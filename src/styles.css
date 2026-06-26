@@ -1,0 +1,267 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+@import "./styles/font-theme.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-saffron: var(--saffron);
+  --color-saffron-foreground: var(--saffron-foreground);
+  --color-gold: var(--gold);
+  --color-leaf: var(--leaf);
+  --color-bark: var(--bark);
+  --font-sans: "Plus Jakarta Sans", "Noto Sans Devanagari", "Inter", system-ui, sans-serif;
+  --font-display: "Merriweather", "Georgia", serif;
+}
+
+:root {
+  --radius: 0.5rem;
+  --background: oklch(0.99 0.005 110);
+  --foreground: oklch(0.2 0.03 150);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.2 0.03 150);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.2 0.03 150);
+  --primary: oklch(0.38 0.11 150);          /* deep forest green */
+  --primary-foreground: oklch(0.98 0.01 110);
+  --secondary: oklch(0.95 0.03 110);
+  --secondary-foreground: oklch(0.3 0.05 150);
+  --muted: oklch(0.96 0.015 110);
+  --muted-foreground: oklch(0.45 0.02 150);
+  --accent: oklch(0.92 0.06 110);
+  --accent-foreground: oklch(0.3 0.06 150);
+  --destructive: oklch(0.55 0.22 27);
+  --destructive-foreground: oklch(0.98 0.01 110);
+  --border: oklch(0.88 0.015 110);
+  --input: oklch(0.9 0.015 110);
+  --ring: oklch(0.5 0.1 150);
+
+  --saffron: oklch(0.72 0.17 55);
+  --saffron-foreground: oklch(0.2 0.03 60);
+  --gold: oklch(0.78 0.14 85);
+  --leaf: oklch(0.55 0.15 145);
+  --bark: oklch(0.35 0.04 60);
+
+  --gradient-hero: linear-gradient(135deg, oklch(0.3 0.09 150) 0%, oklch(0.45 0.13 145) 60%, oklch(0.6 0.14 130) 100%);
+  --gradient-banner: linear-gradient(90deg, var(--saffron) 0%, oklch(0.98 0.005 110) 50%, var(--primary) 100%);
+  --shadow-soft: 0 4px 20px -8px oklch(0.3 0.08 150 / 0.25);
+  --shadow-card: 0 8px 30px -12px oklch(0.3 0.08 150 / 0.2);
+  --mega-menu-bg: linear-gradient(
+    145deg,
+    oklch(0.99 0.015 95) 0%,
+    oklch(0.97 0.025 110) 45%,
+    oklch(0.96 0.04 145) 100%
+  );
+}
+
+.dark {
+  --background: oklch(0.18 0.02 150);
+  --foreground: oklch(0.95 0.01 110);
+  --card: oklch(0.22 0.025 150);
+  --card-foreground: oklch(0.95 0.01 110);
+  --popover: oklch(0.22 0.025 150);
+  --popover-foreground: oklch(0.95 0.01 110);
+  --primary: oklch(0.6 0.13 145);
+  --primary-foreground: oklch(0.15 0.02 150);
+  --secondary: oklch(0.28 0.03 150);
+  --secondary-foreground: oklch(0.95 0.01 110);
+  --muted: oklch(0.28 0.025 150);
+  --muted-foreground: oklch(0.7 0.02 110);
+  --accent: oklch(0.32 0.05 150);
+  --accent-foreground: oklch(0.95 0.01 110);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.6 0.13 145);
+}
+
+@layer base {
+  * { border-color: var(--color-border); }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
+}
+
+@layer utilities {
+  .bg-gradient-hero { background-image: var(--gradient-hero); }
+  .bg-tri-banner { background-image: var(--gradient-banner); }
+  .shadow-soft { box-shadow: var(--shadow-soft); }
+  .shadow-card { box-shadow: var(--shadow-card); }
+  .marquee {
+    display: inline-block;
+    white-space: nowrap;
+    animation: marquee 35s linear infinite;
+  }
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* Mega-menu — bamboo-themed dropdown panels */
+  .mega-menu-panel {
+    background-image: var(--mega-menu-bg);
+    position: relative;
+  }
+  .mega-menu-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(ellipse 70% 55% at 100% 0%, oklch(0.55 0.15 145 / 0.1), transparent 55%),
+      radial-gradient(ellipse 50% 45% at 0% 100%, oklch(0.38 0.11 150 / 0.08), transparent 50%),
+      repeating-linear-gradient(
+        105deg,
+        transparent,
+        transparent 28px,
+        oklch(0.38 0.11 150 / 0.025) 28px,
+        oklch(0.38 0.11 150 / 0.025) 29px
+      );
+    pointer-events: none;
+    border-radius: inherit;
+  }
+  .mega-menu-accent {
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      var(--saffron) 0%,
+      oklch(0.98 0.005 110) 35%,
+      var(--gold) 65%,
+      var(--primary) 100%
+    );
+  }
+  .mega-menu-panel > *:not(.mega-menu-accent) {
+    position: relative;
+    z-index: 1;
+  }
+  .mega-menu-item:hover {
+    background: oklch(0.38 0.11 150 / 0.05);
+  }
+  .mega-menu-footer {
+    background: oklch(0.38 0.11 150 / 0.06);
+  }
+}
+
+/* Hero carousel progress bar */
+@keyframes progress-bar {
+  from { width: 0%; }
+  to   { width: 100%; }
+}
+
+/* ── News vertical auto-scroll ── */
+.news-scroll-inner {
+  animation: newsScrollVertical 30s linear infinite;
+}
+@keyframes newsScrollVertical {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+
+/* ── Card hover lift ── */
+.card-lift {
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.22s ease;
+}
+.card-lift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px -12px oklch(0.3 0.08 150 / 0.22);
+}
+
+/* ── Scroll reveal (fade in up) ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Service card gradient top accent ── */
+.service-card-accent {
+  position: relative;
+}
+.service-card-accent::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 0.5rem 0.5rem 0 0;
+  background: var(--accent-color, var(--saffron));
+}
+
+/* ── Stat card shimmer ── */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* ── Bamboo subtle bg texture (using SVG data URI) ── */
+.bamboo-texture-bg {
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      oklch(0.38 0.11 150 / 0.03) 0px,
+      transparent 1px,
+      transparent 40px,
+      oklch(0.38 0.11 150 / 0.03) 41px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      oklch(0.38 0.11 150 / 0.025) 0px,
+      transparent 1px,
+      transparent 60px,
+      oklch(0.38 0.11 150 / 0.025) 61px
+    );
+}
+
+/* ── Ticker marquee pause on hover ── */
+.ticker-wrapper:hover .marquee {
+  animation-play-state: paused;
+}
+
+/* ── News tag colors ── */
+.news-tag-press  { background: oklch(0.38 0.11 150 / 0.12); color: oklch(0.38 0.11 150); }
+.news-tag-news   { background: oklch(0.55 0.18 240 / 0.12); color: oklch(0.45 0.18 240); }
+.news-tag-notif  { background: oklch(0.75 0.16 75 / 0.18);  color: oklch(0.45 0.12 70);  }
+.news-tag-event  { background: oklch(0.55 0.18 290 / 0.12); color: oklch(0.45 0.16 290); }
+
+/* ── Bamboo Mitra chatbot FAB ── */
+@keyframes chatBubbleFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+
+/* Font theme — after @theme; literal stack beats Tailwind token */
+:root[data-font-theme="header"] {
+  --font-display: "Plus Jakarta Sans", "Noto Sans Devanagari", "Inter", system-ui, sans-serif;
+}
+
+:root[data-font-theme="header"] :not(svg):not(path):not(circle):not(rect):not(line):not(polyline):not(polygon) {
+  font-family: "Plus Jakarta Sans", "Noto Sans Devanagari", "Inter", system-ui, sans-serif !important;
+}

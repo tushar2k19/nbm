@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none" role="img" aria-label="Bamboo Mitra">
+  <defs>
+    <linearGradient id="bambooGrad" x1="60" y1="8" x2="60" y2="112" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#8CC63F"/>
+      <stop offset="100%" stop-color="#2B822E"/>
+    </linearGradient>
+    <clipPath id="bubbleClip">
+      <path d="M18 8h84a10 10 0 0 1 10 10v72a10 10 0 0 1-10 10H58l-10 14-10-14H18a10 10 0 0 1-10-10V18a10 10 0 0 1 10-10z"/>
+    </clipPath>
+  </defs>
+  <rect width="120" height="120" rx="60" fill="#ffffff"/>
+  <g clip-path="url(#bubbleClip)">
+    <path d="M18 8h84a10 10 0 0 1 10 10v72a10 10 0 0 1-10 10H58l-10 14-10-14H18a10 10 0 0 1-10-10V18a10 10 0 0 1 10-10z" fill="#ffffff"/>
+    <g fill="url(#bambooGrad)">
+      <path d="M42 34v58l-4 6V34l4-6z"/>
+      <path d="M38 28h8l-2 6h-4l-2-6z"/>
+      <path d="M36 92h12l-2 8H38l-2-8z"/>
+      <path d="M58 18v74l-4 6V18l4-6z"/>
+      <path d="M54 12h8l-2 6h-4l-2-6z"/>
+      <path d="M52 98h12l-2 8H54l-2-8z"/>
+      <path d="M74 40v52l-4 6V40l4-6z"/>
+      <path d="M70 34h8l-2 6h-4l-2-6z"/>
+      <path d="M68 98h12l-2 8H70l-2-8z"/>
+      <path d="M48 24l6 4-10 6-4-8 8-2z"/>
+      <path d="M66 30l8 2-4 8-8-4 4-6z"/>
+      <path d="M78 48l6 4-10 6-4-8 8-2z"/>
+      <path d="M40 52l6 4-10 6-4-8 8-2z"/>
+      <path d="M62 52l8 2-4 8-8-4 4-6z"/>
+    </g>
+    <rect x="40" y="44" width="16" height="3" rx="1" fill="#fff" opacity="0.85"/>
+    <rect x="40" y="58" width="16" height="3" rx="1" fill="#fff" opacity="0.85"/>
+    <rect x="40" y="72" width="16" height="3" rx="1" fill="#fff" opacity="0.85"/>
+    <rect x="56" y="34" width="16" height="3" rx="1" fill="#fff" opacity="0.85"/>
+    <rect x="56" y="48" width="16" height="3" rx="1" fill="#fff" opacity="0.85"/>
+    <rect x="56" y="62" width="16" height="3" rx="1" fill="#fff" opacity="0.85"/>
+    <rect x="56" y="76" width="16" height="3" rx="1" fill="#fff" opacity="0.85"/>
+    <rect x="72" y="52" width="16" height="3" rx="1" fill="#fff" opacity="0.85"/>
+    <rect x="72" y="66" width="16" height="3" rx="1" fill="#fff" opacity="0.85"/>
+    <rect x="72" y="80" width="16" height="3" rx="1" fill="#fff" opacity="0.85"/>
+  </g>
+  <path d="M18 8h84a10 10 0 0 1 10 10v72a10 10 0 0 1-10 10H58l-10 14-10-14H18a10 10 0 0 1-10-10V18a10 10 0 0 1 10-10z" stroke="url(#bambooGrad)" stroke-width="2.5"/>
+</svg>

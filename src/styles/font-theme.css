@@ -1,0 +1,44 @@
+/**
+ * Font themes — toggle with data-font-theme on <html> ("header" | "legacy").
+ *
+ * header  → Plus Jakarta Sans everywhere (same as "Government of India" / ministry lines)
+ * legacy  → Plus Jakarta body + Merriweather on headings / .font-display
+ */
+
+@layer base {
+  /* ── Legacy: original platform typography ── */
+  :root[data-font-theme="legacy"] body {
+    font-family: var(--font-sans);
+  }
+
+  :root[data-font-theme="legacy"] h1,
+  :root[data-font-theme="legacy"] h2,
+  :root[data-font-theme="legacy"] h3,
+  :root[data-font-theme="legacy"] h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+
+  /* ── Header sans: one font-type site-wide (Plus Jakarta Sans) ── */
+  :root[data-font-theme="header"] {
+    --font-display: var(--font-sans);
+  }
+
+  :root[data-font-theme="header"] body {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  :root[data-font-theme="header"] :where(
+    h1, h2, h3, h4, h5, h6,
+    p, a, li, span, label, small, strong, em,
+    button, input, select, textarea,
+    nav, header, footer, main, table, th, td,
+    .font-display, .font-institutional, .font-eyebrow,
+    .hero-heading, .image-banner-heading, .footer-title, .footer-eyebrow,
+    .prose, .prose *
+  ) {
+    font-family: var(--font-sans);
+  }
+}
