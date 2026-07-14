@@ -1,71 +1,35 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import {
-  TrendingUp,
-  MapPin,
-  Sprout,
-  Leaf,
-  TreePine,
-  Package,
-  Mountain,
-} from "lucide-react";
+import { MapPin } from "lucide-react";
 import { PageHero } from "@/components/SiteLayout";
 import { IndiaBambooMap } from "@/components/dashboard/IndiaBambooMap";
+import { DashboardKpiStrip } from "@/components/dashboard/DashboardKpiStrip";
 import { StateMetricCard } from "@/components/dashboard/StateMetricCard";
 import { StateBarCharts } from "@/components/dashboard/StateBarCharts";
+import { BambooPlantationPreview } from "@/components/dashboard/BambooPlantationPreview";
+import { AccreditedNurseryPreview } from "@/components/dashboard/AccreditedNurseryPreview";
+import { AgarbattiStickPreview } from "@/components/dashboard/AgarbattiStickPreview";
+import { useHashScroll } from "@/hooks/useHashScroll";
 import {
   implementingStates,
-  nationalTotals,
-  IMPLEMENTING_STATE_COUNT,
   type BambooStateStats,
 } from "@/data/bambooStateStats";
-
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
     meta: [
       { title: "Dashboard | National Bamboo Mission" },
       {
         name: "description",
-        content: "Live dashboard of NBM physical and financial progress across States and UTs.",
+        content: "Latest NBM physical and financial progress across States and UTs.",
       },
     ],
   }),
   component: DashboardPage,
 });
 
-const kpis = [
-  {
-    icon: Sprout,
-    label: "Total Plantations",
-    value: nationalTotals.plantations.toLocaleString("en-IN"),
-    delta: "+12% vs last year",
-    watermark: Sprout,
-  },
-  {
-    icon: Mountain,
-    label: "Total Area (Ha)",
-    value: nationalTotals.plantationAreaHa.toLocaleString("en-IN", { maximumFractionDigits: 2 }),
-    delta: `Across ${IMPLEMENTING_STATE_COUNT} states`,
-    watermark: MapPin,
-  },
-  {
-    icon: Leaf,
-    label: "Total Species",
-    value: String(nationalTotals.species),
-    delta: "Categorized varieties",
-    watermark: TreePine,
-  },
-  {
-    icon: Package,
-    label: "Total Culms/Plants",
-    value: nationalTotals.culmsPlants.toLocaleString("en-IN"),
-    delta: "Active stock",
-    watermark: Package,
-  },
-];
-
 function DashboardPage() {
   const [selected, setSelected] = useState<BambooStateStats | null>(null);
+  useHashScroll();
 
   const tableStates = [...implementingStates].sort(
     (a, b) => b.plantationAreaHa - a.plantationAreaHa,
@@ -75,37 +39,22 @@ function DashboardPage() {
     <>
       <PageHero
         title="Dashboard"
-        subtitle="Real-time view of physical and financial progress under the National Bamboo Mission."
+        subtitle="Latest physical and financial progress under the National Bamboo Mission."
       />
       <section className="mx-auto max-w-7xl px-4 py-12 space-y-10">
-        {/* KPI row */}
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {kpis.map((k) => (
-            <div
-              key={k.label}
-              className="relative overflow-hidden bg-card border border-border rounded-lg p-5 shadow-soft card-lift"
-            >
-              <k.watermark className="absolute -right-2 -bottom-2 h-20 w-20 text-primary/5" />
-              <div className="flex items-center gap-2 text-saffron">
-                <k.icon className="h-5 w-5" />
-                <span className="text-xs font-semibold uppercase tracking-wider">{k.label}</span>
-              </div>
-              <div className="mt-2 text-2xl font-display font-bold text-primary">{k.value}</div>
-              <div className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
-                <TrendingUp className="h-3 w-3" /> {k.delta}
-              </div>
-            </div>
-          ))}
-        </div>
+        <DashboardKpiStrip />
 
         {/* Map hero */}
-        <div className="bg-card border border-border rounded-lg shadow-soft overflow-hidden bamboo-texture-bg">
+        <div
+          id="map"
+          className="scroll-mt-28 bg-card border border-border rounded-lg shadow-soft overflow-hidden bamboo-texture-bg"
+        >
           <div className="bg-primary text-primary-foreground px-5 py-3 flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <MapPin className="h-4 w-4 text-saffron" />
               <span className="font-semibold font-display">Bamboo Coverage Across India</span>
             </div>
-            <span className="text-xs opacity-80">FY 2025-26 · Hover states for metrics</span>
+            <span className="text-xs opacity-80">FY 2025-26 · Focus a state for metrics</span>
           </div>
           <div className="grid gap-6 p-5 lg:grid-cols-[1fr_320px]">
             <IndiaBambooMap
@@ -118,15 +67,27 @@ function DashboardPage() {
             </div>
           </div>
           <p className="px-5 pb-4 text-[10px] text-muted-foreground">
-            Data source: NBM-MIS portal · Updated quarterly by State Bamboo Missions.
+            Data source: NBM-MIS portal · Figures based on latest available state reports. Live integration in Phase 2.
           </p>
         </div>
 
         {/* Bar charts */}
         <StateBarCharts />
 
+        {/* Bamboo plantation preview */}
+        <BambooPlantationPreview />
+
+        {/* Accredited nurseries preview */}
+        <AccreditedNurseryPreview />
+
+        {/* Agarbatti stick preview */}
+        <AgarbattiStickPreview />
+
         {/* State table synced with map */}
-        <div className="bg-card border border-border rounded-lg shadow-soft overflow-hidden">
+        <div
+          id="states"
+          className="scroll-mt-28 bg-card border border-border rounded-lg shadow-soft overflow-hidden"
+        >
           <div className="bg-primary text-primary-foreground px-5 py-3 flex items-center gap-2">
             <MapPin className="h-4 w-4 text-saffron" />
             <span className="font-semibold">State-wise Progress (FY 2025-26)</span>
@@ -149,7 +110,7 @@ function DashboardPage() {
                   <tr
                     key={s.id}
                     className={`hover:bg-secondary/40 cursor-pointer transition ${
-                      selected?.id === s.id ? "bg-saffron/10 ring-1 ring-inset ring-saffron/30" : ""
+                      selected?.id === s.id ? "bg-primary/10 ring-1 ring-inset ring-primary/35" : ""
                     }`}
                     onMouseEnter={() => setSelected(s)}
                     onClick={() => setSelected(s)}
@@ -169,7 +130,7 @@ function DashboardPage() {
         </div>
 
         <div className="text-xs text-muted-foreground">
-          Data source: NBM-MIS portal · Updated quarterly by State Bamboo Missions.
+          Data source: NBM-MIS portal · Figures based on latest available state reports. Live integration in Phase 2.
         </div>
       </section>
     </>

@@ -1,0 +1,221 @@
+/* ── Homepage Farmer CTA — bridges light content → dark footer ── */
+
+.farmer-cta-section {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    oklch(0.97 0.035 145) 0%,
+    oklch(0.88 0.06 150) 18%,
+    oklch(0.52 0.12 150) 52%,
+    oklch(0.24 0.09 150) 88%,
+    oklch(0.2 0.08 150) 100%
+  );
+}
+
+.farmer-cta-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='white' stroke-width='1'%3E%3Cline x1='20' y1='8' x2='20' y2='72'/%3E%3Cline x1='40' y1='4' x2='40' y2='76'/%3E%3Cline x1='60' y1='10' x2='60' y2='70'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 80px 80px;
+  pointer-events: none;
+}
+
+.farmer-cta-glow {
+  position: absolute;
+  width: 480px;
+  height: 480px;
+  border-radius: 50%;
+  background: radial-gradient(circle, oklch(0.76 0.15 78 / 0.18) 0%, transparent 68%);
+  top: 10%;
+  right: -8%;
+  pointer-events: none;
+  animation: farmerCtaGlow 14s ease-in-out infinite;
+}
+
+@keyframes farmerCtaGlow {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.7; }
+  50% { transform: translate(-24px, 16px) scale(1.06); opacity: 1; }
+}
+
+.farmer-cta-card {
+  position: relative;
+  display: grid;
+  overflow: hidden;
+  border-radius: 1.25rem;
+  border: 1px solid oklch(1 0 0 / 0.16);
+  background: oklch(0.22 0.08 150 / 0.55);
+  backdrop-filter: blur(12px);
+  box-shadow:
+    0 24px 48px -16px oklch(0.15 0.06 150 / 0.45),
+    0 0 0 1px oklch(1 0 0 / 0.06) inset;
+}
+
+@media (min-width: 768px) {
+  .farmer-cta-card {
+    grid-template-columns: 1fr 1.15fr;
+    border-radius: 1.5rem;
+  }
+}
+
+.farmer-cta-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1.75rem 1.5rem;
+  color: oklch(0.98 0.01 110);
+}
+
+@media (min-width: 768px) {
+  .farmer-cta-content {
+    padding: 2.25rem 2rem;
+  }
+}
+
+.farmer-cta-content::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1.5rem;
+  bottom: 1.5rem;
+  width: 3px;
+  border-radius: 0 2px 2px 0;
+  background: var(--gradient-mitra-gold);
+  box-shadow: 0 0 12px oklch(0.76 0.15 78 / 0.45);
+}
+
+.farmer-cta-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-bottom: 0.75rem;
+  margin-left: 0.75rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+  background: oklch(1 0 0 / 0.08);
+  border: 1px solid oklch(0.76 0.15 78 / 0.35);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: oklch(0.82 0.14 78);
+}
+
+.farmer-cta-title {
+  margin-left: 0.75rem;
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 640px) {
+  .farmer-cta-title {
+    font-size: 1.75rem;
+  }
+}
+
+.farmer-cta-desc {
+  margin-top: 0.625rem;
+  margin-left: 0.75rem;
+  max-width: 28rem;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: oklch(0.98 0.01 110 / 0.82);
+}
+
+@media (min-width: 640px) {
+  .farmer-cta-desc {
+    font-size: 0.875rem;
+  }
+}
+
+.farmer-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  margin-top: 1.25rem;
+  margin-left: 0.75rem;
+}
+
+.farmer-cta-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.5rem;
+  border: 1.5px solid oklch(1 0 0 / 0.45);
+  background: oklch(1 0 0 / 0.08);
+  color: oklch(0.98 0.01 110);
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: background 0.22s ease, border-color 0.22s ease, transform 0.22s ease;
+}
+
+.farmer-cta-btn-outline:hover {
+  background: oklch(1 0 0 / 0.16);
+  border-color: oklch(0.78 0.14 78 / 0.65);
+  transform: translateY(-1px);
+}
+
+.farmer-cta-visual {
+  position: relative;
+  min-height: 200px;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .farmer-cta-visual {
+    min-height: 100%;
+  }
+}
+
+.farmer-cta-visual img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.farmer-cta-card:hover .farmer-cta-visual img {
+  transform: scale(1.04);
+}
+
+.farmer-cta-visual-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    oklch(0.22 0.08 150 / 0.55) 0%,
+    oklch(0.22 0.08 150 / 0.1) 40%,
+    oklch(0.76 0.15 78 / 0.12) 100%
+  );
+  pointer-events: none;
+}
+
+.farmer-cta-visual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, oklch(0.2 0.08 150 / 0.5) 0%, transparent 45%);
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .farmer-cta-visual::after {
+    background: linear-gradient(to right, oklch(0.22 0.08 150 / 0.65) 0%, transparent 42%);
+  }
+}
+
+.farmer-cta-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    oklch(0.76 0.15 78 / 0.35) 50%,
+    transparent 100%
+  );
+}

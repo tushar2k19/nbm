@@ -3,6 +3,7 @@ import { useState } from "react";
 import { BarChart3, Sprout, Leaf, Factory, ChevronRight } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { allReportSections, type ReportSection } from "@/data/reportsDocuments";
+import { annualActionPlanMenuPreviewCount } from "@/data/annualActionPlan";
 import {
   MegaMenuDropdown,
   MegaMenuItemLink,
@@ -18,6 +19,10 @@ const sectionIcons: Record<string, LucideIcon> = {
 
 type SectionId = ReportSection["id"];
 
+function sectionRoute(sectionId: SectionId): { to: string; hash: string } {
+  return { to: "/reports", hash: sectionId };
+}
+
 function MenuPaneContent({
   sectionId,
   onNavigate,
@@ -29,6 +34,13 @@ function MenuPaneContent({
   if (!section) return null;
 
   const Icon = sectionIcons[sectionId] ?? BarChart3;
+  const menuItems =
+    sectionId === "annual-action-plan"
+      ? section.items.slice(0, annualActionPlanMenuPreviewCount)
+      : section.items;
+  const hasMoreAap =
+    sectionId === "annual-action-plan" &&
+    section.items.length > annualActionPlanMenuPreviewCount;
 
   return (
     <div className="animate-in fade-in slide-in-from-left-1 duration-200 ease-out fill-mode-forwards">
@@ -38,7 +50,7 @@ function MenuPaneContent({
       </div>
 
       <ul>
-        {section.items.map((item) => (
+        {menuItems.map((item) => (
           <MegaMenuItemLink
             key={item.id}
             to="/reports"
@@ -49,6 +61,18 @@ function MenuPaneContent({
           </MegaMenuItemLink>
         ))}
       </ul>
+
+      {hasMoreAap && (
+        <Link
+          to="/reports"
+          hash="annual-action-plan"
+          onClick={onNavigate}
+          className="mt-2 inline-flex items-center gap-0.5 text-xs font-semibold text-primary hover:text-saffron transition-colors"
+        >
+          View all action plans
+          <ChevronRight className="h-3 w-3" />
+        </Link>
+      )}
     </div>
   );
 }
@@ -73,22 +97,24 @@ export function ReportsMegaMenuPanel({ open, onNavigate }: { open: boolean; onNa
             {allReportSections.map((section) => {
               const Icon = sectionIcons[section.id] ?? BarChart3;
               const isActive = activeSection === section.id;
+              const route = sectionRoute(section.id);
               return (
                 <li key={section.id}>
-                  <button
-                    type="button"
+                  <Link
+                    to={route.to}
+                    hash={route.hash}
+                    onClick={onNavigate}
                     onMouseEnter={() => setActiveSection(section.id)}
-                    onClick={() => setActiveSection(section.id)}
                     className={`flex w-full items-center gap-2 rounded-md px-2.5 py-2 text-left text-xs font-semibold transition-colors ${
                       isActive
                         ? "bg-primary text-primary-foreground"
                         : "text-foreground/75 hover:bg-primary/10 hover:text-primary"
                     }`}
-                    aria-current={isActive ? "true" : undefined}
+                    aria-current={isActive ? "page" : undefined}
                   >
                     <Icon className={`h-3.5 w-3.5 shrink-0 ${isActive ? "text-saffron" : "text-primary/45"}`} />
                     <span className="leading-tight">{section.title}</span>
-                  </button>
+                  </Link>
                 </li>
               );
             })}
@@ -118,13 +144,27 @@ export function ReportsMegaMenuPanel({ open, onNavigate }: { open: boolean; onNa
 export function ReportsMobileMenu({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <MegaMenuMobileShell>
-      {allReportSections.map((section) => (
+      {allReportSections.map((section) => {
+        const route = sectionRoute(section.id);
+        const menuItems =
+          section.id === "annual-action-plan"
+            ? section.items.slice(0, annualActionPlanMenuPreviewCount)
+            : section.items;
+        const hasMoreAap =
+          section.id === "annual-action-plan" &&
+          section.items.length > annualActionPlanMenuPreviewCount;
+        return (
         <div key={section.id}>
-          <div className="mb-2 flex items-center gap-2 border-b border-primary/8 pb-2">
+          <Link
+            to={route.to}
+            hash={route.hash}
+            onClick={onNavigate}
+            className="mb-2 flex items-center gap-2 border-b border-primary/8 pb-2 hover:text-saffron transition-colors"
+          >
             <h3 className="font-display text-sm font-bold text-primary">{section.title}</h3>
-          </div>
+          </Link>
           <ul>
-            {section.items.map((item) => (
+            {menuItems.map((item) => (
               <MegaMenuItemLink
                 key={item.id}
                 to="/reports"
@@ -135,8 +175,20 @@ export function ReportsMobileMenu({ onNavigate }: { onNavigate?: () => void }) {
               </MegaMenuItemLink>
             ))}
           </ul>
+          {hasMoreAap && (
+            <Link
+              to="/reports"
+              hash="annual-action-plan"
+              onClick={onNavigate}
+              className="mb-4 inline-flex items-center gap-0.5 text-xs font-medium text-primary/70 hover:text-saffron"
+            >
+              View all action plans
+              <ChevronRight className="h-3 w-3" />
+            </Link>
+          )}
         </div>
-      ))}
+        );
+      })}
       <Link
         to="/reports"
         onClick={onNavigate}

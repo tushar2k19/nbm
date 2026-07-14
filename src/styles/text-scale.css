@@ -1,0 +1,27 @@
+/**
+ * GIGW text resize — scales all rem-based typography site-wide.
+ * Default (level 2) matches standard browser 16px base.
+ */
+html {
+  font-size: 100%;
+}
+
+html[data-text-scale="0"] {
+  font-size: 87.5%;
+}
+
+html[data-text-scale="1"] {
+  font-size: 93.75%;
+}
+
+html[data-text-scale="2"] {
+  font-size: 100%;
+}
+
+html[data-text-scale="3"] {
+  font-size: 112.5%;
+}
+
+html[data-text-scale="4"] {
+  font-size: 125%;
+}

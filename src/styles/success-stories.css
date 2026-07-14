@@ -1,0 +1,263 @@
+/* ── Success Stories page ── */
+
+.success-stories-page {
+  --ss-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  background:
+    radial-gradient(ellipse 70% 45% at 50% -5%, oklch(0.55 0.14 145 / 0.07), transparent 55%),
+    linear-gradient(180deg, oklch(0.985 0.008 110) 0%, oklch(0.99 0.005 110) 100%);
+}
+
+.success-stories-nav {
+  background: oklch(1 0 0 / 0.78);
+  border: 1px solid oklch(0.38 0.11 150 / 0.12);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 8px 28px -12px oklch(0.28 0.09 150 / 0.18);
+}
+
+.success-stories-nav-pill {
+  transition:
+    color 0.25s var(--ss-ease),
+    transform 0.25s var(--ss-ease);
+}
+
+.success-stories-nav-pill--active {
+  color: oklch(1 0 0);
+}
+
+.success-stories-nav-pill-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, oklch(0.38 0.11 150) 0%, oklch(0.48 0.13 145) 100%);
+  box-shadow: 0 4px 14px -4px oklch(0.32 0.1 150 / 0.45);
+}
+
+/* PDF group cards */
+.ss-group-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid oklch(0.38 0.11 150 / 0.12);
+  background: oklch(1 0 0);
+  box-shadow: 0 4px 24px -10px oklch(0.28 0.09 150 / 0.15);
+  transition:
+    box-shadow 0.35s var(--ss-ease),
+    border-color 0.35s var(--ss-ease),
+    transform 0.35s var(--ss-ease);
+}
+
+.ss-group-card:hover {
+  border-color: oklch(0.38 0.11 150 / 0.28);
+  box-shadow: 0 12px 36px -12px oklch(0.28 0.09 150 / 0.22);
+  transform: translateY(-2px);
+}
+
+.ss-group-card-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--saffron), var(--gold), var(--primary));
+}
+
+.ss-group-banner {
+  position: relative;
+  height: 7.5rem;
+  overflow: hidden;
+}
+
+.ss-group-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s var(--ss-ease);
+}
+
+.ss-group-card:hover .ss-group-banner img {
+  transform: scale(1.05);
+}
+
+.ss-group-banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    oklch(0.22 0.09 150 / 0.15) 0%,
+    oklch(0.22 0.09 150 / 0.72) 100%
+  );
+}
+
+.ss-pdf-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+  padding: 0.875rem 1rem;
+  border-radius: 0.625rem;
+  border: 1px solid transparent;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.ss-pdf-row:hover {
+  background: oklch(0.38 0.11 150 / 0.05);
+  border-color: oklch(0.38 0.11 150 / 0.12);
+}
+
+.ss-pdf-icon {
+  display: flex;
+  height: 2.25rem;
+  width: 2.25rem;
+  shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  background: oklch(0.38 0.11 150 / 0.08);
+  color: var(--primary);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.ss-pdf-row:hover .ss-pdf-icon {
+  background: var(--primary);
+  color: oklch(1 0 0);
+}
+
+/* Video cards */
+.ss-video-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid oklch(0.38 0.11 150 / 0.12);
+  background: oklch(0.16 0.06 150);
+  cursor: pointer;
+  transition:
+    box-shadow 0.35s var(--ss-ease),
+    transform 0.35s var(--ss-ease);
+}
+
+.ss-video-card:hover {
+  box-shadow: 0 16px 40px -12px oklch(0.22 0.09 150 / 0.45);
+  transform: translateY(-3px);
+}
+
+.ss-video-thumb {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+
+.ss-video-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.88;
+  transition:
+    transform 0.6s var(--ss-ease),
+    opacity 0.35s ease;
+}
+
+.ss-video-card:hover .ss-video-thumb img {
+  transform: scale(1.06);
+  opacity: 0.95;
+}
+
+.ss-video-play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: oklch(0.12 0.05 150 / 0.35);
+  transition: background 0.3s ease;
+}
+
+.ss-video-card:hover .ss-video-play {
+  background: oklch(0.12 0.05 150 / 0.48);
+}
+
+.ss-video-play-btn {
+  display: flex;
+  height: 3.25rem;
+  width: 3.25rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: oklch(1 0 0 / 0.92);
+  color: var(--primary);
+  box-shadow: 0 8px 24px -6px oklch(0 0 0 / 0.35);
+  transition: transform 0.3s var(--ss-ease);
+}
+
+.ss-video-card:hover .ss-video-play-btn {
+  transform: scale(1.08);
+}
+
+.ss-video-duration {
+  position: absolute;
+  bottom: 0.75rem;
+  right: 0.75rem;
+  border-radius: 0.375rem;
+  background: oklch(0 0 0 / 0.72);
+  padding: 0.2rem 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: oklch(1 0 0);
+  backdrop-filter: blur(4px);
+}
+
+/* Video modal */
+.ss-video-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: oklch(0 0 0 / 0.82);
+  padding: 1rem;
+  animation: ssModalIn 0.28s var(--ss-ease);
+}
+
+@keyframes ssModalIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.ss-video-modal-panel {
+  width: min(56rem, 100%);
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid oklch(1 0 0 / 0.12);
+  background: oklch(0.14 0.05 150);
+  box-shadow: 0 24px 64px -16px oklch(0 0 0 / 0.55);
+  animation: ssPanelIn 0.32s var(--ss-ease);
+}
+
+@keyframes ssPanelIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.ss-video-modal-player {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  background: oklch(0 0 0);
+}
+
+.ss-video-modal-player video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}

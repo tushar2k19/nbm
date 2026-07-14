@@ -1,7 +1,11 @@
+import { annualActionPlanArchive } from "./annualActionPlan";
+
 export type ReportDoc = {
   id: string;
   title: string;
   description: string;
+  /** Official PDF on nbm.da.gov.in — opens in a new tab when set */
+  pdfUrl?: string;
 };
 
 export type ReportSection = {
@@ -15,12 +19,12 @@ export const annualActionPlan: ReportSection = {
   id: "annual-action-plan",
   title: "Annual Action Plan",
   description: "State-wise annual action plans submitted under the National Bamboo Mission.",
-  items: [
-    { id: "aap-2026-27", title: "Annual Action Plan FY 2026-27", description: "PDF · 6.8 MB" },
-    { id: "aap-2025-26", title: "Annual Action Plan FY 2025-26", description: "PDF · 6.1 MB" },
-    { id: "aap-2024-25", title: "Annual Action Plan FY 2024-25", description: "PDF · 5.7 MB" },
-    { id: "aap-2023-24", title: "Annual Action Plan FY 2023-24", description: "PDF · 5.4 MB" },
-  ],
+  items: annualActionPlanArchive.map((entry) => ({
+    id: entry.id,
+    title: `Annual Action Plan FY ${entry.financialYear}`,
+    description: "PDF",
+    pdfUrl: entry.pdfUrl,
+  })),
 };
 
 export const sectorReportSections: ReportSection[] = [

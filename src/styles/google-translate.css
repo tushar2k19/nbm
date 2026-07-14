@@ -1,0 +1,25 @@
+/* Hide Google Translate banner — standard on GoI portals using hidden widget */
+.goog-te-banner-frame,
+.goog-te-balloon-frame,
+#goog-gt-tt,
+.goog-te-gadget-icon {
+  display: none !important;
+}
+
+body {
+  top: 0 !important;
+}
+
+.goog-te-combo,
+#google_translate_element {
+  display: none !important;
+}
+
+.skiptranslate {
+  display: none !important;
+}
+
+body.translated-ltr,
+body.translated-rtl {
+  top: 0 !important;
+}

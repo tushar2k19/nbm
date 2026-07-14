@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState, useCallback } from "react";
 import { PageHero } from "@/components/SiteLayout";
+import { MetricAccent } from "@/components/MetricAccent";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import type { Session } from "@supabase/supabase-js";
@@ -227,12 +228,12 @@ function BeneficiariesTable() {
   );
 }
 
-function Kpi({ label, value, icon: Icon }: { label: string; value: number; icon: any }) {
+function Kpi({ label, value, icon: Icon }: { label: string; value: number; icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }> }) {
   return (
     <div className="bg-card border border-border rounded-lg p-4 shadow-soft">
-      <div className="flex items-center gap-2 text-saffron text-xs font-semibold uppercase tracking-wider">
-        <Icon className="h-4 w-4" /> {label}
-      </div>
+      <MetricAccent icon={Icon} iconClassName="h-4 w-4">
+        {label}
+      </MetricAccent>
       <div className="mt-1 text-2xl font-display font-bold text-primary">{value}</div>
     </div>
   );

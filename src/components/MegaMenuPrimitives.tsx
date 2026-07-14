@@ -1,7 +1,10 @@
 import { Link } from "@tanstack/react-router";
-import type { ReactNode } from "react";
+import { createContext, useContext, type CSSProperties, type ReactNode, type RefObject } from "react";
 import { ChevronRight } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+
+/** When false, dropdown is positioned by MegaMenuFloatingLayer (fixed) instead of absolute on the trigger. */
+export const MegaMenuAttachContext = createContext(true);
 
 type MegaMenuDropdownProps = {
   open: boolean;
@@ -19,15 +22,28 @@ export function MegaMenuDropdown({
   anchor = "start",
   children,
 }: MegaMenuDropdownProps) {
+  const attachToTrigger = useContext(MegaMenuAttachContext);
   const anchorClass = anchor === "end" ? "right-0 left-auto" : "left-0";
+  const visibilityClass = open
+    ? "opacity-100 visible translate-y-0 pointer-events-auto"
+    : "opacity-0 invisible -translate-y-1 pointer-events-none";
+
+  if (!attachToTrigger) {
+    return (
+      <div
+        className={`w-max transition-all duration-200 ease-out ${visibilityClass}`}
+        role="region"
+        aria-label={ariaLabel}
+        aria-hidden={!open}
+      >
+        <div className={maxWidthClass}>{children}</div>
+      </div>
+    );
+  }
 
   return (
     <div
-      className={`hidden lg:block absolute ${anchorClass} top-full w-max z-50 transition-all duration-200 ease-out ${
-        open
-          ? "opacity-100 visible translate-y-0 pointer-events-auto"
-          : "opacity-0 invisible -translate-y-1 pointer-events-none"
-      }`}
+      className={`hidden lg:block absolute ${anchorClass} top-full w-max z-50 transition-all duration-200 ease-out ${visibilityClass}`}
       role="region"
       aria-label={ariaLabel}
       aria-hidden={!open}
@@ -35,6 +51,57 @@ export function MegaMenuDropdown({
       {/* Invisible bridge so moving from nav item to panel doesn't close the menu */}
       <div className="h-2" aria-hidden />
       <div className={maxWidthClass}>{children}</div>
+    </div>
+  );
+}
+
+type MegaMenuFloatingLayerProps = {
+  open: boolean;
+  anchorRect: DOMRect | null;
+  anchor: "start" | "end";
+  panelRef: RefObject<HTMLDivElement | null>;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
+  children: ReactNode;
+};
+
+export function MegaMenuFloatingLayer({
+  open,
+  anchorRect,
+  anchor,
+  panelRef,
+  onMouseEnter,
+  onMouseLeave,
+  children,
+}: MegaMenuFloatingLayerProps) {
+  if (!anchorRect) return null;
+
+  const style: CSSProperties =
+    anchor === "end"
+      ? {
+          top: anchorRect.bottom,
+          right: Math.max(8, window.innerWidth - anchorRect.right),
+        }
+      : {
+          top: anchorRect.bottom,
+          left: Math.max(8, anchorRect.left),
+        };
+
+  return (
+    <div
+      ref={panelRef}
+      className={`mega-menu-floating-layer hidden lg:block fixed z-[120] w-max transition-all duration-200 ease-out ${
+        open
+          ? "opacity-100 visible translate-y-0 pointer-events-auto"
+          : "opacity-0 invisible -translate-y-1 pointer-events-none"
+      }`}
+      style={style}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
+      {/* Bridge gap between nav trigger and panel */}
+      <div className="h-2.5" aria-hidden />
+      <MegaMenuAttachContext.Provider value={false}>{children}</MegaMenuAttachContext.Provider>
     </div>
   );
 }
@@ -137,11 +204,13 @@ export function MegaMenuSubsection({
 export function MegaMenuItemLink({
   to,
   hash,
+  params,
   onNavigate,
   children,
 }: {
   to: string;
   hash?: string;
+  params?: Record<string, string>;
   onNavigate?: () => void;
   children: ReactNode;
 }) {
@@ -150,6 +219,7 @@ export function MegaMenuItemLink({
       <Link
         to={to}
         hash={hash}
+        params={params}
         onClick={onNavigate}
         className="mega-menu-item block rounded-md py-1.5 pr-2 text-[13px] leading-snug text-foreground/85 hover:text-primary transition-colors"
       >

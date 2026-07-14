@@ -9,39 +9,85 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WebsitePoliciesRouteImport } from './routes/website-policies'
+import { Route as TrainingModuleRouteImport } from './routes/training-module'
 import { Route as TendersVacanciesRouteImport } from './routes/tenders-vacancies'
+import { Route as SuccessStoriesRouteImport } from './routes/success-stories'
 import { Route as StateDashboardRouteImport } from './routes/state-dashboard'
+import { Route as SitemapRouteImport } from './routes/sitemap'
+import { Route as SearchRouteImport } from './routes/search'
 import { Route as RtiRouteImport } from './routes/rti'
 import { Route as ReportsRouteImport } from './routes/reports'
 import { Route as ProductsRouteImport } from './routes/products'
+import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
+import { Route as PlantationRouteImport } from './routes/plantation'
 import { Route as NewsRouteImport } from './routes/news'
 import { Route as MisLoginRouteImport } from './routes/mis-login'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as KnowledgeCenterRouteImport } from './routes/knowledge-center'
 import { Route as InstitutesRouteImport } from './routes/institutes'
+import { Route as ImplementingStatesRouteImport } from './routes/implementing-states'
+import { Route as HelpRouteImport } from './routes/help'
 import { Route as GuidelinesRouteImport } from './routes/guidelines'
 import { Route as GalleryRouteImport } from './routes/gallery'
+import { Route as FeedbackRouteImport } from './routes/feedback'
+import { Route as DisclaimerRouteImport } from './routes/disclaimer'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ContactRouteImport } from './routes/contact'
-import { Route as BeneficiaryDashboardRouteImport } from './routes/beneficiary-dashboard'
+import { Route as AgarbattiStickRouteImport } from './routes/agarbatti-stick'
+import { Route as AccreditedNurseryRouteImport } from './routes/accredited-nursery'
+import { Route as AccessibilityRouteImport } from './routes/accessibility'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TrainingModuleIndexRouteImport } from './routes/training-module.index'
+import { Route as NewsIndexRouteImport } from './routes/news.index'
 import { Route as KnowledgeCenterIndexRouteImport } from './routes/knowledge-center.index'
+import { Route as GuidelinesIndexRouteImport } from './routes/guidelines.index'
 import { Route as ContactIndexRouteImport } from './routes/contact.index'
+import { Route as TrainingModuleGroupIdRouteImport } from './routes/training-module.$groupId'
 import { Route as NewsNewsIdRouteImport } from './routes/news.$newsId'
+import { Route as KnowledgeCenterStateMissionRouteImport } from './routes/knowledge-center.state-mission'
 import { Route as KnowledgeCenterResearchPapersRouteImport } from './routes/knowledge-center.research-papers'
+import { Route as GuidelinesEnablingProvisionsRouteImport } from './routes/guidelines.enabling-provisions'
+import { Route as ContactWhosWhoRouteImport } from './routes/contact.whos-who'
+import { Route as ContactStructureRouteImport } from './routes/contact.structure'
 import { Route as ContactStateRouteImport } from './routes/contact.state'
 import { Route as ContactHeadQuarterRouteImport } from './routes/contact.head-quarter'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 
+const WebsitePoliciesRoute = WebsitePoliciesRouteImport.update({
+  id: '/website-policies',
+  path: '/website-policies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TrainingModuleRoute = TrainingModuleRouteImport.update({
+  id: '/training-module',
+  path: '/training-module',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TendersVacanciesRoute = TendersVacanciesRouteImport.update({
   id: '/tenders-vacancies',
   path: '/tenders-vacancies',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SuccessStoriesRoute = SuccessStoriesRouteImport.update({
+  id: '/success-stories',
+  path: '/success-stories',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const StateDashboardRoute = StateDashboardRouteImport.update({
   id: '/state-dashboard',
   path: '/state-dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapRoute = SitemapRouteImport.update({
+  id: '/sitemap',
+  path: '/sitemap',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SearchRoute = SearchRouteImport.update({
+  id: '/search',
+  path: '/search',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RtiRoute = RtiRouteImport.update({
@@ -57,6 +103,16 @@ const ReportsRoute = ReportsRouteImport.update({
 const ProductsRoute = ProductsRouteImport.update({
   id: '/products',
   path: '/products',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlantationRoute = PlantationRouteImport.update({
+  id: '/plantation',
+  path: '/plantation',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NewsRoute = NewsRouteImport.update({
@@ -84,6 +140,16 @@ const InstitutesRoute = InstitutesRouteImport.update({
   path: '/institutes',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ImplementingStatesRoute = ImplementingStatesRouteImport.update({
+  id: '/implementing-states',
+  path: '/implementing-states',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HelpRoute = HelpRouteImport.update({
+  id: '/help',
+  path: '/help',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GuidelinesRoute = GuidelinesRouteImport.update({
   id: '/guidelines',
   path: '/guidelines',
@@ -92,6 +158,16 @@ const GuidelinesRoute = GuidelinesRouteImport.update({
 const GalleryRoute = GalleryRouteImport.update({
   id: '/gallery',
   path: '/gallery',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FeedbackRoute = FeedbackRouteImport.update({
+  id: '/feedback',
+  path: '/feedback',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DisclaimerRoute = DisclaimerRouteImport.update({
+  id: '/disclaimer',
+  path: '/disclaimer',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -104,9 +180,19 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BeneficiaryDashboardRoute = BeneficiaryDashboardRouteImport.update({
-  id: '/beneficiary-dashboard',
-  path: '/beneficiary-dashboard',
+const AgarbattiStickRoute = AgarbattiStickRouteImport.update({
+  id: '/agarbatti-stick',
+  path: '/agarbatti-stick',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccreditedNurseryRoute = AccreditedNurseryRouteImport.update({
+  id: '/accredited-nursery',
+  path: '/accredited-nursery',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccessibilityRoute = AccessibilityRouteImport.update({
+  id: '/accessibility',
+  path: '/accessibility',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -119,27 +205,69 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TrainingModuleIndexRoute = TrainingModuleIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => TrainingModuleRoute,
+} as any)
+const NewsIndexRoute = NewsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => NewsRoute,
+} as any)
 const KnowledgeCenterIndexRoute = KnowledgeCenterIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => KnowledgeCenterRoute,
+} as any)
+const GuidelinesIndexRoute = GuidelinesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => GuidelinesRoute,
 } as any)
 const ContactIndexRoute = ContactIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => ContactRoute,
 } as any)
+const TrainingModuleGroupIdRoute = TrainingModuleGroupIdRouteImport.update({
+  id: '/$groupId',
+  path: '/$groupId',
+  getParentRoute: () => TrainingModuleRoute,
+} as any)
 const NewsNewsIdRoute = NewsNewsIdRouteImport.update({
   id: '/$newsId',
   path: '/$newsId',
   getParentRoute: () => NewsRoute,
 } as any)
+const KnowledgeCenterStateMissionRoute =
+  KnowledgeCenterStateMissionRouteImport.update({
+    id: '/state-mission',
+    path: '/state-mission',
+    getParentRoute: () => KnowledgeCenterRoute,
+  } as any)
 const KnowledgeCenterResearchPapersRoute =
   KnowledgeCenterResearchPapersRouteImport.update({
     id: '/research-papers',
     path: '/research-papers',
     getParentRoute: () => KnowledgeCenterRoute,
   } as any)
+const GuidelinesEnablingProvisionsRoute =
+  GuidelinesEnablingProvisionsRouteImport.update({
+    id: '/enabling-provisions',
+    path: '/enabling-provisions',
+    getParentRoute: () => GuidelinesRoute,
+  } as any)
+const ContactWhosWhoRoute = ContactWhosWhoRouteImport.update({
+  id: '/whos-who',
+  path: '/whos-who',
+  getParentRoute: () => ContactRoute,
+} as any)
+const ContactStructureRoute = ContactStructureRouteImport.update({
+  id: '/structure',
+  path: '/structure',
+  getParentRoute: () => ContactRoute,
+} as any)
 const ContactStateRoute = ContactStateRouteImport.update({
   id: '/state',
   path: '/state',
@@ -159,182 +287,329 @@ const ApiChatRoute = ApiChatRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/beneficiary-dashboard': typeof BeneficiaryDashboardRoute
+  '/accessibility': typeof AccessibilityRoute
+  '/accredited-nursery': typeof AccreditedNurseryRoute
+  '/agarbatti-stick': typeof AgarbattiStickRoute
   '/contact': typeof ContactRouteWithChildren
   '/dashboard': typeof DashboardRoute
+  '/disclaimer': typeof DisclaimerRoute
+  '/feedback': typeof FeedbackRoute
   '/gallery': typeof GalleryRoute
-  '/guidelines': typeof GuidelinesRoute
+  '/guidelines': typeof GuidelinesRouteWithChildren
+  '/help': typeof HelpRoute
+  '/implementing-states': typeof ImplementingStatesRoute
   '/institutes': typeof InstitutesRoute
   '/knowledge-center': typeof KnowledgeCenterRouteWithChildren
   '/login': typeof LoginRoute
   '/mis-login': typeof MisLoginRoute
   '/news': typeof NewsRouteWithChildren
+  '/plantation': typeof PlantationRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/products': typeof ProductsRoute
   '/reports': typeof ReportsRoute
   '/rti': typeof RtiRoute
+  '/search': typeof SearchRoute
+  '/sitemap': typeof SitemapRoute
   '/state-dashboard': typeof StateDashboardRoute
+  '/success-stories': typeof SuccessStoriesRoute
   '/tenders-vacancies': typeof TendersVacanciesRoute
+  '/training-module': typeof TrainingModuleRouteWithChildren
+  '/website-policies': typeof WebsitePoliciesRoute
   '/api/chat': typeof ApiChatRoute
   '/contact/head-quarter': typeof ContactHeadQuarterRoute
   '/contact/state': typeof ContactStateRoute
+  '/contact/structure': typeof ContactStructureRoute
+  '/contact/whos-who': typeof ContactWhosWhoRoute
+  '/guidelines/enabling-provisions': typeof GuidelinesEnablingProvisionsRoute
   '/knowledge-center/research-papers': typeof KnowledgeCenterResearchPapersRoute
+  '/knowledge-center/state-mission': typeof KnowledgeCenterStateMissionRoute
   '/news/$newsId': typeof NewsNewsIdRoute
+  '/training-module/$groupId': typeof TrainingModuleGroupIdRoute
   '/contact/': typeof ContactIndexRoute
+  '/guidelines/': typeof GuidelinesIndexRoute
   '/knowledge-center/': typeof KnowledgeCenterIndexRoute
+  '/news/': typeof NewsIndexRoute
+  '/training-module/': typeof TrainingModuleIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/beneficiary-dashboard': typeof BeneficiaryDashboardRoute
+  '/accessibility': typeof AccessibilityRoute
+  '/accredited-nursery': typeof AccreditedNurseryRoute
+  '/agarbatti-stick': typeof AgarbattiStickRoute
   '/dashboard': typeof DashboardRoute
+  '/disclaimer': typeof DisclaimerRoute
+  '/feedback': typeof FeedbackRoute
   '/gallery': typeof GalleryRoute
-  '/guidelines': typeof GuidelinesRoute
+  '/help': typeof HelpRoute
+  '/implementing-states': typeof ImplementingStatesRoute
   '/institutes': typeof InstitutesRoute
   '/login': typeof LoginRoute
   '/mis-login': typeof MisLoginRoute
-  '/news': typeof NewsRouteWithChildren
+  '/plantation': typeof PlantationRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/products': typeof ProductsRoute
   '/reports': typeof ReportsRoute
   '/rti': typeof RtiRoute
+  '/search': typeof SearchRoute
+  '/sitemap': typeof SitemapRoute
   '/state-dashboard': typeof StateDashboardRoute
+  '/success-stories': typeof SuccessStoriesRoute
   '/tenders-vacancies': typeof TendersVacanciesRoute
+  '/website-policies': typeof WebsitePoliciesRoute
   '/api/chat': typeof ApiChatRoute
   '/contact/head-quarter': typeof ContactHeadQuarterRoute
   '/contact/state': typeof ContactStateRoute
+  '/contact/structure': typeof ContactStructureRoute
+  '/contact/whos-who': typeof ContactWhosWhoRoute
+  '/guidelines/enabling-provisions': typeof GuidelinesEnablingProvisionsRoute
   '/knowledge-center/research-papers': typeof KnowledgeCenterResearchPapersRoute
+  '/knowledge-center/state-mission': typeof KnowledgeCenterStateMissionRoute
   '/news/$newsId': typeof NewsNewsIdRoute
+  '/training-module/$groupId': typeof TrainingModuleGroupIdRoute
   '/contact': typeof ContactIndexRoute
+  '/guidelines': typeof GuidelinesIndexRoute
   '/knowledge-center': typeof KnowledgeCenterIndexRoute
+  '/news': typeof NewsIndexRoute
+  '/training-module': typeof TrainingModuleIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/beneficiary-dashboard': typeof BeneficiaryDashboardRoute
+  '/accessibility': typeof AccessibilityRoute
+  '/accredited-nursery': typeof AccreditedNurseryRoute
+  '/agarbatti-stick': typeof AgarbattiStickRoute
   '/contact': typeof ContactRouteWithChildren
   '/dashboard': typeof DashboardRoute
+  '/disclaimer': typeof DisclaimerRoute
+  '/feedback': typeof FeedbackRoute
   '/gallery': typeof GalleryRoute
-  '/guidelines': typeof GuidelinesRoute
+  '/guidelines': typeof GuidelinesRouteWithChildren
+  '/help': typeof HelpRoute
+  '/implementing-states': typeof ImplementingStatesRoute
   '/institutes': typeof InstitutesRoute
   '/knowledge-center': typeof KnowledgeCenterRouteWithChildren
   '/login': typeof LoginRoute
   '/mis-login': typeof MisLoginRoute
   '/news': typeof NewsRouteWithChildren
+  '/plantation': typeof PlantationRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/products': typeof ProductsRoute
   '/reports': typeof ReportsRoute
   '/rti': typeof RtiRoute
+  '/search': typeof SearchRoute
+  '/sitemap': typeof SitemapRoute
   '/state-dashboard': typeof StateDashboardRoute
+  '/success-stories': typeof SuccessStoriesRoute
   '/tenders-vacancies': typeof TendersVacanciesRoute
+  '/training-module': typeof TrainingModuleRouteWithChildren
+  '/website-policies': typeof WebsitePoliciesRoute
   '/api/chat': typeof ApiChatRoute
   '/contact/head-quarter': typeof ContactHeadQuarterRoute
   '/contact/state': typeof ContactStateRoute
+  '/contact/structure': typeof ContactStructureRoute
+  '/contact/whos-who': typeof ContactWhosWhoRoute
+  '/guidelines/enabling-provisions': typeof GuidelinesEnablingProvisionsRoute
   '/knowledge-center/research-papers': typeof KnowledgeCenterResearchPapersRoute
+  '/knowledge-center/state-mission': typeof KnowledgeCenterStateMissionRoute
   '/news/$newsId': typeof NewsNewsIdRoute
+  '/training-module/$groupId': typeof TrainingModuleGroupIdRoute
   '/contact/': typeof ContactIndexRoute
+  '/guidelines/': typeof GuidelinesIndexRoute
   '/knowledge-center/': typeof KnowledgeCenterIndexRoute
+  '/news/': typeof NewsIndexRoute
+  '/training-module/': typeof TrainingModuleIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/about'
-    | '/beneficiary-dashboard'
+    | '/accessibility'
+    | '/accredited-nursery'
+    | '/agarbatti-stick'
     | '/contact'
     | '/dashboard'
+    | '/disclaimer'
+    | '/feedback'
     | '/gallery'
     | '/guidelines'
+    | '/help'
+    | '/implementing-states'
     | '/institutes'
     | '/knowledge-center'
     | '/login'
     | '/mis-login'
     | '/news'
+    | '/plantation'
+    | '/privacy-policy'
     | '/products'
     | '/reports'
     | '/rti'
+    | '/search'
+    | '/sitemap'
     | '/state-dashboard'
+    | '/success-stories'
     | '/tenders-vacancies'
+    | '/training-module'
+    | '/website-policies'
     | '/api/chat'
     | '/contact/head-quarter'
     | '/contact/state'
+    | '/contact/structure'
+    | '/contact/whos-who'
+    | '/guidelines/enabling-provisions'
     | '/knowledge-center/research-papers'
+    | '/knowledge-center/state-mission'
     | '/news/$newsId'
+    | '/training-module/$groupId'
     | '/contact/'
+    | '/guidelines/'
     | '/knowledge-center/'
+    | '/news/'
+    | '/training-module/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
-    | '/beneficiary-dashboard'
+    | '/accessibility'
+    | '/accredited-nursery'
+    | '/agarbatti-stick'
     | '/dashboard'
+    | '/disclaimer'
+    | '/feedback'
     | '/gallery'
-    | '/guidelines'
+    | '/help'
+    | '/implementing-states'
     | '/institutes'
     | '/login'
     | '/mis-login'
-    | '/news'
+    | '/plantation'
+    | '/privacy-policy'
     | '/products'
     | '/reports'
     | '/rti'
+    | '/search'
+    | '/sitemap'
     | '/state-dashboard'
+    | '/success-stories'
     | '/tenders-vacancies'
+    | '/website-policies'
     | '/api/chat'
     | '/contact/head-quarter'
     | '/contact/state'
+    | '/contact/structure'
+    | '/contact/whos-who'
+    | '/guidelines/enabling-provisions'
     | '/knowledge-center/research-papers'
+    | '/knowledge-center/state-mission'
     | '/news/$newsId'
+    | '/training-module/$groupId'
     | '/contact'
+    | '/guidelines'
     | '/knowledge-center'
+    | '/news'
+    | '/training-module'
   id:
     | '__root__'
     | '/'
     | '/about'
-    | '/beneficiary-dashboard'
+    | '/accessibility'
+    | '/accredited-nursery'
+    | '/agarbatti-stick'
     | '/contact'
     | '/dashboard'
+    | '/disclaimer'
+    | '/feedback'
     | '/gallery'
     | '/guidelines'
+    | '/help'
+    | '/implementing-states'
     | '/institutes'
     | '/knowledge-center'
     | '/login'
     | '/mis-login'
     | '/news'
+    | '/plantation'
+    | '/privacy-policy'
     | '/products'
     | '/reports'
     | '/rti'
+    | '/search'
+    | '/sitemap'
     | '/state-dashboard'
+    | '/success-stories'
     | '/tenders-vacancies'
+    | '/training-module'
+    | '/website-policies'
     | '/api/chat'
     | '/contact/head-quarter'
     | '/contact/state'
+    | '/contact/structure'
+    | '/contact/whos-who'
+    | '/guidelines/enabling-provisions'
     | '/knowledge-center/research-papers'
+    | '/knowledge-center/state-mission'
     | '/news/$newsId'
+    | '/training-module/$groupId'
     | '/contact/'
+    | '/guidelines/'
     | '/knowledge-center/'
+    | '/news/'
+    | '/training-module/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  BeneficiaryDashboardRoute: typeof BeneficiaryDashboardRoute
+  AccessibilityRoute: typeof AccessibilityRoute
+  AccreditedNurseryRoute: typeof AccreditedNurseryRoute
+  AgarbattiStickRoute: typeof AgarbattiStickRoute
   ContactRoute: typeof ContactRouteWithChildren
   DashboardRoute: typeof DashboardRoute
+  DisclaimerRoute: typeof DisclaimerRoute
+  FeedbackRoute: typeof FeedbackRoute
   GalleryRoute: typeof GalleryRoute
-  GuidelinesRoute: typeof GuidelinesRoute
+  GuidelinesRoute: typeof GuidelinesRouteWithChildren
+  HelpRoute: typeof HelpRoute
+  ImplementingStatesRoute: typeof ImplementingStatesRoute
   InstitutesRoute: typeof InstitutesRoute
   KnowledgeCenterRoute: typeof KnowledgeCenterRouteWithChildren
   LoginRoute: typeof LoginRoute
   MisLoginRoute: typeof MisLoginRoute
   NewsRoute: typeof NewsRouteWithChildren
+  PlantationRoute: typeof PlantationRoute
+  PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   ProductsRoute: typeof ProductsRoute
   ReportsRoute: typeof ReportsRoute
   RtiRoute: typeof RtiRoute
+  SearchRoute: typeof SearchRoute
+  SitemapRoute: typeof SitemapRoute
   StateDashboardRoute: typeof StateDashboardRoute
+  SuccessStoriesRoute: typeof SuccessStoriesRoute
   TendersVacanciesRoute: typeof TendersVacanciesRoute
+  TrainingModuleRoute: typeof TrainingModuleRouteWithChildren
+  WebsitePoliciesRoute: typeof WebsitePoliciesRoute
   ApiChatRoute: typeof ApiChatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/website-policies': {
+      id: '/website-policies'
+      path: '/website-policies'
+      fullPath: '/website-policies'
+      preLoaderRoute: typeof WebsitePoliciesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/training-module': {
+      id: '/training-module'
+      path: '/training-module'
+      fullPath: '/training-module'
+      preLoaderRoute: typeof TrainingModuleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tenders-vacancies': {
       id: '/tenders-vacancies'
       path: '/tenders-vacancies'
@@ -342,11 +617,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TendersVacanciesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/success-stories': {
+      id: '/success-stories'
+      path: '/success-stories'
+      fullPath: '/success-stories'
+      preLoaderRoute: typeof SuccessStoriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/state-dashboard': {
       id: '/state-dashboard'
       path: '/state-dashboard'
       fullPath: '/state-dashboard'
       preLoaderRoute: typeof StateDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap': {
+      id: '/sitemap'
+      path: '/sitemap'
+      fullPath: '/sitemap'
+      preLoaderRoute: typeof SitemapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/search': {
+      id: '/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof SearchRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/rti': {
@@ -368,6 +664,20 @@ declare module '@tanstack/react-router' {
       path: '/products'
       fullPath: '/products'
       preLoaderRoute: typeof ProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy-policy': {
+      id: '/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof PrivacyPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/plantation': {
+      id: '/plantation'
+      path: '/plantation'
+      fullPath: '/plantation'
+      preLoaderRoute: typeof PlantationRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/news': {
@@ -405,6 +715,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InstitutesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/implementing-states': {
+      id: '/implementing-states'
+      path: '/implementing-states'
+      fullPath: '/implementing-states'
+      preLoaderRoute: typeof ImplementingStatesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/help': {
+      id: '/help'
+      path: '/help'
+      fullPath: '/help'
+      preLoaderRoute: typeof HelpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/guidelines': {
       id: '/guidelines'
       path: '/guidelines'
@@ -417,6 +741,20 @@ declare module '@tanstack/react-router' {
       path: '/gallery'
       fullPath: '/gallery'
       preLoaderRoute: typeof GalleryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/feedback': {
+      id: '/feedback'
+      path: '/feedback'
+      fullPath: '/feedback'
+      preLoaderRoute: typeof FeedbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/disclaimer': {
+      id: '/disclaimer'
+      path: '/disclaimer'
+      fullPath: '/disclaimer'
+      preLoaderRoute: typeof DisclaimerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -433,11 +771,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/beneficiary-dashboard': {
-      id: '/beneficiary-dashboard'
-      path: '/beneficiary-dashboard'
-      fullPath: '/beneficiary-dashboard'
-      preLoaderRoute: typeof BeneficiaryDashboardRouteImport
+    '/agarbatti-stick': {
+      id: '/agarbatti-stick'
+      path: '/agarbatti-stick'
+      fullPath: '/agarbatti-stick'
+      preLoaderRoute: typeof AgarbattiStickRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/accredited-nursery': {
+      id: '/accredited-nursery'
+      path: '/accredited-nursery'
+      fullPath: '/accredited-nursery'
+      preLoaderRoute: typeof AccreditedNurseryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/accessibility': {
+      id: '/accessibility'
+      path: '/accessibility'
+      fullPath: '/accessibility'
+      preLoaderRoute: typeof AccessibilityRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -454,12 +806,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/training-module/': {
+      id: '/training-module/'
+      path: '/'
+      fullPath: '/training-module/'
+      preLoaderRoute: typeof TrainingModuleIndexRouteImport
+      parentRoute: typeof TrainingModuleRoute
+    }
+    '/news/': {
+      id: '/news/'
+      path: '/'
+      fullPath: '/news/'
+      preLoaderRoute: typeof NewsIndexRouteImport
+      parentRoute: typeof NewsRoute
+    }
     '/knowledge-center/': {
       id: '/knowledge-center/'
       path: '/'
       fullPath: '/knowledge-center/'
       preLoaderRoute: typeof KnowledgeCenterIndexRouteImport
       parentRoute: typeof KnowledgeCenterRoute
+    }
+    '/guidelines/': {
+      id: '/guidelines/'
+      path: '/'
+      fullPath: '/guidelines/'
+      preLoaderRoute: typeof GuidelinesIndexRouteImport
+      parentRoute: typeof GuidelinesRoute
     }
     '/contact/': {
       id: '/contact/'
@@ -468,6 +841,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactIndexRouteImport
       parentRoute: typeof ContactRoute
     }
+    '/training-module/$groupId': {
+      id: '/training-module/$groupId'
+      path: '/$groupId'
+      fullPath: '/training-module/$groupId'
+      preLoaderRoute: typeof TrainingModuleGroupIdRouteImport
+      parentRoute: typeof TrainingModuleRoute
+    }
     '/news/$newsId': {
       id: '/news/$newsId'
       path: '/$newsId'
@@ -475,12 +855,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NewsNewsIdRouteImport
       parentRoute: typeof NewsRoute
     }
+    '/knowledge-center/state-mission': {
+      id: '/knowledge-center/state-mission'
+      path: '/state-mission'
+      fullPath: '/knowledge-center/state-mission'
+      preLoaderRoute: typeof KnowledgeCenterStateMissionRouteImport
+      parentRoute: typeof KnowledgeCenterRoute
+    }
     '/knowledge-center/research-papers': {
       id: '/knowledge-center/research-papers'
       path: '/research-papers'
       fullPath: '/knowledge-center/research-papers'
       preLoaderRoute: typeof KnowledgeCenterResearchPapersRouteImport
       parentRoute: typeof KnowledgeCenterRoute
+    }
+    '/guidelines/enabling-provisions': {
+      id: '/guidelines/enabling-provisions'
+      path: '/enabling-provisions'
+      fullPath: '/guidelines/enabling-provisions'
+      preLoaderRoute: typeof GuidelinesEnablingProvisionsRouteImport
+      parentRoute: typeof GuidelinesRoute
+    }
+    '/contact/whos-who': {
+      id: '/contact/whos-who'
+      path: '/whos-who'
+      fullPath: '/contact/whos-who'
+      preLoaderRoute: typeof ContactWhosWhoRouteImport
+      parentRoute: typeof ContactRoute
+    }
+    '/contact/structure': {
+      id: '/contact/structure'
+      path: '/structure'
+      fullPath: '/contact/structure'
+      preLoaderRoute: typeof ContactStructureRouteImport
+      parentRoute: typeof ContactRoute
     }
     '/contact/state': {
       id: '/contact/state'
@@ -509,25 +917,45 @@ declare module '@tanstack/react-router' {
 interface ContactRouteChildren {
   ContactHeadQuarterRoute: typeof ContactHeadQuarterRoute
   ContactStateRoute: typeof ContactStateRoute
+  ContactStructureRoute: typeof ContactStructureRoute
+  ContactWhosWhoRoute: typeof ContactWhosWhoRoute
   ContactIndexRoute: typeof ContactIndexRoute
 }
 
 const ContactRouteChildren: ContactRouteChildren = {
   ContactHeadQuarterRoute: ContactHeadQuarterRoute,
   ContactStateRoute: ContactStateRoute,
+  ContactStructureRoute: ContactStructureRoute,
+  ContactWhosWhoRoute: ContactWhosWhoRoute,
   ContactIndexRoute: ContactIndexRoute,
 }
 
 const ContactRouteWithChildren =
   ContactRoute._addFileChildren(ContactRouteChildren)
 
+interface GuidelinesRouteChildren {
+  GuidelinesEnablingProvisionsRoute: typeof GuidelinesEnablingProvisionsRoute
+  GuidelinesIndexRoute: typeof GuidelinesIndexRoute
+}
+
+const GuidelinesRouteChildren: GuidelinesRouteChildren = {
+  GuidelinesEnablingProvisionsRoute: GuidelinesEnablingProvisionsRoute,
+  GuidelinesIndexRoute: GuidelinesIndexRoute,
+}
+
+const GuidelinesRouteWithChildren = GuidelinesRoute._addFileChildren(
+  GuidelinesRouteChildren,
+)
+
 interface KnowledgeCenterRouteChildren {
   KnowledgeCenterResearchPapersRoute: typeof KnowledgeCenterResearchPapersRoute
+  KnowledgeCenterStateMissionRoute: typeof KnowledgeCenterStateMissionRoute
   KnowledgeCenterIndexRoute: typeof KnowledgeCenterIndexRoute
 }
 
 const KnowledgeCenterRouteChildren: KnowledgeCenterRouteChildren = {
   KnowledgeCenterResearchPapersRoute: KnowledgeCenterResearchPapersRoute,
+  KnowledgeCenterStateMissionRoute: KnowledgeCenterStateMissionRoute,
   KnowledgeCenterIndexRoute: KnowledgeCenterIndexRoute,
 }
 
@@ -537,32 +965,61 @@ const KnowledgeCenterRouteWithChildren = KnowledgeCenterRoute._addFileChildren(
 
 interface NewsRouteChildren {
   NewsNewsIdRoute: typeof NewsNewsIdRoute
+  NewsIndexRoute: typeof NewsIndexRoute
 }
 
 const NewsRouteChildren: NewsRouteChildren = {
   NewsNewsIdRoute: NewsNewsIdRoute,
+  NewsIndexRoute: NewsIndexRoute,
 }
 
 const NewsRouteWithChildren = NewsRoute._addFileChildren(NewsRouteChildren)
 
+interface TrainingModuleRouteChildren {
+  TrainingModuleGroupIdRoute: typeof TrainingModuleGroupIdRoute
+  TrainingModuleIndexRoute: typeof TrainingModuleIndexRoute
+}
+
+const TrainingModuleRouteChildren: TrainingModuleRouteChildren = {
+  TrainingModuleGroupIdRoute: TrainingModuleGroupIdRoute,
+  TrainingModuleIndexRoute: TrainingModuleIndexRoute,
+}
+
+const TrainingModuleRouteWithChildren = TrainingModuleRoute._addFileChildren(
+  TrainingModuleRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  BeneficiaryDashboardRoute: BeneficiaryDashboardRoute,
+  AccessibilityRoute: AccessibilityRoute,
+  AccreditedNurseryRoute: AccreditedNurseryRoute,
+  AgarbattiStickRoute: AgarbattiStickRoute,
   ContactRoute: ContactRouteWithChildren,
   DashboardRoute: DashboardRoute,
+  DisclaimerRoute: DisclaimerRoute,
+  FeedbackRoute: FeedbackRoute,
   GalleryRoute: GalleryRoute,
-  GuidelinesRoute: GuidelinesRoute,
+  GuidelinesRoute: GuidelinesRouteWithChildren,
+  HelpRoute: HelpRoute,
+  ImplementingStatesRoute: ImplementingStatesRoute,
   InstitutesRoute: InstitutesRoute,
   KnowledgeCenterRoute: KnowledgeCenterRouteWithChildren,
   LoginRoute: LoginRoute,
   MisLoginRoute: MisLoginRoute,
   NewsRoute: NewsRouteWithChildren,
+  PlantationRoute: PlantationRoute,
+  PrivacyPolicyRoute: PrivacyPolicyRoute,
   ProductsRoute: ProductsRoute,
   ReportsRoute: ReportsRoute,
   RtiRoute: RtiRoute,
+  SearchRoute: SearchRoute,
+  SitemapRoute: SitemapRoute,
   StateDashboardRoute: StateDashboardRoute,
+  SuccessStoriesRoute: SuccessStoriesRoute,
   TendersVacanciesRoute: TendersVacanciesRoute,
+  TrainingModuleRoute: TrainingModuleRouteWithChildren,
+  WebsitePoliciesRoute: WebsitePoliciesRoute,
   ApiChatRoute: ApiChatRoute,
 }
 export const routeTree = rootRouteImport

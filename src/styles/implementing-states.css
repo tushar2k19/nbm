@@ -1,0 +1,152 @@
+/* Implementing States — revamped state map gallery */
+
+.is-page {
+  background:
+    radial-gradient(ellipse 70% 45% at 50% -5%, oklch(0.55 0.14 145 / 0.07), transparent 55%),
+    linear-gradient(180deg, oklch(0.98 0.008 110) 0%, oklch(0.995 0.004 110) 100%);
+}
+
+.is-page-inner {
+  padding-top: 2rem;
+  padding-bottom: 3rem;
+}
+
+.is-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .is-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .is-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .is-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+.is-state-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 1rem 0.75rem 0.875rem;
+  border-radius: 0.875rem;
+  border: 1px solid oklch(0.38 0.11 150 / 0.1);
+  background: oklch(1 0 0);
+  box-shadow: 0 2px 14px -8px oklch(0.28 0.09 150 / 0.12);
+  text-align: center;
+  transition:
+    transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.is-state-card:hover {
+  transform: translateY(-3px);
+  border-color: oklch(0.38 0.11 150 / 0.22);
+  box-shadow: 0 10px 28px -12px oklch(0.28 0.09 150 / 0.2);
+}
+
+.is-state-card__map-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 4.5rem;
+  padding: 0.25rem;
+}
+
+.is-state-card__map {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px oklch(0.28 0.09 150 / 0.08));
+  transition: transform 0.22s ease;
+}
+
+.is-state-card:hover .is-state-card__map {
+  transform: scale(1.04);
+}
+
+.is-state-card__name {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: oklch(0.28 0.06 150);
+}
+
+.is-state-card__tagline {
+  font-size: 0.6875rem;
+  line-height: 1.4;
+  color: oklch(0.48 0.03 150);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* About page teaser */
+.is-preview {
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid oklch(0.38 0.11 150 / 0.12);
+  background: linear-gradient(
+    135deg,
+    oklch(0.99 0.01 110) 0%,
+    oklch(0.97 0.02 130) 50%,
+    oklch(0.99 0.015 95) 100%
+  );
+  box-shadow: 0 4px 28px -12px oklch(0.28 0.09 150 / 0.14);
+}
+
+.is-preview__inner {
+  display: grid;
+  gap: 1.5rem;
+  padding: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .is-preview__inner {
+    grid-template-columns: 1fr 1.1fr;
+    align-items: center;
+    padding: 1.75rem 2rem;
+    gap: 2rem;
+  }
+}
+
+.is-preview__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.is-preview__card {
+  padding: 0.875rem 0.625rem;
+  border-radius: 0.75rem;
+  background: oklch(1 0 0 / 0.85);
+  border: 1px solid oklch(0.38 0.11 150 / 0.08);
+}
+
+.is-preview__card .is-state-card__map-wrap {
+  height: 3.25rem;
+}
+
+.is-preview__card .is-state-card__name {
+  font-size: 0.75rem;
+}
+
+.is-preview__card .is-state-card__tagline {
+  display: none;
+}

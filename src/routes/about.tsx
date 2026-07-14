@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/SiteLayout";
+import { ImplementingStatesPreview } from "@/components/implementing-states/ImplementingStatesPreview";
 import plantationImg from "@/assets/bamboo-plantation.jpg";
 import { Target, Eye, CheckCircle2 } from "lucide-react";
 
@@ -25,7 +26,11 @@ const objectives = [
 function AboutPage() {
   return (
     <>
-      <PageHero title="About NBM" subtitle="A restructured Centrally Sponsored Scheme of the Government of India to develop the complete value chain of the bamboo sector." />
+      <PageHero
+        eyebrow="Centrally Sponsored Scheme · Government of India"
+        title="About NBM"
+        subtitle="A restructured Centrally Sponsored Scheme of the Government of India to develop the complete value chain of the bamboo sector."
+      />
       <section className="mx-auto max-w-7xl px-4 py-12 grid gap-8 lg:grid-cols-3">
         <div className="lg:col-span-2 space-y-5 text-foreground/90 leading-relaxed">
           <h2 className="text-2xl font-bold text-primary">Background</h2>
@@ -47,6 +52,10 @@ function AboutPage() {
             <p className="mt-2 text-sm text-foreground/90">Holistic development of the complete value chain through cluster-based approach by connecting farmers with consumers and industry.</p>
           </div>
         </aside>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+        <ImplementingStatesPreview />
       </section>
 
       <section className="bg-secondary">

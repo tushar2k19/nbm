@@ -1,0 +1,199 @@
+/* ── Site header navigation ── */
+
+.site-header-utility {
+  color: oklch(0.98 0.01 110);
+  background: linear-gradient(
+    135deg,
+    oklch(0.22 0.09 150) 0%,
+    oklch(0.28 0.1 148) 50%,
+    oklch(0.32 0.09 145) 100%
+  );
+}
+
+.site-header-utility .page-hero__photo {
+  opacity: 0.18;
+}
+
+.site-header-utility .page-hero__overlay {
+  background:
+    linear-gradient(
+      180deg,
+      oklch(0.2 0.08 150 / 0.6) 0%,
+      oklch(0.26 0.09 150 / 0.85) 100%
+    ),
+    radial-gradient(ellipse 50% 80% at 100% 0%, oklch(0.76 0.15 78 / 0.08), transparent 60%);
+}
+
+/* Gold focus ring on dark utility strip for contrast */
+.site-header-utility a:focus-visible,
+.site-header-utility button:focus-visible {
+  outline-color: var(--accent-warm) !important;
+  box-shadow: 0 0 0 1px oklch(0.2 0.08 150 / 0.8);
+}
+
+.header-divider {
+  padding-top: 0.125rem;
+  padding-bottom: 0.5rem;
+}
+
+.header-divider-line {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    oklch(0.86 0.02 110) 12%,
+    oklch(0.78 0.04 145 / 0.45) 50%,
+    oklch(0.86 0.02 110) 88%,
+    transparent 100%
+  );
+}
+
+.site-nav {
+  background: linear-gradient(180deg, oklch(0.985 0.008 110) 0%, oklch(0.97 0.02 110) 100%);
+  padding-bottom: 0.3rem;
+}
+
+.site-nav-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+  padding-inline: 0.5rem;
+}
+
+@media (min-width: 1024px) {
+  .site-nav {
+    /* overflow-x:auto forces overflow-y:auto and clips absolute/fixed mega menus */
+    overflow: visible;
+    padding-top: 0.125rem;
+  }
+
+  .site-nav-scroll {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .site-nav-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .site-nav-list {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 0;
+    width: 100%;
+    max-width: 80rem;
+    padding-inline: 0.5rem;
+    min-width: min-content;
+  }
+
+  .site-nav-list > li {
+    flex: 0 0 auto;
+  }
+}
+
+.site-nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  width: 100%;
+  min-height: 2.5rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8125rem;
+  line-height: 1.15;
+  white-space: nowrap;
+  border-radius: 0.3rem;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+@media (min-width: 1024px) {
+  .site-nav-link {
+    width: auto;
+    min-height: 2.25rem;
+    padding: 0.4rem 0.55rem;
+    font-size: clamp(0.6875rem, 0.55vw + 0.42rem, 0.8125rem);
+  }
+}
+
+@media (min-width: 1280px) {
+  .site-nav-link {
+    padding: 0.45rem 0.65rem;
+  }
+}
+
+/* Default (inactive) */
+.site-nav-link.is-inactive {
+  color: oklch(0.32 0.06 150);
+  font-weight: 500;
+}
+
+/* Hover — soft tint, no layout shift */
+.site-nav-link.is-inactive:hover {
+  background: oklch(0.38 0.11 150 / 0.08);
+  color: var(--primary);
+}
+
+/* Mega-menu open */
+.site-nav-link.is-open:not(.is-active) {
+  background: oklch(0.38 0.11 150 / 0.06);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.site-nav-link.is-open:not(.is-active)::after {
+  content: "";
+  position: absolute;
+  left: 0.65rem;
+  right: 0.65rem;
+  bottom: 0.2rem;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--accent-warm);
+}
+
+/* Active route */
+.site-nav-link.is-active {
+  background: var(--primary);
+  color: #fff;
+  font-weight: 700;
+}
+
+.site-nav-link.is-active:hover {
+  background: oklch(0.34 0.11 150);
+  color: #fff;
+}
+
+.site-nav-chevron {
+  font-size: 0.55em;
+  line-height: 1;
+  opacity: 0.45;
+  margin-top: 0.05em;
+}
+
+.site-nav-link.is-active .site-nav-chevron {
+  opacity: 0.85;
+  color: #fff;
+}
+
+.site-nav-link.is-open .site-nav-chevron {
+  opacity: 0.7;
+}
+
+/* Keyboard focus — high-contrast ring on nav items */
+.site-nav-link:focus-visible {
+  outline: 3px solid oklch(0.52 0.22 250) !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 1px oklch(1 0 0 / 0.85);
+}
+
+.site-nav-link.is-active:focus-visible {
+  outline-color: oklch(0.84 0.13 72) !important;
+}

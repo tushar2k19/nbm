@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHero } from "@/components/SiteLayout";
 import { researchPapers } from "@/data/researchPapers";
+import { downloadSamplePdf } from "@/lib/samplePdf";
 import { Download, FileText, Search, ChevronLeft } from "lucide-react";
 import { useMemo, useState } from "react";
 
@@ -73,13 +74,16 @@ function ResearchPapersPage() {
 
           <div className="overflow-x-auto">
             <table className="w-full text-sm border-collapse min-w-[800px]">
+              <caption className="sr-only">
+                Research papers and publications on bamboo cultivation, processing, composites and policy from NBM partner institutions
+              </caption>
               <thead>
                 <tr className="bg-primary text-primary-foreground">
-                  <th className="text-left px-4 py-3 font-semibold w-16">S. No.</th>
-                  <th className="text-left px-4 py-3 font-semibold min-w-[320px]">Title</th>
-                  <th className="text-left px-4 py-3 font-semibold min-w-[160px]">Author Name</th>
-                  <th className="text-left px-4 py-3 font-semibold w-20">Date</th>
-                  <th className="text-left px-4 py-3 font-semibold w-36">Download</th>
+                  <th scope="col" className="text-left px-4 py-3 font-semibold w-16">S. No.</th>
+                  <th scope="col" className="text-left px-4 py-3 font-semibold min-w-[320px]">Title</th>
+                  <th scope="col" className="text-left px-4 py-3 font-semibold min-w-[160px]">Author Name</th>
+                  <th scope="col" className="text-left px-4 py-3 font-semibold w-20">Date</th>
+                  <th scope="col" className="text-left px-4 py-3 font-semibold w-36">Download</th>
                 </tr>
               </thead>
               <tbody>
@@ -109,20 +113,22 @@ function ResearchPapersPage() {
                         {paper.date}
                       </td>
                       <td className="px-4 py-3.5">
-                        <a
-                          href="#"
+                        <button
+                          type="button"
+                          onClick={() => downloadSamplePdf(paper.title)}
                           title={`Download PDF — ${paper.fileSize}`}
+                          aria-label={`Download PDF — ${paper.title}`}
                           className="group inline-flex items-center gap-2 text-xs hover:text-primary transition-colors"
                         >
                           <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-50 border border-red-200 text-red-600 group-hover:bg-red-100 transition-colors">
                             <Download className="h-4 w-4" />
                           </span>
-                          <span className="text-muted-foreground group-hover:text-primary">
+                          <span className="text-muted-foreground group-hover:text-primary text-left">
                             Type: PDF
                             <br />
                             Size: {paper.fileSize}
                           </span>
-                        </a>
+                        </button>
                       </td>
                     </tr>
                   ))

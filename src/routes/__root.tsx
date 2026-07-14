@@ -7,12 +7,16 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import { I18nextProvider } from "react-i18next";
 
 import appCss from "../styles.css?url";
+import i18n from "../i18n";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { initAppLocale, LOCALE_INIT_SCRIPT } from "../lib/locale";
+import { initTextScale, TEXT_SCALE_INIT_SCRIPT } from "../lib/textScale";
 import SiteLayout from "../components/SiteLayout";
-import { FontThemeSwitcher } from "@/components/FontThemeSwitcher";
 import { Toaster } from "@/components/ui/sonner";
+import BambooPageLoader from "../components/BambooPageLoader";
 
 function NotFoundComponent() {
   return (
@@ -79,20 +83,34 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "NBM Bamboo Hub is a prototype website for the National Bamboo Mission, showcasing key information and resources." },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "NBM Bamboo Hub is a prototype website for the National Bamboo Mission, showcasing key information and resources." },
+      { title: "National Bamboo Mission | Government of India" },
+      {
+        name: "description",
+        content:
+          "Official portal of the National Bamboo Mission — promoting holistic growth of the bamboo sector across India.",
+      },
+      { name: "author", content: "Ministry of Agriculture and Farmers Welfare, Government of India" },
+      { property: "og:title", content: "National Bamboo Mission" },
+      {
+        property: "og:description",
+        content:
+          "Holistic development of bamboo sector — plantations, products, processing and livelihoods.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "Lovable App" },
-      { name: "twitter:description", content: "NBM Bamboo Hub is a prototype website for the National Bamboo Mission, showcasing key information and resources." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e79a2336-08e8-4248-a2d6-013a367e3906/id-preview-2e9559d0--acb6ffe3-9ea5-44fd-b51e-e0a2de8c2c8e.lovable.app-1782285513531.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e79a2336-08e8-4248-a2d6-013a367e3906/id-preview-2e9559d0--acb6ffe3-9ea5-44fd-b51e-e0a2de8c2c8e.lovable.app-1782285513531.png" },
+      { name: "twitter:title", content: "National Bamboo Mission" },
+      {
+        name: "twitter:description",
+        content:
+          "Official portal of the National Bamboo Mission — promoting holistic growth of the bamboo sector across India.",
+      },
+      { property: "og:image", content: "/apple-touch-icon.png" },
+      { name: "twitter:image", content: "/apple-touch-icon.png" },
     ],
     links: [
+      { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+      { rel: "manifest", href: "/site.webmanifest" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com" },
       {
@@ -113,14 +131,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" data-font-theme="header">
+    <html lang="en" data-font-theme="legacy" data-text-scale="2">
       <head>
         <HeadContent />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem("nbm-font-theme")||"header";document.documentElement.dataset.fontTheme=t==="legacy"?"legacy":"header";}catch(e){document.documentElement.dataset.fontTheme="header";}})();`,
-          }}
-        />
+        <script dangerouslySetInnerHTML={{ __html: TEXT_SCALE_INIT_SCRIPT }} />
+        <script dangerouslySetInnerHTML={{ __html: LOCALE_INIT_SCRIPT }} />
       </head>
       <body>
         {children}
@@ -133,11 +148,18 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
+  useEffect(() => {
+    initTextScale();
+    initAppLocale();
+  }, []);
+
   return (
-    <QueryClientProvider client={queryClient}>
-      <SiteLayout />
-      <FontThemeSwitcher />
-      <Toaster richColors position="top-right" />
-    </QueryClientProvider>
+    <I18nextProvider i18n={i18n}>
+      <QueryClientProvider client={queryClient}>
+        <BambooPageLoader />
+        <SiteLayout />
+        <Toaster richColors position="top-right" />
+      </QueryClientProvider>
+    </I18nextProvider>
   );
 }

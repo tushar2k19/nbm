@@ -1,45 +1,186 @@
-import { Link, Outlet } from "@tanstack/react-router";
-import { Menu, X, Phone, Mail, MapPin, Twitter, Youtube, Facebook, Linkedin } from "lucide-react";
-import { useState, useRef, useEffect, useCallback, type ReactNode } from "react";
+import { Link, Outlet, useNavigate } from "@tanstack/react-router";
+import { Menu, X, Phone, MonitorSpeaker, Search } from "lucide-react";
+import { useState, useRef, useEffect, useLayoutEffect, useCallback, type CSSProperties, type ReactNode } from "react";
+import bambooHeroBg from "@/assets/front_page.png";
+import { MegaMenuFloatingLayer } from "@/components/MegaMenuPrimitives";
+import { useTranslation } from "react-i18next";
 import logo from "@/assets/nbm-logo.png";
-import digitalIndiaLogo from "@/assets/dig_ind.jpeg";
 import nationalEmblem from "@/assets/national-emblem.svg";
 import { GuidelinesMegaMenuPanel, GuidelinesMobileMenu } from "@/components/GuidelinesMegaMenu";
 import { KnowledgeCenterMegaMenuPanel, KnowledgeCenterMobileMenu } from "@/components/KnowledgeCenterMegaMenu";
 import { ReportsMegaMenuPanel, ReportsMobileMenu } from "@/components/ReportsMegaMenu";
 import { NavDropdownMegaMenuPanel, NavDropdownMobileMenu } from "@/components/NavDropdownMegaMenu";
-import type { NavMegaMenuId } from "@/data/navMegaMenus";
-import { navMegaMenus } from "@/data/navMegaMenus";
+import { navItems, type MegaMenuType } from "@/data/siteNav";
+import { TextSizeControls } from "@/components/TextSizeControls";
+import { LanguageSelector } from "@/components/LanguageSelector";
+import { SiteFooter } from "@/components/footer/SiteFooter";
+import { AccessibilityWidget } from "@/components/AccessibilityWidget";
 
-type MegaMenuType = "guidelines" | "knowledge-center" | "reports" | NavMegaMenuId;
+/* ── Screen Reader Access popover ── */
+const screenReaders = [
+  { name: "NVDA", platform: "Windows (Free)", url: "https://www.nvaccess.org/download/" },
+  { name: "JAWS", platform: "Windows", url: "https://www.freedomscientific.com/products/software/jaws/" },
+  { name: "ORCA", platform: "Linux (Free)", url: "https://help.gnome.org/users/orca/stable/" },
+  { name: "VoiceOver", platform: "macOS / iOS", url: "https://www.apple.com/accessibility/vision/" },
+  { name: "TalkBack", platform: "Android", url: "https://support.google.com/accessibility/android/answer/6007100" },
+] as const;
 
-type NavItem = {
-  to: string;
-  label: string;
-  megaMenu?: MegaMenuType;
-  /** Right-align popup for items near the end of the nav bar */
-  menuAnchor?: "start" | "end";
-};
+function ScreenReaderPopover() {
+  const { t } = useTranslation();
+  const [open, setOpen] = useState(false);
+  const wrapRef = useRef<HTMLDivElement | null>(null);
 
-const navItems: NavItem[] = [
-  { to: "/", label: "Home" },
-  { to: "/about", label: "About NBM" },
-  { to: "/guidelines", label: "Guidelines & Documents", megaMenu: "guidelines" },
-  { to: "/gallery", label: "Gallery" },
-  { to: "/knowledge-center", label: "Knowledge Center", megaMenu: "knowledge-center" },
-  { to: "/reports", label: "Reports", megaMenu: "reports" },
-  { to: "/tenders-vacancies", label: "Tenders / Vacancies" },
-  { to: "/dashboard", label: "Dashboard", megaMenu: "dashboard", menuAnchor: "end" },
-  { to: "/login", label: "Login", megaMenu: "login", menuAnchor: "end" },
-  { to: "/contact/head-quarter", label: "Contact", megaMenu: "contact", menuAnchor: "end" },
-];
+  useEffect(() => {
+    if (!open) return;
+    function onPointerDown(e: PointerEvent) {
+      if (!wrapRef.current?.contains(e.target as Node)) setOpen(false);
+    }
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") setOpen(false);
+    }
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
+
+  return (
+    <div ref={wrapRef} className={`sr-access-wrap relative${open ? " z-[300]" : ""}`}>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-haspopup="dialog"
+        aria-controls={open ? "sr-access-panel" : undefined}
+        aria-label={t("header.screenReader")}
+        title={t("header.screenReader")}
+        className="a11y-trigger"
+      >
+        <MonitorSpeaker className="h-3.5 w-3.5" aria-hidden />
+      </button>
+      {open && (
+        <div
+          id="sr-access-panel"
+          className="sr-access-popover"
+          role="dialog"
+          aria-label={t("header.screenReader")}
+        >
+          <div className="sr-access-popover__title">{t("header.screenReader")}</div>
+          <p className="sr-access-popover__desc">{t("header.screenReaderDesc")}</p>
+          <ul className="sr-access-popover__list" role="list">
+            {screenReaders.map((sr) => (
+              <li key={sr.name} className="sr-access-popover__item">
+                <span>
+                  <span className="sr-access-popover__name">{sr.name}</span>
+                  <span className="sr-access-popover__platform"> — {sr.platform}</span>
+                </span>
+                <a
+                  href={sr.url}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="sr-access-popover__link"
+                >
+                  Download
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ── Inline site search bar ── */
+function SiteSearchBar() {
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (open) inputRef.current?.focus();
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") { setOpen(false); setQuery(""); }
+    }
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    const q = query.trim();
+    if (q) {
+      void navigate({ to: "/search", search: { q } });
+      setOpen(false);
+      setQuery("");
+    }
+  }
+
+  return (
+    <div className="relative flex shrink-0 items-center">
+      {open ? (
+        <form
+          onSubmit={handleSubmit}
+          role="search"
+          aria-label="Search the site"
+          className="absolute right-0 top-1/2 z-20 flex -translate-y-1/2 items-center gap-1 rounded-md border border-white/20 bg-[oklch(0.22_0.09_150)] px-1.5 py-0.5 shadow-lg"
+        >
+          <input
+            ref={inputRef}
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search site…"
+            aria-label="Search query"
+            className="w-28 rounded border border-white/30 bg-white/10 px-2 py-0.5 text-xs text-white placeholder:text-white/50 focus:outline-none focus:ring-1 focus:ring-white/50 sm:w-36 lg:w-40"
+          />
+          <button
+            type="submit"
+            aria-label="Submit search"
+            className="shrink-0 rounded p-0.5 opacity-80 hover:opacity-100"
+          >
+            <Search className="h-3.5 w-3.5 text-white" aria-hidden />
+          </button>
+          <button
+            type="button"
+            onClick={() => { setOpen(false); setQuery(""); }}
+            aria-label="Close search"
+            className="shrink-0 rounded p-0.5 opacity-70 hover:opacity-100"
+          >
+            <X className="h-3.5 w-3.5 text-white" aria-hidden />
+          </button>
+        </form>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          aria-label="Open site search"
+          className="inline-flex items-center gap-1 opacity-80 transition-opacity hover:opacity-100 hover:underline text-xs"
+        >
+          <Search className="h-3.5 w-3.5" aria-hidden />
+          Search
+        </button>
+      )}
+    </div>
+  );
+}
 
 export function SiteHeader() {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [expandedMegaMenu, setExpandedMegaMenu] = useState<MegaMenuType | null>(null);
   const [activeMegaMenu, setActiveMegaMenu] = useState<MegaMenuType | null>(null);
   const megaMenuRefs = useRef<Partial<Record<MegaMenuType, HTMLLIElement | null>>>({});
+  const megaMenuPanelRef = useRef<HTMLDivElement | null>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [menuAnchorRect, setMenuAnchorRect] = useState<DOMRect | null>(null);
 
   const closeMenu = useCallback(() => {
     setOpen(false);
@@ -70,13 +211,36 @@ export function SiteHeader() {
     }
   }, []);
 
+  const syncMenuAnchorRect = useCallback(() => {
+    if (!activeMegaMenu) {
+      setMenuAnchorRect(null);
+      return;
+    }
+    const trigger = megaMenuRefs.current[activeMegaMenu];
+    setMenuAnchorRect(trigger ? trigger.getBoundingClientRect() : null);
+  }, [activeMegaMenu]);
+
+  useLayoutEffect(() => {
+    syncMenuAnchorRect();
+    if (!activeMegaMenu) return;
+
+    const onReposition = () => syncMenuAnchorRect();
+    window.addEventListener("resize", onReposition);
+    window.addEventListener("scroll", onReposition, true);
+    return () => {
+      window.removeEventListener("resize", onReposition);
+      window.removeEventListener("scroll", onReposition, true);
+    };
+  }, [activeMegaMenu, syncMenuAnchorRect]);
+
   useEffect(() => {
     function handlePointerDown(event: PointerEvent) {
       if (!activeMegaMenu) return;
-      const container = megaMenuRefs.current[activeMegaMenu];
-      if (container && !container.contains(event.target as Node)) {
-        setActiveMegaMenu(null);
-      }
+      const target = event.target as Node;
+      const trigger = megaMenuRefs.current[activeMegaMenu];
+      const panel = megaMenuPanelRef.current;
+      if (trigger?.contains(target) || panel?.contains(target)) return;
+      setActiveMegaMenu(null);
     }
 
     function handleKeyDown(event: KeyboardEvent) {
@@ -135,366 +299,300 @@ export function SiteHeader() {
   }
 
   return (
-    <header className="relative z-50 bg-background border-b border-border shadow-soft">
-      {/* Top strip */}
-      <div className="bg-primary text-primary-foreground text-xs">
-        <div className="mx-auto max-w-7xl px-4 py-1.5 flex flex-wrap items-center justify-between gap-2">
-          <span className="font-medium tracking-wide">
-            भारत सरकार | Government of India &nbsp;·&nbsp; Ministry of Agriculture &amp; Farmers Welfare
-          </span>
-          <div className="hidden sm:flex items-center gap-4">
-            <span className="flex items-center gap-1.5 opacity-80">
+    <header className="relative z-50 w-full max-w-full overflow-x-clip bg-background border-b border-border header-elevated">
+      {/* Top utility strip — bamboo canopy backdrop (matches footer / page heroes) */}
+      <div
+        className="site-header-utility relative overflow-visible text-xs text-primary-foreground"
+        style={{ "--page-hero-bg": `url(${bambooHeroBg})` } as CSSProperties}
+      >
+        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+          <div className="page-hero__photo" />
+          <div className="page-hero__overlay" />
+        </div>
+
+        {/* Desktop / tablet */}
+        <div className="relative z-[1] mx-auto hidden min-w-0 max-w-7xl items-center justify-between gap-3 px-4 py-1.5 sm:flex">
+          <a
+            href="tel:18001801551"
+            className="group inline-flex min-w-0 max-w-[45%] items-center gap-2 font-semibold text-saffron transition-opacity hover:opacity-90 lg:max-w-none"
+          >
+            <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-saffron/20 ring-1 ring-saffron/45 transition-colors group-hover:bg-saffron/30">
               <Phone className="h-3 w-3" />
-              Helpline: 1800-180-1551
             </span>
-            <span className="opacity-40">|</span>
-            <a href="#main-content" className="hover:underline opacity-80">Skip to Main Content</a>
-            <span className="opacity-40">|</span>
-            <span className="opacity-80">
-              <button className="hover:underline mr-1" aria-label="Decrease font size">A-</button>
-              <button className="font-semibold hover:underline mr-1" aria-label="Normal font size">A</button>
-              <button className="text-sm font-semibold hover:underline" aria-label="Increase font size">A+</button>
+            <span className="truncate">{t("header.helpline")}</span>
+          </a>
+          <div className="flex min-w-0 flex-wrap items-center justify-end gap-x-2 gap-y-1 lg:gap-x-3">
+            <a
+              href="#main-content"
+              className="shrink-0 opacity-80 transition-opacity hover:opacity-100 hover:underline"
+            >
+              {t("header.skipToContent")}
+            </a>
+            <span className="h-3.5 w-px bg-primary-foreground/25" aria-hidden />
+            <span className="inline-flex items-center gap-1.5">
+              <span className="opacity-75">{t("header.textSize")}:</span>
+              <TextSizeControls />
             </span>
+            <span className="h-3.5 w-px bg-primary-foreground/25" aria-hidden />
+            <LanguageSelector />
+            <span className="h-3.5 w-px bg-primary-foreground/25" aria-hidden />
+            <SiteSearchBar />
+            <span className="h-3.5 w-px bg-primary-foreground/25" aria-hidden />
+            <div className="inline-flex shrink-0 items-center gap-1.5">
+              <ScreenReaderPopover />
+              <AccessibilityWidget />
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile */}
+        <div className="relative z-[1] mx-auto flex max-w-7xl items-center justify-between gap-2 px-4 py-1.5 sm:hidden">
+          <a
+            href="tel:18001801551"
+            className="inline-flex items-center gap-1.5 font-semibold text-saffron shrink-0"
+          >
+            <Phone className="h-3 w-3" />
+            {t("header.helplineShort")}
+          </a>
+          <div className="flex items-center gap-2.5">
+            <a
+              href="#main-content"
+              className="shrink-0 opacity-85 hover:opacity-100 hover:underline text-[10px] leading-tight"
+            >
+              {t("header.skipToContent")}
+            </a>
+            <span className="h-3.5 w-px bg-primary-foreground/25" aria-hidden />
+            <span className="inline-flex items-center gap-1 opacity-85">
+              <span>{t("header.textSize")}:</span>
+              <TextSizeControls />
+            </span>
+            <span className="h-3.5 w-px bg-primary-foreground/25" aria-hidden />
+            <LanguageSelector />
+            <span className="h-3.5 w-px bg-primary-foreground/25" aria-hidden />
+            <div className="inline-flex shrink-0 items-center gap-1.5">
+              <ScreenReaderPopover />
+              <AccessibilityWidget />
+            </div>
           </div>
         </div>
       </div>
       {/* Tri-color stripe */}
       <div className="h-1 bg-tri-banner" />
       {/* Brand row — GoI left, scheme right (PMFBY-style) */}
-      <div className="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between gap-3 sm:gap-6">
-        <div className="flex min-w-0 items-center gap-2 sm:gap-4">
+      <div className="mx-auto max-w-7xl px-4 py-2 flex items-center justify-between gap-3 sm:gap-6">
+        <Link
+          to="/"
+          aria-label={t("header.homeAria")}
+          className="flex min-w-0 items-center gap-2 rounded-md transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:gap-4"
+        >
           <img
             src={nationalEmblem}
-            alt="National Emblem of India — Satyameva Jayate"
-            className="h-9 w-auto shrink-0 object-contain sm:h-12 md:h-14"
+            alt={t("header.emblemAlt")}
+            className="h-8 w-auto shrink-0 object-contain sm:h-10 md:h-11"
             width={44}
             height={56}
           />
-          <div className="hidden sm:block h-10 w-px shrink-0 bg-border" aria-hidden />
+          <div className="hidden sm:block h-9 w-px shrink-0 bg-border" aria-hidden />
           <div className="min-w-0 text-[11px] sm:text-sm leading-snug">
-            <div className="font-medium text-foreground">भारत सरकार</div>
-            <div className="text-muted-foreground">Government of India</div>
+            <div className="text-foreground" lang="hi">{t("header.brandGovtHi")}</div>
+            <div className="font-semibold text-foreground">{t("header.brandGovtEn")}</div>
           </div>
-          <div className="hidden md:block h-10 w-px shrink-0 bg-border" aria-hidden />
-          <div className="hidden md:block min-w-0 text-xs sm:text-sm leading-snug text-muted-foreground">
-            <div>कृषि एवं किसान कल्याण मंत्रालय</div>
-            <div>Ministry of Agriculture and Farmers Welfare</div>
+          <div className="hidden md:block h-9 w-px shrink-0 bg-border" aria-hidden />
+          <div className="hidden md:block min-w-0 text-xs sm:text-sm leading-snug">
+            <div className="text-muted-foreground" lang="hi">{t("header.brandMinistryHi")}</div>
+            <div className="font-semibold text-foreground">{t("header.brandMinistryEn")}</div>
           </div>
-        </div>
+        </Link>
 
         <div className="flex shrink-0 items-center gap-2 sm:gap-4">
-          <Link to="/" className="flex items-center gap-2 sm:gap-4 min-w-0">
-            <img
-              src={logo}
-              alt="National Bamboo Mission emblem"
-              className="h-9 w-9 shrink-0 object-contain sm:h-12 sm:w-12 md:h-14 md:w-14"
-              width={56}
-              height={56}
-            />
-            <div className="hidden sm:block h-10 w-px shrink-0 bg-border" aria-hidden />
-            <div className="min-w-0">
-              <div className="font-display text-sm sm:text-lg md:text-xl font-bold text-foreground leading-tight">
-                National Bamboo Mission
-              </div>
-              <div className="hidden sm:block text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wide">
-                Ministry of Agriculture &amp; Farmers Welfare
-              </div>
-              <div className="sm:hidden text-[10px] text-muted-foreground truncate">राष्ट्रीय बांस मिशन</div>
-            </div>
+          <Link to="/" className="group flex items-center gap-2.5 sm:gap-3.5 min-w-0">
+            <span
+              className="relative shrink-0 rounded-xl bg-gradient-to-br from-accent-warm to-primary p-[2px] shadow-[0_4px_12px_-5px_oklch(0.32_0.1_150_/_0.45)] transition-transform duration-300 group-hover:scale-[1.03]"
+            >
+              <span className="flex items-center justify-center rounded-[10px] bg-white p-1">
+                <img
+                  src={logo}
+                  alt={t("header.logoAlt")}
+                  className="h-7 w-7 shrink-0 object-contain sm:h-8 sm:w-8 md:h-9 md:w-9"
+                  width={56}
+                  height={56}
+                />
+              </span>
+            </span>
+            <span className="min-w-0 flex flex-col justify-center">
+              <span className="font-display text-[0.95rem] sm:text-lg md:text-[1.3rem] font-bold leading-[1.05] tracking-tight text-primary">
+                {t("header.schemeTitle")}
+              </span>
+              <span className="mt-0.5 truncate text-sm font-normal tracking-[0.04em] text-accent-warm-text sm:text-[1.1rem]" lang="hi">
+                {t("header.schemeTitleHi")}
+              </span>
+            </span>
           </Link>
           <button
             className="lg:hidden p-2 rounded-md border border-border"
             onClick={() => setOpen((v) => !v)}
-            aria-label="Toggle menu"
+            aria-label={t("header.toggleMenu")}
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
       </div>
+      <div className="header-divider mx-auto max-w-7xl px-4 sm:px-6" aria-hidden>
+        <div className="header-divider-line" />
+      </div>
       {/* Nav */}
-      <nav className={`${open ? "block" : "hidden"} lg:block border-t border-border bg-secondary relative`}>
-        <ul className="mx-auto max-w-7xl px-2 flex flex-col lg:flex-row lg:flex-nowrap">
-          {navItems.map((item) => {
-            if (item.megaMenu) {
-              const isExpanded = expandedMegaMenu === item.megaMenu;
-              const isMegaOpen = activeMegaMenu === item.megaMenu;
-              const anchor = item.menuAnchor ?? "start";
+      <nav aria-label="Main navigation" className={`site-nav ${open ? "block" : "hidden"} lg:block relative overflow-visible`}>
+        <div className="site-nav-scroll mx-auto max-w-7xl lg:overflow-x-auto">
+          <ul className="site-nav-list" role="list">
+            {navItems.map((item) => {
+              if (item.megaMenu) {
+                const isExpanded = expandedMegaMenu === item.megaMenu;
+                const isMegaOpen = activeMegaMenu === item.megaMenu;
 
+                return (
+                  <li
+                    key={item.to}
+                    ref={(el) => {
+                      megaMenuRefs.current[item.megaMenu!] = el;
+                    }}
+                    className="relative"
+                    onMouseEnter={() => openMegaMenu(item.megaMenu!)}
+                    onMouseLeave={scheduleCloseMegaMenu}
+                    onFocus={() => openMegaMenu(item.megaMenu!)}
+                    onBlur={scheduleCloseMegaMenu}
+                  >
+                    <div className="flex items-stretch">
+                      <Link
+                        to={item.to}
+                        onClick={closeMenu}
+                        className={`site-nav-link${isMegaOpen ? " is-open" : ""}`}
+                        inactiveProps={{ className: "is-inactive" }}
+                        activeProps={{ className: "is-active" }}
+                        aria-expanded={isMegaOpen}
+                        aria-haspopup="true"
+                      >
+                        {t(item.labelKey)}
+                        <span className="site-nav-chevron hidden lg:inline" aria-hidden>
+                          ▾
+                        </span>
+                      </Link>
+                      <button
+                        type="button"
+                        className="lg:hidden px-3 py-3 text-secondary-foreground hover:bg-primary hover:text-primary-foreground border-l border-border/60"
+                        onClick={() =>
+                          setExpandedMegaMenu((v) => (v === item.megaMenu ? null : item.megaMenu!))
+                        }
+                        aria-expanded={isExpanded}
+                        aria-label={t("header.toggleMenuFor", { label: t(item.labelKey) })}
+                      >
+                        <span aria-hidden>{isExpanded ? "▴" : "▾"}</span>
+                      </button>
+                    </div>
+                    {isExpanded && renderMobileMegaMenu(item.megaMenu)}
+                  </li>
+                );
+              }
               return (
-                <li
-                  key={item.to}
-                  ref={(el) => {
-                    megaMenuRefs.current[item.megaMenu!] = el;
-                  }}
-                  className="relative"
-                  onMouseEnter={() => openMegaMenu(item.megaMenu!)}
-                  onMouseLeave={scheduleCloseMegaMenu}
-                >
-                  <div className="flex items-stretch lg:inline-flex">
-                    <Link
-                      to={item.to}
-                      onClick={closeMenu}
-                      className={`flex-1 lg:flex-none flex items-center gap-1 px-4 py-3 text-sm lg:text-[13.5px] font-medium transition-colors ${
-                        isMegaOpen
-                          ? "bg-primary text-primary-foreground"
-                          : "text-secondary-foreground hover:bg-primary hover:text-primary-foreground"
-                      }`}
-                      activeProps={{
-                        className:
-                          "flex-1 lg:flex-none flex items-center gap-1 px-4 py-3 text-sm lg:text-[13.5px] font-semibold bg-primary text-primary-foreground",
-                      }}
-                    >
-                      {item.label}
-                      <span className="hidden lg:inline text-xs opacity-80" aria-hidden>
-                        ▾
-                      </span>
-                    </Link>
-                    <button
-                      type="button"
-                      className="lg:hidden px-3 py-3 text-secondary-foreground hover:bg-primary hover:text-primary-foreground border-l border-border/60"
-                      onClick={() =>
-                        setExpandedMegaMenu((v) => (v === item.megaMenu ? null : item.megaMenu!))
-                      }
-                      aria-expanded={isExpanded}
-                      aria-label={`Toggle ${item.label} menu`}
-                    >
-                      <span aria-hidden>{isExpanded ? "▴" : "▾"}</span>
-                    </button>
-                  </div>
-                  {isExpanded && renderMobileMegaMenu(item.megaMenu)}
-                  <div onMouseEnter={cancelCloseMegaMenu} onMouseLeave={scheduleCloseMegaMenu}>
-                    {renderMegaMenuPanel(item.megaMenu, isMegaOpen, anchor)}
-                  </div>
+                <li key={item.to}>
+                  <Link
+                    to={item.to}
+                    onClick={closeMenu}
+                    className="site-nav-link"
+                    inactiveProps={{ className: "is-inactive" }}
+                    activeProps={{ className: "is-active" }}
+                    activeOptions={{ exact: item.to === "/" }}
+                  >
+                    {t(item.labelKey)}
+                  </Link>
                 </li>
               );
-            }
-            return (
-              <li key={item.to}>
-                <Link
-                  to={item.to}
-                  onClick={closeMenu}
-                  className="block px-4 py-3 text-sm lg:text-[13.5px] font-medium text-secondary-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
-                  activeProps={{ className: "block px-4 py-3 text-sm lg:text-[13.5px] font-semibold bg-primary text-primary-foreground" }}
-                  activeOptions={{ exact: item.to === "/" }}
-                >
-                  {item.label}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+            })}
+          </ul>
+        </div>
       </nav>
+
+      {/* Desktop mega menus — fixed layer outside nav scroll/overflow */}
+      {activeMegaMenu && (
+        <MegaMenuFloatingLayer
+          open
+          anchorRect={menuAnchorRect}
+          anchor={navItems.find((i) => i.megaMenu === activeMegaMenu)?.menuAnchor ?? "start"}
+          panelRef={megaMenuPanelRef}
+          onMouseEnter={cancelCloseMegaMenu}
+          onMouseLeave={scheduleCloseMegaMenu}
+        >
+          {renderMegaMenuPanel(
+            activeMegaMenu,
+            true,
+            navItems.find((i) => i.megaMenu === activeMegaMenu)?.menuAnchor ?? "start",
+          )}
+        </MegaMenuFloatingLayer>
+      )}
     </header>
   );
 }
 
-export function SiteFooter() {
-  const year = new Date().getFullYear();
-  const lastUpdated = new Date().toLocaleDateString("en-IN", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-
+export function PageHero({
+  title,
+  subtitle,
+  eyebrow,
+  leading,
+  children,
+  aside,
+  panel,
+  className,
+}: {
+  title: string;
+  subtitle?: string;
+  eyebrow?: ReactNode;
+  leading?: ReactNode;
+  children?: ReactNode;
+  aside?: ReactNode;
+  panel?: ReactNode;
+  className?: string;
+}) {
   return (
-    <footer className="bg-primary text-primary-foreground">
-      <div className="h-1 bg-tri-banner" />
+    <section
+      className={`page-hero${className ? ` ${className}` : ""}`}
+      data-hero
+      style={{ "--page-hero-bg": `url(${bambooHeroBg})` } as CSSProperties}
+    >
+      <div className="page-hero__stripe" aria-hidden />
+      <div className="page-hero__photo" aria-hidden />
+      <div className="page-hero__overlay" aria-hidden />
 
-      {/* Social + Connect row */}
-      <div className="border-b border-primary-foreground/15">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div>
-            <p className="text-xs uppercase tracking-widest opacity-60 mb-1 footer-eyebrow">Connect With Us</p>
-            <div className="flex items-center gap-3">
-              {[
-                { icon: Twitter, label: "Twitter/X", href: "https://twitter.com" },
-                { icon: Facebook, label: "Facebook", href: "https://facebook.com" },
-                { icon: Youtube, label: "YouTube", href: "https://youtube.com" },
-                { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com" },
-              ].map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={s.label}
-                  className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-foreground/10 border border-primary-foreground/20 hover:bg-saffron hover:border-saffron transition-colors"
-                >
-                  <s.icon className="h-3.5 w-3.5" />
-                </a>
-              ))}
-            </div>
+      <div className="page-hero-inner page-hero__content">
+        <div className={`page-hero__layout ${aside ? "page-hero__layout--with-aside" : ""}`}>
+          <div className="page-hero__copy">
+            {leading && <div className="page-hero__leading">{leading}</div>}
+            {eyebrow && <p className="page-hero__eyebrow">{eyebrow}</p>}
+            <div className="page-hero__accent" aria-hidden />
+            <h1 className="page-hero__title hero-heading font-display">{title}</h1>
+            {subtitle && <p className="page-hero__subtitle">{subtitle}</p>}
+            {children}
           </div>
-          <div className="text-right">
-            <p className="text-xs uppercase tracking-widest opacity-60 mb-1 footer-eyebrow">Helpline</p>
-            <a
-              href="tel:18001801551"
-              className="text-lg font-bold font-display hover:text-saffron transition-colors flex items-center gap-2 justify-end"
-            >
-              <Phone className="h-4 w-4" />
-              1800-180-1551
-            </a>
-            <p className="text-xs opacity-60 mt-0.5">Mon–Fri, 9 AM – 6 PM IST</p>
-          </div>
+          {aside && <div className="page-hero__aside">{aside}</div>}
         </div>
       </div>
-
-      {/* Main footer grid — Digital India in cols 3–4, parallel to lower Quick Links */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-10">
-        <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-4 md:items-start">
-          {/* Brand */}
-          <div>
-            <div className="font-display footer-title text-base font-bold mb-2 leading-snug">
-              National Bamboo Mission
-            </div>
-            <p className="text-xs opacity-80 leading-relaxed">
-              A centrally sponsored scheme promoting the holistic growth of the bamboo sector in India
-              through area-based, regionally differentiated strategy.
-            </p>
-            <div className="mt-4 flex items-center gap-2">
-              <span className="text-xs opacity-60">Ministry of Agriculture &amp; Farmers Welfare</span>
-            </div>
-          </div>
-
-          {/* Quick Links — spans 2 rows on desktop so Digital India sits beside lower links */}
-          <div className="md:row-span-2">
-            <div className="footer-title font-display text-sm font-bold mb-3 pb-2 border-b border-primary-foreground/20">
-              Quick Links
-            </div>
-            <ul className="space-y-1.5 text-xs opacity-85">
-              {navItems.slice(1).flatMap((i) => {
-                if (i.megaMenu && i.megaMenu in navMegaMenus) {
-                  return navMegaMenus[i.megaMenu as NavMegaMenuId].items.map((c) => (
-                    <li key={`${c.to}#${c.hash ?? ""}`}>
-                      <Link to={c.to} hash={c.hash} className="hover:text-saffron transition-colors">
-                        {c.label}
-                      </Link>
-                    </li>
-                  ));
-                }
-                return [
-                  <li key={i.to}>
-                    <Link to={i.to} className="hover:text-saffron transition-colors">
-                      {i.label}
-                    </Link>
-                  </li>,
-                ];
-              })}
-            </ul>
-          </div>
-
-          {/* Related Sites */}
-          <div>
-            <div className="footer-title font-display text-sm font-bold mb-3 pb-2 border-b border-primary-foreground/20">
-              Related Sites
-            </div>
-            <ul className="space-y-1.5 text-xs opacity-85">
-              {[
-                { href: "https://midh.gov.in", label: "MIDH" },
-                { href: "https://agricoop.gov.in", label: "Department of Agriculture" },
-                { href: "https://india.gov.in", label: "India.gov.in" },
-                { href: "https://mygov.in", label: "MyGov" },
-                { href: "https://pmfby.gov.in", label: "PM Fasal Bima Yojana" },
-              ].map((s) => (
-                <li key={s.href}>
-                  <a
-                    href={s.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-saffron transition-colors inline-flex items-center gap-1"
-                  >
-                    {s.label}
-                    <span className="opacity-40 text-[9px]">↗</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Reach Us */}
-          <div>
-            <div className="footer-title font-display text-sm font-bold mb-3 pb-2 border-b border-primary-foreground/20">
-              Reach Us
-            </div>
-            <ul className="space-y-3 text-xs opacity-85">
-              <li className="flex gap-2 leading-relaxed">
-                <MapPin className="h-3.5 w-3.5 mt-0.5 shrink-0 text-saffron" />
-                Krishi Bhawan, Dr. Rajendra Prasad Road, New Delhi – 110001
-              </li>
-              <li>
-                <a href="tel:+911123382651" className="flex gap-2 hover:text-saffron transition-colors">
-                  <Phone className="h-3.5 w-3.5 mt-0.5 shrink-0 text-saffron" />
-                  +91-11-2338-2651
-                </a>
-              </li>
-              <li>
-                <a
-                  href="mailto:nbm-agri@gov.in"
-                  className="flex gap-2 hover:text-saffron transition-colors"
-                >
-                  <Mail className="h-3.5 w-3.5 mt-0.5 shrink-0 text-saffron" />
-                  nbm-agri@gov.in
-                </a>
-              </li>
-            </ul>
-
-            <div className="mt-5 pt-3 border-t border-primary-foreground/20">
-              <div className="flex flex-wrap gap-x-3 gap-y-1 text-[11px] opacity-70">
-                <a href="#" className="hover:text-saffron transition-colors">Privacy Policy</a>
-                <span className="opacity-40">·</span>
-                <a href="#" className="hover:text-saffron transition-colors">Disclaimer</a>
-                <span className="opacity-40">·</span>
-                <a href="#" className="hover:text-saffron transition-colors">Accessibility</a>
-              </div>
-            </div>
-          </div>
-
-          {/* Digital India — below Related Sites & Reach Us, parallel to lower Quick Links */}
-          <div className="sm:col-span-2 md:col-span-2 md:col-start-3 md:row-start-2 flex justify-start md:justify-end items-end">
-            <img
-              src={digitalIndiaLogo}
-              alt="Digital India — Power To Empower"
-              className="h-10 w-auto object-contain sm:h-12 bg-white/95 rounded px-2 py-1"
-              width={140}
-              height={48}
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Copyright bar */}
-      <div className="border-t border-primary-foreground/20 bg-primary-foreground/5">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 py-3 text-[11px] flex flex-wrap justify-between gap-2 opacity-75">
-          <span>© {year} National Bamboo Mission, Ministry of Agriculture &amp; Farmers Welfare, Government of India. All rights reserved.</span>
-          <span>Last updated: {lastUpdated}</span>
-        </div>
-      </div>
-    </footer>
-  );
-}
-
-export function PageHero({ title, subtitle, children }: { title: string; subtitle?: string; children?: ReactNode }) {
-  return (
-    <section className="bg-gradient-hero text-primary-foreground" data-hero>
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:py-16">
-        <nav className="text-xs opacity-80 mb-3">Home / {title}</nav>
-        <h1 className="hero-heading font-display text-3xl sm:text-4xl font-bold">{title}</h1>
-        {subtitle && <p className="mt-2 max-w-3xl opacity-90">{subtitle}</p>}
-        {children}
-      </div>
+      {panel && <div className="page-hero__panel">{panel}</div>}
+      <div className="page-hero__fade" aria-hidden />
     </section>
   );
 }
 
 import BambooChatbot from "./BambooChatbot";
+import { MitraGoldGradientDefs } from "@/components/MetricAccent";
 
 export default function SiteLayout() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex min-h-screen w-full max-w-full flex-col overflow-x-clip">
+      <MitraGoldGradientDefs />
       <SiteHeader />
-      <main id="main-content" className="flex-1"><Outlet /></main>
+      <main id="main-content" tabIndex={-1} className="flex-1 outline-none"><Outlet /></main>
       <SiteFooter />
+      {/* Temporarily hidden — chatbot floating icon
       <BambooChatbot />
+      */}
     </div>
   );
 }

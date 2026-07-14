@@ -1,0 +1,85 @@
+/* Official Website Policies — legacy GoI section layout */
+
+.official-policy {
+  border: 1px solid oklch(0.78 0.08 148);
+  border-radius: 2px;
+  overflow: hidden;
+  background: var(--card);
+}
+
+.official-policy + .official-policy {
+  margin-top: 1.75rem;
+}
+
+.official-policy__banner {
+  position: relative;
+  background: linear-gradient(
+    90deg,
+    oklch(0.72 0.16 75) 0%,
+    oklch(0.68 0.17 68) 100%
+  );
+  padding: 0.55rem 1rem;
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%);
+}
+
+.official-policy__banner-title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 0.01em;
+}
+
+.official-policy__body {
+  padding: 1rem 1.1rem 1.15rem;
+}
+
+.official-policy__text {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: var(--foreground);
+  text-align: justify;
+}
+
+.official-policy__text + .official-policy__text,
+.official-policy__subsection + .official-policy__text {
+  margin-top: 0.85rem;
+}
+
+.official-policy__subsection {
+  margin-top: 1rem;
+}
+
+.official-policy__subtitle {
+  margin: 0 0 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--foreground);
+}
+
+/* Card variant for split policy pages */
+.official-policy--card {
+  border-radius: 0.5rem;
+  border-color: var(--border);
+  box-shadow: 0 1px 2px oklch(0 0 0 / 0.04);
+}
+
+.official-policy--card .official-policy__title {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--primary);
+  border-bottom: 1px solid var(--border);
+  background: oklch(0.97 0.02 148);
+}
+
+.official-policy--card .official-policy__body {
+  padding: 1rem 1.1rem 1.15rem;
+}
+
+.website-policies-page .official-policy-list {
+  max-width: 52rem;
+  margin-inline: auto;
+}

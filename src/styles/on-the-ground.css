@@ -1,0 +1,743 @@
+/* ── On the Ground — bento grid bridging light content → dark footer ── */
+
+.on-the-ground-section {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    oklch(0.98 0.02 130) 0%,
+    oklch(0.96 0.035 145) 12%,
+    oklch(0.92 0.05 148) 35%,
+    oklch(0.78 0.08 150) 62%,
+    oklch(0.52 0.11 150) 82%,
+    oklch(0.28 0.09 150) 96%,
+    oklch(0.24 0.08 150) 100%
+  );
+}
+
+/* ── Gallery tile label — frosted glass pill with accent dot ── */
+.otg-tile--gallery .otg-tile-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  width: fit-content;
+  padding: 0.22em 0.65em 0.22em 0.48em;
+  border-radius: 100px;
+  font-size: 0.5625rem;
+  letter-spacing: 0.1em;
+  background: oklch(0 0 0 / 0.42);
+  border: 1px solid oklch(1 0 0 / 0.20);
+  color: oklch(0.96 0.025 85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 1px 4px oklch(0 0 0 / 0.3);
+  margin-bottom: 0.3rem;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+/* accent dot — uses the tile's brand color, set as --tile-accent on the article */
+.otg-tile--gallery .otg-tile-label::before {
+  content: '';
+  display: inline-block;
+  flex-shrink: 0;
+  width: 0.45em;
+  height: 0.45em;
+  border-radius: 50%;
+  background: var(--tile-accent, oklch(0.65 0.15 145));
+  box-shadow: 0 0 5px var(--tile-accent, oklch(0.65 0.15 145));
+}
+
+/* Active/hover state — label brightens to warm gold */
+.otg-tile--gallery.otg-tile--active .otg-tile-label,
+.otg-tile--gallery:hover .otg-tile-label {
+  background: oklch(1 0 0 / 0.18);
+  border-color: oklch(1 0 0 / 0.32);
+  color: oklch(0.95 0.05 80);
+}
+
+/* Bamboo side ornaments — lighter on dark gradient lower band */
+.on-the-ground-section .qs-side-edge {
+  color: oklch(0.72 0.1 145);
+  opacity: 0.42;
+}
+
+.on-the-ground-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%232d5a3d' stroke-width='1'%3E%3Cline x1='20' y1='8' x2='20' y2='72'/%3E%3Cline x1='40' y1='4' x2='40' y2='76'/%3E%3Cline x1='60' y1='10' x2='60' y2='70'/%3E%3Cpath d='M20 30 Q35 24 45 34'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 80px 80px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.on-the-ground-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 70% 50% at 50% 20%,
+    oklch(1 0 0 / 0.5) 0%,
+    transparent 65%
+  );
+  z-index: 0;
+}
+
+.otg-glow {
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  background: radial-gradient(circle, oklch(0.76 0.15 78 / 0.12) 0%, transparent 68%);
+  top: 8%;
+  left: -6%;
+  pointer-events: none;
+  animation: otgGlowDrift 16s ease-in-out infinite;
+  z-index: 0;
+}
+
+.otg-glow--right {
+  left: auto;
+  right: -8%;
+  top: 45%;
+  animation-delay: 4s;
+  background: radial-gradient(circle, oklch(0.50 0.18 250 / 0.1) 0%, transparent 68%);
+}
+
+@keyframes otgGlowDrift {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.6; }
+  50% { transform: translate(20px, -12px) scale(1.05); opacity: 1; }
+}
+
+/* ── Header ── */
+
+.otg-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 9999px;
+  background: oklch(1 0 0 / 0.65);
+  border: 1px solid oklch(0.38 0.11 150 / 0.12);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: oklch(0.48 0.14 55);
+  box-shadow: 0 2px 8px -2px oklch(0.3 0.06 150 / 0.1);
+}
+
+.otg-eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: oklch(0.62 0.16 65);
+  box-shadow: 0 0 6px oklch(0.62 0.16 65 / 0.5);
+}
+
+.on-the-ground-section .otg-title {
+  color: oklch(0.22 0.08 150);
+}
+
+.on-the-ground-section .otg-subtitle {
+  color: oklch(0.38 0.06 150 / 0.85);
+}
+
+.otg-header--lower .otg-title {
+  color: oklch(0.98 0.01 110);
+}
+
+.otg-header--lower .otg-subtitle {
+  color: oklch(0.98 0.01 110 / 0.78);
+}
+
+.otg-header--lower .otg-eyebrow {
+  background: oklch(1 0 0 / 0.1);
+  border-color: oklch(0.76 0.15 78 / 0.35);
+  color: oklch(0.82 0.14 78);
+}
+
+/* ── Bento grid ── */
+
+.otg-bento {
+  display: grid;
+  gap: 0.625rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .otg-bento {
+    gap: 0.625rem;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .otg-tile--featured,
+  .otg-tile--map,
+  .otg-tile--northeast,
+  .otg-tile--farmer {
+    grid-column: span 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .otg-bento {
+    gap: 0.625rem;
+    grid-template-columns: repeat(12, 1fr);
+    /* rows 1+2 = metric/featured (auto), row 3 = 220px story cards, row 4 = 160px gallery/farmer */
+    grid-template-rows: auto auto 220px 160px;
+    align-items: stretch;
+  }
+
+  .otg-tile--featured {
+    grid-column: 1 / 8;
+    grid-row: 1 / 3;
+    min-height: 200px;
+  }
+
+  .otg-tile--bearing-area {
+    grid-column: 8 / 10;
+    grid-row: 1;
+  }
+
+  .otg-tile--states {
+    grid-column: 10 / 13;
+    grid-row: 1;
+  }
+
+  .otg-tile--nurseries {
+    grid-column: 8 / 10;
+    grid-row: 2;
+  }
+
+  .otg-tile--funds {
+    grid-column: 10 / 13;
+    grid-row: 2;
+  }
+
+  .otg-tile--map {
+    grid-column: 1 / 6;
+    grid-row: 3;
+  }
+
+  .otg-tile--cultivation {
+    grid-column: 6 / 9;
+    grid-row: 3;
+  }
+
+  .otg-tile--artisan {
+    grid-column: 9 / 11;
+    grid-row: 3;
+  }
+
+  .otg-tile--markets {
+    grid-column: 11 / 13;
+    grid-row: 3;
+  }
+
+  .otg-tile--northeast {
+    grid-column: 1 / 5;
+    grid-row: 4;
+  }
+
+  .otg-tile--plantation {
+    grid-column: 5 / 9;
+    grid-row: 4;
+  }
+
+  .otg-tile--farmer {
+    grid-column: 9 / 13;
+    grid-row: 4;
+  }
+}
+
+@media (min-width: 1280px) {
+  .otg-bento {
+    grid-template-rows: auto auto 240px 170px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .otg-bento {
+    grid-template-rows: auto auto 260px 180px;
+  }
+}
+
+/* ── Tile base ── */
+
+.otg-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  border: 1px solid oklch(1 0 0 / 0.45);
+  background: oklch(1 0 0 / 0.88);
+  box-shadow:
+    0 4px 16px -4px oklch(0.25 0.06 150 / 0.12),
+    0 0 0 1px oklch(1 0 0 / 0.5) inset;
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.otg-tile:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 16px 32px -8px oklch(0.2 0.06 150 / 0.22),
+    0 0 0 1px oklch(1 0 0 / 0.6) inset;
+}
+
+.otg-tile--active {
+  border-color: oklch(1 0 0 / 0.25);
+  color: oklch(0.98 0.01 110);
+  transform: translateY(-2px);
+  box-shadow:
+    0 12px 28px -6px oklch(0.2 0.06 150 / 0.28),
+    0 0 0 1px oklch(1 0 0 / 0.35) inset;
+}
+
+.otg-tile-accent-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 2;
+}
+
+/* ── Featured tile ── */
+
+.otg-tile--featured .otg-tile-visual {
+  position: absolute;
+  inset: 0;
+}
+
+.otg-tile--featured .otg-tile-visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.otg-tile--featured:hover .otg-tile-visual img,
+.otg-tile--featured.otg-tile--active .otg-tile-visual img {
+  transform: scale(1.05);
+}
+
+.otg-tile--featured .otg-tile-visual-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    oklch(0.14 0.07 150 / 0.90) 0%,
+    oklch(0.22 0.09 150 / 0.48) 45%,
+    oklch(0.30 0.08 150 / 0.12) 100%
+  );
+}
+
+.otg-tile--featured .otg-tile-body {
+  position: relative;
+  z-index: 1;
+  margin-top: auto;
+  padding: 0.875rem;
+  color: oklch(0.98 0.01 110);
+}
+
+/* Featured map — analytics hero card (full-bleed choropleth) */
+.otg-tile--featured.otg-tile--map-card .otg-tile-map-visual {
+  position: absolute;
+  inset: 0;
+  display: block;
+  padding: 0;
+  overflow: hidden;
+}
+
+.otg-tile--featured.otg-tile--map-card .otg-tile-map-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  border-radius: 0;
+  box-shadow: none;
+  transition: filter 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.otg-tile--featured.otg-tile--map-card .otg-tile-map-overlay {
+  background: linear-gradient(
+    to top,
+    oklch(0.12 0.07 220 / 0.96) 0%,
+    oklch(0.16 0.08 215 / 0.72) 28%,
+    oklch(0.22 0.09 210 / 0.28) 52%,
+    oklch(0.28 0.08 205 / 0.08) 72%,
+    transparent 100%
+  );
+  transition: background 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.otg-tile--featured.otg-tile--map-card:hover .otg-tile-map-overlay,
+.otg-tile--featured.otg-tile--map-card.otg-tile--active .otg-tile-map-overlay {
+  background: linear-gradient(
+    to top,
+    oklch(0.28 0.12 235 / 0.82) 0%,
+    oklch(0.40 0.14 230 / 0.50) 30%,
+    oklch(0.52 0.13 225 / 0.22) 55%,
+    oklch(0.62 0.11 220 / 0.06) 75%,
+    transparent 100%
+  );
+}
+
+.otg-tile--featured.otg-tile--map-card:hover .otg-tile-map-svg,
+.otg-tile--featured.otg-tile--map-card.otg-tile--active .otg-tile-map-svg {
+  filter: brightness(1.18) saturate(1.12) hue-rotate(-4deg);
+}
+
+.otg-tile--featured.otg-tile--map-card:hover,
+.otg-tile--featured.otg-tile--map-card.otg-tile--active {
+  border-color: oklch(0.58 0.14 230 / 0.42);
+  box-shadow:
+    0 16px 32px -8px oklch(0.35 0.12 230 / 0.28),
+    0 0 0 1px oklch(0.65 0.12 230 / 0.25) inset;
+}
+
+.otg-tile--featured.otg-tile--map-card .otg-tile-body--map {
+  padding: 0.625rem 0.875rem 0.75rem;
+  max-width: 72%;
+}
+
+/* ── Image tiles — image fills remaining height, body stays compact ── */
+
+.otg-tile--image .otg-tile-visual {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.otg-tile--image .otg-tile-visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.otg-tile--image:hover .otg-tile-visual img,
+.otg-tile--image.otg-tile--active .otg-tile-visual img {
+  transform: scale(1.06);
+}
+
+.otg-tile--image .otg-tile-visual-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    oklch(0.2 0.06 150 / 0.55) 0%,
+    transparent 55%
+  );
+}
+
+.otg-tile--image .otg-tile-body {
+  flex: 0 0 auto;
+  padding: 0.5rem 0.625rem 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.otg-tile--image .otg-tile-desc {
+  flex: 0 0 auto;
+  margin-bottom: 0.3rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Row 3 + farmer — compact typography on desktop */
+@media (min-width: 1024px) {
+  .otg-tile--map.otg-tile--image .otg-tile-body,
+  .otg-tile--cultivation.otg-tile--image .otg-tile-body,
+  .otg-tile--artisan.otg-tile--image .otg-tile-body,
+  .otg-tile--markets.otg-tile--image .otg-tile-body,
+  .otg-tile--farmer.otg-tile--image .otg-tile-body {
+    padding: 0.35rem 0.5rem 0.45rem;
+  }
+
+  .otg-tile--map.otg-tile--image .otg-tile-icon,
+  .otg-tile--cultivation.otg-tile--image .otg-tile-icon,
+  .otg-tile--artisan.otg-tile--image .otg-tile-icon,
+  .otg-tile--markets.otg-tile--image .otg-tile-icon,
+  .otg-tile--farmer.otg-tile--image .otg-tile-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-bottom: 0.12rem;
+  }
+
+  .otg-tile--map.otg-tile--image .otg-tile-label,
+  .otg-tile--cultivation.otg-tile--image .otg-tile-label,
+  .otg-tile--artisan.otg-tile--image .otg-tile-label,
+  .otg-tile--markets.otg-tile--image .otg-tile-label,
+  .otg-tile--farmer.otg-tile--image .otg-tile-label {
+    font-size: 0.5rem;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.1rem;
+  }
+
+  .otg-tile--map.otg-tile--image .otg-tile-title,
+  .otg-tile--cultivation.otg-tile--image .otg-tile-title,
+  .otg-tile--artisan.otg-tile--image .otg-tile-title,
+  .otg-tile--markets.otg-tile--image .otg-tile-title,
+  .otg-tile--farmer.otg-tile--image .otg-tile-title {
+    font-size: 0.625rem;
+    line-height: 1.25;
+    margin-bottom: 0.1rem;
+  }
+
+  .otg-tile--map.otg-tile--image .otg-tile-desc,
+  .otg-tile--cultivation.otg-tile--image .otg-tile-desc,
+  .otg-tile--artisan.otg-tile--image .otg-tile-desc,
+  .otg-tile--markets.otg-tile--image .otg-tile-desc,
+  .otg-tile--farmer.otg-tile--image .otg-tile-desc {
+    font-size: 0.5rem;
+    line-height: 1.35;
+    margin-bottom: 0.22rem;
+  }
+
+  .otg-tile--map.otg-tile--image .otg-tile-cta,
+  .otg-tile--cultivation.otg-tile--image .otg-tile-cta,
+  .otg-tile--artisan.otg-tile--image .otg-tile-cta,
+  .otg-tile--markets.otg-tile--image .otg-tile-cta,
+  .otg-tile--farmer.otg-tile--image .otg-tile-cta {
+    font-size: 0.5rem;
+    padding: 0.175rem 0.4rem;
+  }
+}
+
+/* ── Gallery tiles — full-bleed photo, body overlay at bottom ── */
+
+.otg-tile--gallery .otg-tile-visual {
+  position: absolute;
+  inset: 0;
+}
+
+.otg-tile--gallery .otg-tile-visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.otg-tile--gallery:hover .otg-tile-visual img,
+.otg-tile--gallery.otg-tile--active .otg-tile-visual img {
+  transform: scale(1.05);
+}
+
+.otg-tile--gallery .otg-tile-visual-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    oklch(0.08 0.04 150 / 0.96) 0%,
+    oklch(0.14 0.06 150 / 0.70) 40%,
+    oklch(0.22 0.08 150 / 0.18) 100%
+  );
+}
+
+.otg-tile--gallery .otg-tile-body {
+  position: relative;
+  z-index: 1;
+  margin-top: auto;
+  padding: 0.625rem 0.75rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  text-shadow: 0 1px 4px oklch(0 0 0 / 0.55);
+}
+
+.otg-tile--gallery .otg-tile-desc {
+  margin-bottom: 0.35rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Map tile ── */
+
+.otg-tile--map-card {
+  min-height: 130px;
+}
+
+.otg-tile-map-visual {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0.75rem 2rem;
+  pointer-events: none;
+}
+
+.otg-tile-map-svg {
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  border-radius: 0.375rem;
+  box-shadow: 0 6px 18px -4px oklch(0.15 0.06 220 / 0.45);
+}
+
+.otg-tile-map-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    oklch(0.20 0.08 220 / 0.92) 0%,
+    oklch(0.26 0.09 215 / 0.55) 45%,
+    oklch(0.32 0.10 210 / 0.2) 100%
+  );
+}
+
+.otg-tile-body--map {
+  position: relative;
+  z-index: 1;
+  margin-top: auto;
+  padding: 0.5rem 0.75rem 0.625rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Metric tiles ── */
+
+.otg-tile--metric .otg-tile-body--metric {
+  padding: 0.625rem 0.75rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 86px;
+}
+
+.otg-tile--metric .otg-stat-value {
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  background: var(--otg-stat-gradient, var(--gradient-mitra-gold));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@media (min-width: 1024px) {
+  .otg-tile--metric .otg-stat-value {
+    font-size: 1.375rem;
+  }
+}
+
+.otg-tile--active.otg-tile--metric .otg-stat-value {
+  background: linear-gradient(135deg, oklch(1 0 0) 0%, oklch(0.95 0.02 80) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* ── Shared tile parts ── */
+
+.otg-tile-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 0.375rem;
+  margin-bottom: 0.3rem;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.otg-tile-label {
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+
+.otg-tile-title {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.2rem;
+}
+
+.otg-tile-desc {
+  font-size: 0.5625rem;
+  line-height: 1.45;
+  margin-bottom: 0.35rem;
+}
+
+.otg-tile-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  width: fit-content;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.3125rem;
+  font-size: 0.5625rem;
+  font-weight: 600;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.otg-tile-cta:hover {
+  transform: translateX(2px);
+}
+
+/* ── Bottom bridge to footer ── */
+
+.otg-footer-bridge {
+  position: relative;
+  height: 1px;
+  margin-top: 1.25rem;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    oklch(0.76 0.15 78 / 0.45) 25%,
+    oklch(0.76 0.15 78 / 0.65) 50%,
+    oklch(0.76 0.15 78 / 0.45) 75%,
+    transparent 100%
+  );
+  box-shadow: 0 0 20px oklch(0.76 0.15 78 / 0.25);
+}
+
+.otg-footer-fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3rem;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    oklch(0.24 0.08 150 / 0.85) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Staggered entrance */
+.otg-tile-enter {
+  animation: otgTileFadeIn 0.65s ease forwards;
+  opacity: 0;
+}
+
+@keyframes otgTileFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

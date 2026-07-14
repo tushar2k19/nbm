@@ -85,7 +85,7 @@ export function StateMetricCard({
       <div className="mega-menu-accent" />
       <div className="bg-primary px-4 py-3 text-primary-foreground">
         <h3 className="font-display font-bold">{state.name}</h3>
-        <span className="mt-1 inline-block text-[10px] font-semibold uppercase tracking-wider bg-saffron text-saffron-foreground px-2 py-0.5 rounded">
+        <span className="mt-1 inline-block text-[10px] font-semibold uppercase tracking-wider bg-gradient-mitra text-forest px-2 py-0.5 rounded">
           NBM Active
         </span>
       </div>

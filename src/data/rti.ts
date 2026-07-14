@@ -185,50 +185,17 @@ export const rtiSections: RtiSection[] = [
     intro:
       "Administrative structure of the National Bamboo Mission Cell at the Department of Agriculture and Farmers Welfare, Krishi Bhawan, New Delhi.",
     root: {
-      id: "js",
-      label: "Joint Secretary (NBM)",
+      id: "hort-commissioner",
+      label: "Horticulture Commissioner",
       children: [
         {
-          id: "ds1",
-          label: "DS (NBM — Policy & Coordination)",
+          id: "addl-commissioner",
+          label: "Additional Commissioner",
           children: [
             {
-              id: "us1",
-              label: "US (Scheme & Guidelines)",
-              children: [
-                { id: "so1", label: "SO" },
-                { id: "aso1", label: "ASO" },
-              ],
-            },
-            {
-              id: "us2",
-              label: "US (Fund Release & Budget)",
-              children: [
-                { id: "ad1", label: "AD" },
-                { id: "aso2", label: "ASO" },
-              ],
-            },
-          ],
-        },
-        {
-          id: "ds2",
-          label: "DS (NBM — Implementation)",
-          children: [
-            {
-              id: "us3",
-              label: "US (Plantation & Nurseries)",
-              children: [
-                { id: "so2", label: "SO" },
-                { id: "aso3", label: "ASO" },
-              ],
-            },
-            {
-              id: "us4",
-              label: "US (Processing & MIS)",
-              children: [
-                { id: "ad2", label: "AD" },
-                { id: "aso4", label: "ASO" },
-              ],
+              id: "section-officer",
+              label: "Section Officer",
+              children: [{ id: "sta", label: "Senior Technical Assistant" }],
             },
           ],
         },
@@ -363,17 +330,61 @@ export const rtiSections: RtiSection[] = [
   },
 ];
 
-export const rtiActLinks = [
+export type RtiActLink = {
+  id: string;
+  label: string;
+  href: string;
+  description: string;
+  source: string;
+};
+
+export const rtiActLinks: RtiActLink[] = [
   {
+    id: "rti-act",
     label: "RTI Act, 2005 — Official Gazette",
-    href: "https://rti.gov.in/",
+    href: "https://rti.dopt.gov.in/Writereaddata/RTI-Act.pdf",
+    description:
+      "The Right to Information Act, 2005 (Act No. 22 of 2005) — official English text as published in the Gazette of India, Extraordinary, Part II, 21 June 2005.",
+    source: "Department of Personnel & Training · rti.dopt.gov.in",
   },
   {
+    id: "suo-motu",
     label: "Guidelines for suo motu disclosure under Section 4",
-    href: "https://rti.gov.in/",
+    href: "https://documents.doptcirculars.nic.in/D2/D02rti/Suo_moto_disclosure-15042013.pdf",
+    description:
+      "DoPT O.M. No. 1/6/2011-IR (15 April 2013) — guidelines for proactive disclosure under Section 4(1)(b), 4(2) and 4(3) of the RTI Act, 2005.",
+    source: "documents.doptcirculars.nic.in",
   },
   {
+    id: "rti-portal",
     label: "Online RTI Portal — rti.gov.in",
     href: "https://rti.gov.in/",
+    description:
+      "National Portal on Right to Information — PIO/AA directories, RTI Act & Rules, circulars, and gateway to file applications at rtionline.gov.in.",
+    source: "Ministry of Personnel, Public Grievances & Pensions",
+  },
+];
+
+/** Supplementary official RTI references (sidebar / footer) */
+export const rtiSupplementaryLinks = [
+  {
+    label: "RTI Act, 2005 (Amended) — English PDF",
+    href: "https://rti.dopt.gov.in/Writereaddata/RTI%20Act,%202005%20(Amended)-English%20Version.PDF",
+  },
+  {
+    label: "RTI Rules, 2019",
+    href: "https://documents.doptcirculars.nic.in/D2/D02rti/RTI_Rules_2019.pdf",
+  },
+  {
+    label: "Suo motu disclosure — compliance guidelines (Sept 2022)",
+    href: "https://documents.doptcirculars.nic.in/D2/D02rti/14%20sept%202022Btbp6.pdf",
+  },
+  {
+    label: "File RTI application online — rtionline.gov.in",
+    href: "https://rtionline.gov.in/",
+  },
+  {
+    label: "DoPT RTI circulars & OMs",
+    href: "https://doptcirculars.nic.in/Default.aspx?URL=e0joY8Gw069R",
   },
 ];

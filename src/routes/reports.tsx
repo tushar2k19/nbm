@@ -1,8 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { FileBarChart, Sprout, Factory, Leaf, Download, BarChart3 } from "lucide-react";
+import { FileBarChart, Sprout, Factory, Leaf } from "lucide-react";
+import { DownloadPdfButton } from "@/components/DownloadPdfButton";
+import { DocFormatBadge } from "@/components/DocFormatBadge";
 import { PageHero } from "@/components/SiteLayout";
-import { allReportSections } from "@/data/reportsDocuments";
-import plantationImg from "@/assets/bamboo-northeast.jpg";
+import { sectorReportSections } from "@/data/reportsDocuments";
+import { reportPortalLinks } from "@/data/reportPortals";
+import { ReportPortalBanner } from "@/components/reports/ReportPortalBanner";
+import { AnnualActionPlanSection } from "@/components/reports/AnnualActionPlanSection";
+import plantationImg from "@/assets/bamboo-plantation.jpg";
 import agarbattiImg from "@/assets/bamboo-agarbatti.jpg";
 import nurseryImg from "@/assets/bamboo-grove.jpg";
 
@@ -20,14 +25,12 @@ export const Route = createFileRoute("/reports")({
 });
 
 const sectionImages: Record<string, string> = {
-  "annual-action-plan": plantationImg,
   "bamboo-plantation": plantationImg,
   "agarbatti-stick": agarbattiImg,
   "accredited-nurseries": nurseryImg,
 };
 
 const sectionIcons: Record<string, typeof Sprout> = {
-  "annual-action-plan": BarChart3,
   "bamboo-plantation": Sprout,
   "agarbatti-stick": Leaf,
   "accredited-nurseries": Factory,
@@ -40,43 +43,50 @@ function ReportsPage() {
         title="Reports"
         subtitle="Annual action plans, public reports and statistical data on the Mission's progress."
       />
-      <section className="mx-auto max-w-7xl px-4 py-12 space-y-10">
-        {allReportSections.map((s) => {
+      <section className="reports-page mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="reports-page__sections">
+        <AnnualActionPlanSection />
+
+        {sectorReportSections.map((s) => {
           const Icon = sectionIcons[s.id] ?? FileBarChart;
           const img = sectionImages[s.id] ?? plantationImg;
 
           return (
-            <div
-              key={s.id}
-              id={s.id}
-              className="scroll-mt-28 bg-card border border-border rounded-lg shadow-soft overflow-hidden grid md:grid-cols-[220px_1fr]"
-            >
-              <img src={img} alt={s.title} className="h-40 md:h-full w-full object-cover" loading="lazy" />
-              <div>
-                <div className="bg-primary text-primary-foreground px-5 py-3 flex items-center gap-3">
-                  <Icon className="h-5 w-5 text-saffron" />
-                  <div>
-                    <div className="font-semibold">{s.title}</div>
-                    <div className="text-xs opacity-90">{s.description}</div>
+            <div key={s.id} id={s.id} className="reports-section scroll-mt-28">
+              <img src={img} alt={s.title} className="reports-section__image" loading="lazy" />
+              <div className="min-w-0">
+                <div className="reports-section__header">
+                  <Icon className="h-4 w-4 shrink-0 text-saffron" />
+                  <div className="min-w-0">
+                    <div className="reports-section__title">{s.title}</div>
+                    <div className="reports-section__subtitle">{s.description}</div>
                   </div>
                 </div>
+                {reportPortalLinks[s.id] && (
+                  <ReportPortalBanner config={reportPortalLinks[s.id]!} />
+                )}
                 <ul className="divide-y divide-border">
                   {s.items.map((i) => (
                     <li
                       key={i.id}
                       id={`${s.id}-${i.id}`}
-                      className="scroll-mt-28 flex items-center justify-between gap-4 px-5 py-3 hover:bg-secondary/60 transition"
+                      className="reports-doc-list__item scroll-mt-28"
                     >
-                      <div className="flex items-center gap-3">
-                        <FileBarChart className="h-4 w-4 text-primary shrink-0" />
-                        <div>
-                          <div className="text-sm font-medium text-foreground">{i.title}</div>
-                          <div className="text-xs text-muted-foreground">{i.description}</div>
+                      <div className="flex min-w-0 items-center gap-2.5">
+                        <FileBarChart className="h-3.5 w-3.5 shrink-0 text-primary" />
+                        <div className="min-w-0">
+                          <div className="reports-doc-list__title text-foreground">{i.title}</div>
+                          <DocFormatBadge description={i.description} />
                         </div>
                       </div>
-                      <a href="#" className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline">
-                        <Download className="h-3.5 w-3.5" /> Download
-                      </a>
+                      <DownloadPdfButton
+                        label={i.title}
+                        variant="link"
+                        showText
+                        text="Download"
+                        iconClassName="h-3 w-3"
+                        className="text-[11px]"
+                      />
                     </li>
                   ))}
                 </ul>
@@ -84,6 +94,7 @@ function ReportsPage() {
             </div>
           );
         })}
+        </div>
       </section>
     </>
   );

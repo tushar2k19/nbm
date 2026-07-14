@@ -40,3 +40,11 @@ dist-ssr
 
 # Original prototype archive (already extracted)
 NBM Bamboo Hub.zip
+
+# Informal and prompt files
+*.md
+prompt
+docs/
+NBM_Project_Clean.zip
+.cursor/
+

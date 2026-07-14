@@ -2,6 +2,8 @@ export type GuidelineDoc = {
   id: string;
   title: string;
   description: string;
+  /** Official PDF on nbm.da.gov.in — opens in a new tab when set */
+  pdfUrl?: string;
 };
 
 export type GuidelineSection = {
@@ -11,26 +13,49 @@ export type GuidelineSection = {
   items: GuidelineDoc[];
 };
 
+const NBM_OFFICIAL = "https://nbm.da.gov.in";
+
 export const guidelineSections: GuidelineSection[] = [
   {
     id: "nbm-guidelines-2025",
-    title: "NBM Guidelines 2025",
+    title: "NBM Guidelines & Documents",
     menuGroup: "guidelines",
     items: [
       {
-        id: "operational-guidelines-2025",
-        title: "Operational Guidelines of National Bamboo Mission — 2025 Edition",
-        description: "PDF · 4.6 MB · 12 Mar 2025",
+        id: "guideline-2025",
+        title: "NBM Guidelines 2025",
+        description: "PDF",
+        pdfUrl: `${NBM_OFFICIAL}/Documents/pdf/NBM_Guideline_2025.pdf`,
       },
       {
-        id: "revised-cost-norms-2025",
-        title: "Revised Cost Norms & Subsidy Pattern (2025)",
-        description: "PDF · 1.3 MB · 12 Mar 2025",
+        id: "nbm-revised-guidelines",
+        title: "Revised Guidelines",
+        description: "PDF",
+        pdfUrl: `${NBM_OFFICIAL}/Documents/pdf/NBM_Revised_Guidelines.pdf`,
       },
       {
-        id: "annexures-2025",
-        title: "Annexures — Application & Sanction Formats (2025)",
-        description: "PDF · 1.0 MB · 12 Mar 2025",
+        id: "credit-linked-subsidy",
+        title: "Credit Linked Back Ended Subsidy",
+        description: "PDF",
+        pdfUrl: `${NBM_OFFICIAL}/Documents/Letters/Guidelines_for_Credit_Linked.pdf`,
+      },
+      {
+        id: "nursery-accreditation",
+        title: "Accreditation of Bamboo Nurseries",
+        description: "PDF",
+        pdfUrl: `${NBM_OFFICIAL}/Documents/pdf/Guidelines_accreditation_Nurseries_10062019.pdf`,
+      },
+      {
+        id: "neids-2017",
+        title: "NE Industrial Development Scheme, 2017",
+        description: "PDF",
+        pdfUrl: `${NBM_OFFICIAL}/Documents/pdf/NEIDS_2017_16April2018.pdf`,
+      },
+      {
+        id: "pcr-propagation-bamboo-clumps",
+        title: "Propagation of Improved Bamboo Clumps (NBM – BTSG Supported Project)",
+        description: "PDF · Project Report",
+        pdfUrl: `${NBM_OFFICIAL}/Documents/ProjectReport/PCR-Final_PropagationofBabooClumps.pdf`,
       },
     ],
   },
@@ -39,15 +64,42 @@ export const guidelineSections: GuidelineSection[] = [
     title: "State Bamboo Policies",
     menuGroup: "policies",
     items: [
-      { id: "assam-policy", title: "Assam State Bamboo Policy, 2019", description: "PDF · 1.8 MB" },
-      { id: "tripura-policy", title: "Tripura State Bamboo Policy", description: "PDF · 1.4 MB" },
       {
-        id: "mp-policy",
-        title: "Madhya Pradesh State Bamboo Mission — Policy Framework",
-        description: "PDF · 2.1 MB",
+        id: "felling-transit-royalty",
+        title: "State wise status of Felling, Transit Royalty regime in respect of Bamboo",
+        description: "PDF",
+        pdfUrl: `${NBM_OFFICIAL}/Documents/pdf/Statewise_status_on_Felling_Transit_Royalty_on%20Bamboo_06072020.pdf`,
       },
-      { id: "karnataka-policy", title: "Karnataka State Bamboo Policy", description: "PDF · 1.6 MB" },
-      { id: "odisha-policy", title: "Odisha Bamboo Development Policy", description: "PDF · 1.9 MB" },
+      {
+        id: "assam-policy",
+        title: "Assam State Bamboo & Cane Policy",
+        description: "PDF",
+        pdfUrl: `${NBM_OFFICIAL}/Documents/Policies/AssamBambooAndCanePolicy.pdf`,
+      },
+      {
+        id: "nagaland-policy",
+        title: "Nagaland State Bamboo Policy",
+        description: "PDF",
+        pdfUrl: `${NBM_OFFICIAL}/Documents/Policies/NagalandStateBambooPolicy.pdf`,
+      },
+      {
+        id: "tripura-policy",
+        title: "Tripura State Bamboo Policy",
+        description: "PDF",
+        pdfUrl: `${NBM_OFFICIAL}/Documents/Policies/TripuraStateBambooPolicy.pdf`,
+      },
+      {
+        id: "manipur-policy",
+        title: "Draft Manipur State Bamboo Policy",
+        description: "PDF",
+        pdfUrl: `${NBM_OFFICIAL}/Documents/Policies/DraftManipurBambooPolicy.pdf`,
+      },
+      {
+        id: "maharashtra-policy",
+        title: "Maharashtra State Bamboo Policy",
+        description: "PDF",
+        pdfUrl: `${NBM_OFFICIAL}/Documents/Policies/MaharashtraBambooPolicy.pdf`,
+      },
     ],
   },
   {
@@ -79,7 +131,25 @@ export const megaMenuGroups = [
   { id: "guidelines" as const, title: "Guidelines" },
   { id: "policies" as const, title: "Policies" },
   { id: "financials" as const, title: "Financials" },
+  { id: "letters" as const, title: "Letters" },
+  { id: "provisions" as const, title: "Enabling Provisions" },
+  { id: "faq" as const, title: "FAQ" },
 ];
+
+export type GuidelinesMenuGroup =
+  | GuidelineSection["menuGroup"]
+  | "letters"
+  | "provisions"
+  | "faq";
+
+/** Quick-jump anchors on the Guidelines & Documents page (in-page sections only) */
+export const guidelinesPageNav = [
+  { id: "nbm-guidelines-2025", label: "Guidelines" },
+  { id: "state-bamboo-policies", label: "Policies" },
+  { id: "enabling-provisions", label: "Enabling Provisions" },
+  { id: "release-of-funds", label: "Financials" },
+  { id: "letters", label: "Letters" },
+] as const;
 
 export function sectionsForMenuGroup(group: GuidelineSection["menuGroup"]) {
   return guidelineSections.filter((s) => s.menuGroup === group);

@@ -6,8 +6,40 @@ import {
   type TenderVacancyItem,
   type TenderVacancyTab,
 } from "@/data/tendersVacancies";
-import { Briefcase, FileSearch, Download, Search, Info } from "lucide-react";
+import { Briefcase, FileSearch, Search, Info, Archive, EyeOff } from "lucide-react";
+import { DownloadPdfButton } from "@/components/DownloadPdfButton";
 import { useMemo, useState } from "react";
+
+/** Parse DD.MM.YYYY → Date, or return null on failure */
+function parseDMY(s: string): Date | null {
+  const parts = s.split(".");
+  if (parts.length !== 3) return null;
+  const [d, m, y] = parts.map(Number);
+  if (!d || !m || !y) return null;
+  return new Date(y, m - 1, d);
+}
+
+function isExpired(endDate: string): boolean {
+  const d = parseDMY(endDate);
+  if (!d) return false;
+  return d < new Date();
+}
+
+function FormatSizeBadge({ size }: { size: string }) {
+  return (
+    <span className="flex items-center gap-1 mt-0.5">
+      <span className="inline-flex items-center gap-0.5 rounded border border-red-200 bg-red-50 px-1.5 py-0.5 text-[10px] font-bold uppercase text-red-700">
+        PDF
+      </span>
+      <span className="text-[10px] text-muted-foreground" aria-label={`File size: ${size}`}>
+        {size}
+      </span>
+      <span className="rounded bg-amber-50 border border-amber-200 px-1 py-0.5 text-[10px] font-medium text-amber-700">
+        Sample
+      </span>
+    </span>
+  );
+}
 
 export const Route = createFileRoute("/tenders-vacancies")({
   head: () => ({
@@ -26,20 +58,23 @@ export const Route = createFileRoute("/tenders-vacancies")({
 function TendersVacanciesPage() {
   const [activeTab, setActiveTab] = useState<TenderVacancyTab>("vacancies");
   const [query, setQuery] = useState("");
+  const [showArchived, setShowArchived] = useState(false);
 
   const items = activeTab === "vacancies" ? vacancies : tenders;
+  const archivedCount = useMemo(() => items.filter((i) => isExpired(i.endDate)).length, [items]);
 
   const filtered = useMemo(() => {
+    const base = showArchived ? items : items.filter((i) => !isExpired(i.endDate));
     const q = query.trim().toLowerCase();
-    if (!q) return items;
-    return items.filter(
+    if (!q) return base;
+    return base.filter(
       (item) =>
         item.title.toLowerCase().includes(q) ||
         item.publishDate.includes(q) ||
         item.startDate.includes(q) ||
         item.endDate.includes(q),
     );
-  }, [items, query]);
+  }, [items, query, showArchived]);
 
   return (
     <>
@@ -88,32 +123,58 @@ function TendersVacanciesPage() {
                   className="w-full rounded-lg border border-border bg-card pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
                 />
               </div>
-              <p className="text-xs text-muted-foreground mt-2">
-                Showing {filtered.length} of {items.length}{" "}
-                {activeTab === "vacancies" ? "vacancy" : "tender"}
-                {filtered.length !== 1 ? " notices" : " notice"}
-              </p>
+              <div className="flex flex-wrap items-center justify-between gap-2 mt-2">
+                <p className="text-xs text-muted-foreground">
+                  Showing {filtered.length} of {showArchived ? items.length : items.length - archivedCount}{" "}
+                  {activeTab === "vacancies" ? "vacancy" : "tender"}
+                  {filtered.length !== 1 ? " notices" : " notice"}
+                  {!showArchived && archivedCount > 0 && (
+                    <span className="ml-1 text-muted-foreground/70">
+                      ({archivedCount} archived hidden)
+                    </span>
+                  )}
+                </p>
+                {archivedCount > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => setShowArchived((v) => !v)}
+                    aria-pressed={showArchived}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-[11px] font-semibold text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+                  >
+                    {showArchived ? (
+                      <><EyeOff className="h-3 w-3" aria-hidden /> Hide Archived</>
+                    ) : (
+                      <><Archive className="h-3 w-3" aria-hidden /> Show Archived ({archivedCount})</>
+                    )}
+                  </button>
+                )}
+              </div>
             </div>
 
             {/* Table */}
             <div className="overflow-x-auto">
               <table className="w-full text-sm border-collapse min-w-[720px]">
+                <caption className="sr-only">
+                  {activeTab === "vacancies"
+                    ? "Vacancies — National Bamboo Mission recruitment notices"
+                    : "Tenders — National Bamboo Mission tender invitations"}
+                </caption>
                 <thead>
                   <tr className="bg-primary text-primary-foreground">
-                    <th className="text-left px-4 py-3 font-semibold whitespace-nowrap w-16">
+                    <th scope="col" className="text-left px-4 py-3 font-semibold whitespace-nowrap w-16">
                       Sr. No.
                     </th>
-                    <th className="text-left px-4 py-3 font-semibold min-w-[280px]">Title</th>
-                    <th className="text-left px-4 py-3 font-semibold whitespace-nowrap">
+                    <th scope="col" className="text-left px-4 py-3 font-semibold min-w-[280px]">Title</th>
+                    <th scope="col" className="text-left px-4 py-3 font-semibold whitespace-nowrap">
                       Start Date
                     </th>
-                    <th className="text-left px-4 py-3 font-semibold whitespace-nowrap">
+                    <th scope="col" className="text-left px-4 py-3 font-semibold whitespace-nowrap">
                       End Date
                     </th>
-                    <th className="text-left px-4 py-3 font-semibold whitespace-nowrap">
+                    <th scope="col" className="text-left px-4 py-3 font-semibold whitespace-nowrap">
                       Publish Date
                     </th>
-                    <th className="text-center px-4 py-3 font-semibold whitespace-nowrap w-24">
+                    <th scope="col" className="text-center px-4 py-3 font-semibold whitespace-nowrap w-24">
                       Details
                     </th>
                   </tr>
@@ -200,26 +261,41 @@ function TabButton({
 }
 
 function TableRow({ item, index }: { item: TenderVacancyItem; index: number }) {
+  const expired = isExpired(item.endDate);
   return (
     <tr
       className={`border-b border-border transition-colors hover:bg-primary/5 ${
-        index % 2 === 0 ? "bg-card" : "bg-secondary/30"
-      }`}
+        expired ? "opacity-60" : index % 2 === 0 ? "bg-card" : "bg-secondary/30"
+      } ${expired ? "bg-secondary/10" : ""}`}
+      aria-label={expired ? `${item.title} (Expired)` : item.title}
     >
-      <td className="px-4 py-3.5 text-muted-foreground font-medium">{item.srNo}</td>
-      <td className="px-4 py-3.5 text-foreground leading-snug">{item.title}</td>
+      <td scope="row" className="px-4 py-3.5 text-muted-foreground font-medium">{item.srNo}</td>
+      <td className="px-4 py-3.5 leading-snug">
+        <div className="flex flex-col gap-1">
+          <span className={expired ? "text-muted-foreground line-through decoration-1" : "text-foreground"}>
+            {item.title}
+          </span>
+          {expired && (
+            <span
+              className="inline-flex w-fit items-center gap-1 rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-bold uppercase text-red-700"
+              aria-label="This notice has expired"
+            >
+              <Archive className="h-2.5 w-2.5" aria-hidden />
+              Expired
+            </span>
+          )}
+        </div>
+      </td>
       <td className="px-4 py-3.5 text-muted-foreground whitespace-nowrap">{item.startDate}</td>
-      <td className="px-4 py-3.5 text-muted-foreground whitespace-nowrap">{item.endDate}</td>
+      <td className={`px-4 py-3.5 whitespace-nowrap font-medium ${expired ? "text-red-600" : "text-muted-foreground"}`}>
+        {item.endDate}
+      </td>
       <td className="px-4 py-3.5 text-muted-foreground whitespace-nowrap">{item.publishDate}</td>
       <td className="px-4 py-3.5 text-center">
-        <a
-          href="#"
-          title={`Download: ${item.documentTitle} (${item.documentSize})`}
-          className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
-          aria-label={`Download ${item.documentTitle}`}
-        >
-          <Download className="h-5 w-5" />
-        </a>
+        <div className="inline-flex flex-col items-center gap-1">
+          <DownloadPdfButton label={item.documentTitle} />
+          <FormatSizeBadge size={item.documentSize} />
+        </div>
       </td>
     </tr>
   );

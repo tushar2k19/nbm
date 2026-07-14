@@ -78,38 +78,7 @@ export const knowledgeCenterSections: KnowledgeSection[] = [
   {
     id: "training-modules",
     title: "Training Modules",
-    items: [
-      {
-        id: "plantation-techniques",
-        title: "Bamboo Plantation Techniques & Nursery Management",
-        description: "PDF · Video · 8 modules",
-      },
-      {
-        id: "harvesting-seasoning",
-        title: "Harvesting, Seasoning & Treatment of Bamboo",
-        description: "PDF · Video · 6 modules",
-      },
-      {
-        id: "artisan-skills",
-        title: "Artisan Skills — Handicrafts & Utility Products",
-        description: "PDF · Video · 10 modules",
-      },
-      {
-        id: "entrepreneurship",
-        title: "Bamboo Entrepreneurship & MSME Setup",
-        description: "PDF · Video · 7 modules",
-      },
-      {
-        id: "processing-units",
-        title: "Bamboo Processing Units — Operations & Safety",
-        description: "PDF · Video · 5 modules",
-      },
-      {
-        id: "field-functionaries",
-        title: "Training for Field Functionaries & State Mission Staff",
-        description: "PDF · Video · 4 modules",
-      },
-    ],
+    items: [],
   },
   {
     id: "institutes",
@@ -157,32 +126,6 @@ export const knowledgeCenterSections: KnowledgeSection[] = [
     ],
   },
   {
-    id: "letters",
-    title: "Letters",
-    items: [
-      {
-        id: "do-letter-aap",
-        title: "DO Letter — Submission of AAP 2026-27 by State Bamboo Missions",
-        description: "PDF · 220 KB · 02 Jun 2026",
-      },
-      {
-        id: "empanelment-tc",
-        title: "Letter — Empanelment of Tissue Culture Laboratories",
-        description: "PDF · 310 KB",
-      },
-      {
-        id: "mgnregs-advisory",
-        title: "Advisory — Convergence with MGNREGS for bamboo plantations",
-        description: "PDF · 290 KB",
-      },
-      {
-        id: "qpr-format",
-        title: "Letter — Quarterly Progress Reporting Format",
-        description: "PDF · 180 KB",
-      },
-    ],
-  },
-  {
     id: "research-papers",
     title: "Research Papers",
     items: [
@@ -215,6 +158,68 @@ export const knowledgeCenterSections: KnowledgeSection[] = [
         id: "agarbatti-value-chain",
         title: "Round Bamboo Stick Production for Agarbatti Industry",
         description: "NITRA · 2023 · PDF",
+      },
+    ],
+  },
+  {
+    id: "state-mission",
+    title: "State Mission",
+    items: [
+      {
+        id: "andhra-pradesh",
+        title: "Andhra Pradesh",
+        description: "SLEC PDF · Mission Director (SBM)",
+      },
+      {
+        id: "maharashtra",
+        title: "Maharashtra",
+        description: "SLEC PDF · Bamboo Development Board",
+      },
+      {
+        id: "assam",
+        title: "Assam",
+        description: "SLEC PDF · State Bamboo Development Agency",
+      },
+      {
+        id: "tripura",
+        title: "Tripura",
+        description: "SLEC PDF · Industries & Commerce",
+      },
+      {
+        id: "nagaland",
+        title: "Nagaland",
+        description: "SLEC PDF · NBDA",
+      },
+      {
+        id: "uttar-pradesh",
+        title: "Uttar Pradesh",
+        description: "SLEC PDF · Forest Head Office",
+      },
+    ],
+  },
+  {
+    id: "success-stories",
+    title: "Success Stories",
+    items: [
+      {
+        id: "madhya-pradesh",
+        title: "Madhya Pradesh — Farmer livelihoods & CFC Baihar",
+        description: "4 PDF stories",
+      },
+      {
+        id: "maharashtra",
+        title: "Maharashtra — Gadchiroli Agarbatti Project",
+        description: "3 PDF stories",
+      },
+      {
+        id: "assam",
+        title: "Assam SBDA — Green economy documentaries",
+        description: "1 PDF · 3 videos",
+      },
+      {
+        id: "others",
+        title: "Pan-India — Markets, silvipasture & festivals",
+        description: "3 PDF stories",
       },
     ],
   },

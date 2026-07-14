@@ -1,7 +1,6 @@
 export type HeadquarterContact = {
   name: string;
   designation: string;
-  division: string;
   extn: string;
   roomNo: string;
   phone: string;
@@ -22,10 +21,10 @@ export function decodeGovEmail(email: string): string {
 }
 
 export const headquarterContacts: HeadquarterContact[] = [
+  /* Former HQ directory (8 officials) — superseded by NBMC core team from Who's Who
   {
     name: 'Dr Abhilaksh Likhi',
     designation: 'Additional Secretary',
-    division: 'NBM - MIDH',
     extn: '4999',
     roomNo: '134',
     phone: '011-23389348 , 23381305',
@@ -35,7 +34,6 @@ export const headquarterContacts: HeadquarterContact[] = [
   {
     name: 'Shri Priya Ranjan',
     designation: 'Joint Secretary',
-    division: 'NBM - MIDH',
     extn: '4224',
     roomNo: '224',
     phone: '011-23384309,23389208',
@@ -45,7 +43,6 @@ export const headquarterContacts: HeadquarterContact[] = [
   {
     name: 'Shri Ajay Wadhwa',
     designation: 'JS-PPS',
-    division: 'NBM - MIDH',
     extn: '4624',
     roomNo: '224A',
     phone: '011-23389208',
@@ -55,7 +52,6 @@ export const headquarterContacts: HeadquarterContact[] = [
   {
     name: 'Sh Manoj Kumar',
     designation: 'Director',
-    division: 'NBM - MIDH',
     extn: '',
     roomNo: '344',
     phone: '',
@@ -65,7 +61,6 @@ export const headquarterContacts: HeadquarterContact[] = [
   {
     name: 'Shri Sreekanth K.S',
     designation: 'Deputy Commissioner',
-    division: 'NBM - MIDH',
     extn: '5019',
     roomNo: '117-B',
     phone: '011-23388861',
@@ -75,7 +70,6 @@ export const headquarterContacts: HeadquarterContact[] = [
   {
     name: 'Ms. Pooja Singh',
     designation: 'Section Officer',
-    division: 'NBM - MIDH',
     extn: '2783',
     roomNo: '118-B',
     phone: '',
@@ -85,7 +79,6 @@ export const headquarterContacts: HeadquarterContact[] = [
   {
     name: 'Shri Anil Kumar Meena',
     designation: 'US',
-    division: 'NBM - MIDH',
     extn: '4512',
     roomNo: '534A',
     phone: '',
@@ -95,12 +88,50 @@ export const headquarterContacts: HeadquarterContact[] = [
   {
     name: 'Sh Rahul Kumar',
     designation: 'Section Officer',
-    division: 'NBM - MIDH',
     extn: '',
     roomNo: '114-B',
     phone: '011-23070955',
     email: 'rahul[dot]kumar84[at]nic[dot]in',
     address: 'Krishi Bhawan, New Delhi-110001',
+  },
+  */
+
+  /* NBMC core team (from Who's Who) */
+  {
+    name: "Dr. Prabhat Kumar",
+    designation: "Horticulture Commissioner",
+    extn: "4738",
+    roomNo: "237",
+    phone: "23381503",
+    email: "hort[dot]comm-agri[at]gov[dot]in",
+    address: "Krishi Bhawan, New Delhi — 110001",
+  },
+  {
+    name: "Mrs. Kamna Sharma",
+    designation: "Additional Commissioner",
+    extn: "4997",
+    roomNo: "299-B",
+    phone: "011-23384752",
+    email: "kamna[dot]rajesh[at]gov[dot]in",
+    address: "Krishi Bhawan, New Delhi — 110001",
+  },
+  {
+    name: "Ms. Pooja Singh",
+    designation: "Section Officer",
+    extn: "2783",
+    roomNo: "118-B",
+    phone: "",
+    email: "Pooja[dot]89[at]gov[dot]in",
+    address: "Shastri Bhawan, New Delhi — 110001",
+  },
+  {
+    name: "Mr. Dharambir Dhan",
+    designation: "Senior Technical Assistant",
+    extn: "",
+    roomNo: "",
+    phone: "011-23382101",
+    email: "dharambir[dot]dhan[at]gov[dot]in",
+    address: "Shastri Bhawan, New Delhi — 110001",
   },
 ];
 

@@ -1,0 +1,247 @@
+{
+  "header": {
+    "govtStrip": "भारत सरकार | Government of India · Ministry of Agriculture and Farmers Welfare",
+    "helpline": "Kisan Call Centre & Helpline: 1800-180-1551",
+    "helplineShort": "1800-180-1551",
+    "skipToContent": "Skip to Main Content",
+    "textSize": "Text Size",
+    "language": "Language",
+    "homeAria": "Go to National Bamboo Mission home page",
+    "toggleMenu": "Toggle menu",
+    "toggleMenuFor": "Toggle {{label}} menu",
+    "brandGovtHi": "भारत सरकार",
+    "brandGovtEn": "Government of India",
+    "brandMinistryHi": "कृषि एवं किसान कल्याण मंत्रालय",
+    "brandMinistryEn": "Ministry of Agriculture and Farmers Welfare",
+    "schemeTitle": "National Bamboo Mission",
+    "schemeSubtitle": "Ministry of Agriculture and Farmers Welfare",
+    "schemeTitleHi": "राष्ट्रीय बांस मिशन",
+    "emblemAlt": "National Emblem of India — Satyameva Jayate",
+    "logoAlt": "National Bamboo Mission emblem",
+    "screenReader": "Screen Reader Access",
+    "screenReaderClose": "Close screen reader panel",
+    "screenReaderDesc": "Download a free screen reader to browse this website:"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About NBM",
+    "guidelines": "Guidelines & Documents",
+    "gallery": "Gallery",
+    "knowledgeCenter": "Knowledge Center",
+    "reports": "Reports",
+    "tenders": "Tenders / Vacancies",
+    "rti": "RTI",
+    "dashboard": "Dashboard",
+    "login": "Login",
+    "contact": "Contact"
+  },
+  "textSize": {
+    "groupLabel": "Text size",
+    "decrease": "Decrease text size",
+    "reset": "Reset text size to default",
+    "increase": "Increase text size"
+  },
+  "footer": {
+    "connect": "Connect With Us",
+    "visitors": "Visitors",
+    "visitorsSince": "Since portal launch",
+    "helpline": "Helpline",
+    "helplineHours": "Mon–Fri, 9 AM – 6 PM IST",
+    "brandTitle": "National Bamboo Mission",
+    "brandDesc": "A centrally sponsored scheme promoting the holistic growth of the bamboo sector in India through area-based, regionally differentiated strategy.",
+    "ministry": "Ministry of Agriculture and Farmers Welfare",
+    "quickLinks": "Quick Links",
+    "relatedSites": "Related Sites",
+    "reachUs": "Reach Us",
+    "address": "Krishi Bhawan, Dr. Rajendra Prasad Road, New Delhi – 110001",
+    "privacy": "Privacy Policy",
+    "disclaimer": "Disclaimer",
+    "accessibility": "Accessibility",
+    "sitemap": "Sitemap",
+    "feedback": "Feedback",
+    "help": "Help",
+    "ownershipStatement": "This website belongs to the National Bamboo Mission, Ministry of Agriculture and Farmers Welfare, Government of India.",
+    "lastUpdated": "Last updated: {{date}}"
+  },
+  "sections": {
+    "quickServices": {
+      "eyebrow": "Citizen Corner",
+      "title": "Quick Services",
+      "subtitle": "Essential services for farmers, entrepreneurs and stakeholders — one click away."
+    },
+    "missionPillars": {
+      "eyebrow": "Our Approach",
+      "title": "Mission Pillars",
+      "subtitle": "A holistic, cluster-based approach to grow India's bamboo economy."
+    },
+    "resources": {
+      "eyebrow": "Resources",
+      "title": "Other Links",
+      "subtitle": "Documents, data, directories and media — everything you need in one place."
+    },
+    "onTheGround": {
+      "eyebrow": "On the Ground",
+      "title": "NBM at a Glance — Impact, Reach & Stories",
+      "subtitle": "Key metrics, state coverage and on-ground stories across India's bamboo bioeconomy."
+    }
+  },
+  "quickServices": {
+    "farmerRegistration": {
+      "title": "Farmer Registration",
+      "desc": "Register as a bamboo grower or beneficiary under NBM schemes.",
+      "cta": "Enroll Now"
+    },
+    "applicationStatus": {
+      "title": "Application Status",
+      "desc": "Track scheme application, nursery accreditation or tender status.",
+      "cta": "Check Now"
+    },
+    "knowledgeCenter": {
+      "title": "Knowledge Center",
+      "desc": "Training modules, research papers, institutes and value-added products.",
+      "cta": "Explore Now"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "desc": "Interactive India map with state-wise bamboo mission data and KPIs.",
+      "cta": "Open Dashboard"
+    },
+    "contactRti": {
+      "title": "Contact & RTI",
+      "desc": "Headquarters, state contacts, helpline and Right to Information.",
+      "cta": "Get in Touch"
+    }
+  },
+  "missionPillars": {
+    "plantation": {
+      "title": "Plantation Development",
+      "desc": "Block, bund and farm-level plantations on government and private land.",
+      "cta": "View Guidelines"
+    },
+    "product": {
+      "title": "Product Development",
+      "desc": "Setting up primary processing, treatment and product manufacturing units.",
+      "cta": "View Products"
+    },
+    "skilling": {
+      "title": "Skilling & Capacity",
+      "desc": "Training of artisans, entrepreneurs and field functionaries across clusters.",
+      "cta": "Start Learning"
+    },
+    "market": {
+      "title": "Market Linkages",
+      "desc": "Retail outlets, e-marketing platforms and brand promotion for bamboo products.",
+      "cta": "Explore Markets"
+    }
+  },
+  "onTheGround": {
+    "processing": {
+      "label": "Processing Units",
+      "title": "Industrial-scale bamboo processing",
+      "desc": "Mechanised splitting, treatment and finishing lines supported under NBM are creating new product streams and jobs.",
+      "cta": "View Products"
+    },
+    "bearingArea": {
+      "label": "Bamboo Bearing Area",
+      "title": "National bamboo cover",
+      "desc": "Total area under bamboo bearing across implementing States.",
+      "cta": "Explore Data"
+    },
+    "states": {
+      "label": "Pan-India Reach",
+      "title": "Implementing States",
+      "desc": "NBM is active across States and UTs through dedicated State Bamboo Missions.",
+      "cta": "State Coverage"
+    },
+    "nurseries": {
+      "label": "Accredited Nurseries",
+      "title": "Quality planting material",
+      "desc": "Pan-India registry of NBM-accredited bamboo nurseries — species stock, certificates and quality propagules.",
+      "cta": "Browse Registry"
+    },
+    "funds": {
+      "label": "Mission Investment",
+      "title": "Funds released",
+      "desc": "Central assistance released to States since restructuring in 2018–19.",
+      "cta": "View Reports"
+    },
+    "stateMap": {
+      "label": "State Analytics",
+      "title": "India Bamboo Map",
+      "desc": "Interactive choropleth with state-wise mission data and KPIs.",
+      "cta": "Open Interactive Map"
+    },
+    "valueAdded": {
+      "label": "Agarbatti Production",
+      "title": "Bamboo agarbatti stick units",
+      "desc": "NBM-supported incense stick enterprises — state-wise capacity, production metrics and unit-level MIS directory.",
+      "cta": "View Agarbatti MIS"
+    },
+    "artisan": {
+      "label": "Artisan Economy",
+      "title": "Skilled bamboo craftsmanship",
+      "desc": "Training and cluster support for artisans turning bamboo into livelihoods.",
+      "cta": "Read Stories"
+    },
+    "farmer": {
+      "label": "Farmer Livelihoods",
+      "title": "Growers & beneficiaries",
+      "desc": "Scheme support for farmers, entrepreneurs and bamboo growers under NBM.",
+      "cta": "Beneficiary Data"
+    },
+    "northeast": {
+      "label": "Bamboo Gallery",
+      "title": "Cultivation & field stories",
+      "desc": "A visual record of bamboo plantations, nurseries, processing units and artisan craftsmanship across India.",
+      "cta": "Browse Gallery"
+    },
+    "markets": {
+      "label": "Value Chain",
+      "title": "Products & market linkages",
+      "desc": "Retail outlets, e-marketing platforms and brand promotion connecting bamboo growers to consumers nationwide.",
+      "cta": "Explore Value Chain"
+    },
+    "plantation": {
+      "label": "Plantation MIS",
+      "title": "Bamboo plantation records",
+      "desc": "Farm and block-level MIS records — species-wise culms, area, irrigation status and verified plantation data.",
+      "cta": "View Plantation MIS"
+    }
+  },
+  "resourceLinks": {
+    "tutorials": {
+      "title": "Tutorials",
+      "desc": "Video guides and training modules for bamboo cultivation, processing and artisan skills.",
+      "cta": "Watch Now"
+    },
+    "circulars": {
+      "title": "Circulars",
+      "desc": "Official government circulars, notifications and policy letters under NBM.",
+      "cta": "Read Now"
+    },
+    "reports": {
+      "title": "Reports",
+      "desc": "Annual reports, Annual Action Plans and state-wise progress summaries.",
+      "cta": "View Reports"
+    },
+    "directory": {
+      "title": "Directory",
+      "desc": "State-wise contacts of Mission Directors, nodal officers and SBM staff.",
+      "cta": "Browse Directory"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "desc": "National and state-wise bamboo mission statistics, KPIs and interactive map.",
+      "cta": "Open Dashboard"
+    },
+    "gallery": {
+      "title": "Gallery",
+      "desc": "Photos from plantations, processing units, artisan melas and bamboo products.",
+      "cta": "View Gallery"
+    }
+  },
+  "language": {
+    "select": "Select language",
+    "current": "Current language: {{language}}"
+  }
+}

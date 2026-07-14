@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHero } from "@/components/SiteLayout";
-import { rtiActLinks, rtiSections, type RtiOrgNode, type RtiSection } from "@/data/rti";
+import { RtiActLinks } from "@/components/rti/RtiActLinks";
+import { rtiSections, rtiSupplementaryLinks, type RtiOrgNode, type RtiSection } from "@/data/rti";
 import {
   Accordion,
   AccordionContent,
@@ -46,64 +47,29 @@ const sectionIcons: Record<string, typeof Scale> = {
 
 function RtiPage() {
   return (
-    <>
+    <div className="rti-page">
       <PageHero
+        eyebrow={
+          <>
+            <Scale className="h-3.5 w-3.5" aria-hidden />
+            RTI Act, 2005 · Government of India
+          </>
+        }
         title="Right to Information"
         subtitle="Proactive disclosures and public authority details under the Right to Information Act, 2005 — National Bamboo Mission."
       />
 
-      {/* Contact section sub-nav */}
-      <div className="bg-secondary border-b border-border">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 py-3 flex flex-wrap gap-2">
-          <Link
-            to="/contact/head-quarter"
-            className="px-4 py-2 rounded-lg text-sm font-semibold bg-card text-foreground hover:bg-primary/10 transition-colors"
-          >
-            Head Quarter
-          </Link>
-          <Link
-            to="/contact/state"
-            className="px-4 py-2 rounded-lg text-sm font-semibold bg-card text-foreground hover:bg-primary/10 transition-colors"
-          >
-            State
-          </Link>
-          <Link
-            to="/rti"
-            className="px-4 py-2 rounded-lg text-sm font-semibold bg-primary text-primary-foreground"
-          >
-            RTI
-          </Link>
-        </div>
+      <div className="rti-hero-bridge mx-auto max-w-7xl px-4 sm:px-6">
+        <RtiActLinks />
       </div>
 
-      {/* RTI quick links strip */}
-      <section className="bg-primary bamboo-texture-bg border-b border-primary-foreground/10">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 py-6">
-          <div className="grid gap-3 sm:grid-cols-3">
-            {rtiActLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                target="_blank"
-                rel="noreferrer"
-                className="group flex items-center gap-3 rounded-xl border border-primary-foreground/15 bg-primary-foreground/10 px-4 py-3 text-primary-foreground hover:bg-primary-foreground/15 transition-all card-lift"
-              >
-                <Scale className="h-5 w-5 text-saffron shrink-0" />
-                <span className="text-sm font-medium flex-1 leading-snug">{link.label}</span>
-                <ExternalLink className="h-3.5 w-3.5 opacity-60 group-hover:opacity-100 shrink-0" />
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 py-10">
+      <section className="rti-disclosure mx-auto max-w-7xl px-4 sm:px-6 pb-10">
         <div className="grid gap-8 lg:grid-cols-[1fr_280px]">
           {/* Accordion main */}
           <div>
-            <div className="flex items-center gap-2 mb-6">
-              <div className="h-7 w-1 rounded-full bg-saffron" />
-              <h2 className="text-xl font-bold text-primary font-display">
+            <div className="rti-section-heading">
+              <div className="rti-section-heading__bar" aria-hidden />
+              <h2 className="rti-section-heading__title font-display">
                 Proactive Disclosure under Section 4
               </h2>
             </div>
@@ -121,7 +87,7 @@ function RtiPage() {
                     key={section.id}
                     value={section.id}
                     id={section.id}
-                    className="border border-border rounded-xl bg-card shadow-soft overflow-hidden scroll-mt-28 data-[state=open]:border-primary/30 data-[state=open]:shadow-card transition-all duration-300"
+                    className="rti-accordion-item border-0 scroll-mt-28 data-[state=open]:border-primary/30 transition-all duration-300"
                     style={{ animationDelay: `${idx * 40}ms` }}
                   >
                     <AccordionTrigger className="px-5 py-4 hover:no-underline hover:bg-secondary/50 [&[data-state=open]]:bg-primary [&[data-state=open]]:text-primary-foreground group">
@@ -145,7 +111,7 @@ function RtiPage() {
 
           {/* Sidebar */}
           <aside className="space-y-5">
-            <div className="bg-card border border-border rounded-xl p-5 shadow-soft sticky top-4">
+            <div className="rti-sidebar-card p-5 sticky top-4">
               <h3 className="font-semibold text-primary text-sm mb-3">Quick Navigation</h3>
               <ul className="space-y-1">
                 {rtiSections.map((s) => (
@@ -162,24 +128,54 @@ function RtiPage() {
               </ul>
             </div>
 
-            <div className="bg-secondary border border-border rounded-xl p-5">
+            <div className="rti-sidebar-card rti-sidebar-card--accent p-5">
               <h3 className="font-semibold text-primary text-sm mb-2">How to file an RTI</h3>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Applications under the RTI Act, 2005 may be submitted to the concerned Central
-                Public Information Officer (CPIO) in writing or through the online portal at{" "}
+                Applications under the RTI Act, 2005 may be submitted in writing to the concerned
+                Central Public Information Officer (CPIO) listed above, or filed electronically
+                through the Central Government online portal at{" "}
                 <a
-                  href="https://rti.gov.in"
+                  href="https://rtionline.gov.in/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-primary font-medium hover:underline"
+                >
+                  rtionline.gov.in
+                </a>
+                . Fee as prescribed under the RTI Rules, 2019 is applicable. General information
+                and PIO directories are available at{" "}
+                <a
+                  href="https://rti.gov.in/"
                   target="_blank"
                   rel="noreferrer"
                   className="text-primary font-medium hover:underline"
                 >
                   rti.gov.in
                 </a>
-                . Fee as prescribed under the RTI Rules is applicable.
+                .
               </p>
             </div>
 
-            <div className="bg-card border border-border rounded-xl p-5 shadow-soft">
+            <div className="rti-sidebar-card p-5">
+              <h3 className="font-semibold text-primary text-sm mb-3">Official RTI Documents</h3>
+              <ul className="space-y-2">
+                {rtiSupplementaryLinks.map((link) => (
+                  <li key={link.href}>
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-start gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors"
+                    >
+                      <ExternalLink className="h-3 w-3 shrink-0 mt-0.5" aria-hidden />
+                      <span className="leading-relaxed">{link.label}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="rti-sidebar-card p-5">
               <h3 className="font-semibold text-primary text-sm mb-2">NBM Helpline</h3>
               <p className="text-xs text-muted-foreground leading-relaxed">
                 For general scheme-related queries (not RTI applications):
@@ -201,9 +197,9 @@ function RtiPage() {
         </div>
 
         {/* Bottom info */}
-        <div className="mt-8 flex items-start gap-3 bg-secondary/60 border border-border rounded-xl px-5 py-4">
-          <Info className="h-5 w-5 text-saffron shrink-0 mt-0.5" />
-          <p className="text-xs text-muted-foreground leading-relaxed">
+        <div className="rti-notice">
+          <Info className="rti-notice__icon h-5 w-5" aria-hidden />
+          <p className="rti-notice__text">
             This page contains proactive disclosures under Section 4 of the Right to Information
             Act, 2005 for the National Bamboo Mission. Information is updated periodically. For
             documents not available here, please submit an RTI application to the concerned CPIO
@@ -211,7 +207,7 @@ function RtiPage() {
           </p>
         </div>
       </section>
-    </>
+    </div>
   );
 }
 
@@ -250,11 +246,14 @@ function RtiSectionContent({ section }: { section: RtiSection }) {
           </div>
           <div className="overflow-x-auto rounded-xl border border-border">
             <table className="w-full text-sm border-collapse min-w-[520px]">
+              <caption className="sr-only">
+                Sub-schemes under the National Bamboo Mission with target groups and beneficiary areas
+              </caption>
               <thead>
                 <tr className="bg-primary text-primary-foreground">
-                  <th className="text-left px-4 py-3 font-semibold w-16">Sr No.</th>
-                  <th className="text-left px-4 py-3 font-semibold">Sub Scheme</th>
-                  <th className="text-left px-4 py-3 font-semibold">Target Group / Area</th>
+                  <th scope="col" className="text-left px-4 py-3 font-semibold w-16">Sr No.</th>
+                  <th scope="col" className="text-left px-4 py-3 font-semibold">Sub Scheme</th>
+                  <th scope="col" className="text-left px-4 py-3 font-semibold">Target Group / Area</th>
                 </tr>
               </thead>
               <tbody>
@@ -343,11 +342,13 @@ function RtiSectionContent({ section }: { section: RtiSection }) {
       return (
         <div className="overflow-x-auto rounded-xl border border-border">
           <table className="w-full text-xs sm:text-sm border-collapse min-w-[640px]">
+            <caption className="sr-only">{section.title}</caption>
             <thead>
               <tr className="bg-primary text-primary-foreground">
                 {section.columns.map((col) => (
                   <th
                     key={col.key}
+                    scope="col"
                     className={`text-left px-3 py-3 font-semibold align-top ${col.className ?? ""}`}
                   >
                     {col.label}

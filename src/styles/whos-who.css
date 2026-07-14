@@ -1,0 +1,805 @@
+/* ── Who's Who directory ── */
+
+.whos-who-page {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+/* ── Directory panel (hero + search + jump) ── */
+
+.whos-who-directory-panel {
+  overflow: hidden;
+  border-radius: 1.25rem;
+  border: 1px solid oklch(0.35 0.08 150 / 0.14);
+  background: oklch(0.99 0.006 110);
+  box-shadow:
+    0 8px 32px -12px oklch(0.15 0.06 150 / 0.18),
+    0 0 0 1px oklch(1 0 0 / 0.5) inset;
+}
+
+/* ── Elevated search bar (bridges hero → content) ── */
+
+.whos-who-directory-panel__search {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1.125rem;
+  transition: background 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.whos-who-directory-panel__search--elevated {
+  position: relative;
+  z-index: 4;
+  margin: -1.125rem 1rem 0;
+  border-radius: 0.875rem;
+  border: 1px solid oklch(0.35 0.08 150 / 0.12);
+  background: oklch(1 0 0);
+  box-shadow:
+    0 12px 28px -10px oklch(0.15 0.06 150 / 0.2),
+    0 0 0 1px oklch(1 0 0 / 0.8) inset;
+}
+
+@media (min-width: 640px) {
+  .whos-who-directory-panel__search--elevated {
+    margin: -1.25rem 1.5rem 0;
+    padding: 1rem 1.25rem;
+  }
+}
+
+.whos-who-directory-panel__search--elevated:focus-within {
+  border-color: oklch(0.35 0.08 150 / 0.28);
+  box-shadow:
+    0 12px 28px -10px oklch(0.15 0.06 150 / 0.22),
+    0 0 0 3px oklch(0.35 0.08 150 / 0.1);
+}
+
+.whos-who-directory-panel__footer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  padding: 1.25rem 1.25rem 1.375rem;
+}
+
+@media (min-width: 640px) {
+  .whos-who-directory-panel__footer {
+    padding: 1.375rem 1.75rem 1.5rem;
+  }
+}
+
+.whos-who-directory-panel__jump-label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: oklch(0.5 0.03 150);
+}
+
+.whos-who-jump {
+  margin-bottom: 0;
+  background: oklch(0.98 0.01 110);
+  border: 1px solid oklch(0.35 0.08 150 / 0.1);
+  border-radius: 0.875rem;
+  padding: 0.3rem;
+}
+
+.whos-who-jump__pill {
+  border-radius: 0.625rem;
+  padding: 0.5rem 0.875rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: oklch(0.4 0.04 150);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.whos-who-jump__pill:hover {
+  background: oklch(0.35 0.08 150 / 0.08);
+  color: oklch(0.32 0.09 150);
+}
+
+.whos-who-jump__pill--active {
+  background: var(--gradient-mitra-gold);
+  color: oklch(0.22 0.06 55);
+  box-shadow: 0 2px 8px -2px oklch(0.72 0.14 78 / 0.4);
+}
+
+/* ── Aside link cards ── */
+
+.whos-who-aside {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.whos-who-aside__cards {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .whos-who-aside__cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.whos-who-aside-card {
+  position: relative;
+  display: flex;
+  gap: 1rem;
+  padding: 1.25rem 1.375rem 1.25rem 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid oklch(0.35 0.08 150 / 0.12);
+  background: oklch(1 0 0);
+  text-decoration: none;
+  overflow: hidden;
+  box-shadow: 0 2px 12px -6px oklch(0.2 0.06 150 / 0.1);
+  transition:
+    transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.whos-who-aside-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(
+    180deg,
+    oklch(0.35 0.09 150) 0%,
+    oklch(0.72 0.14 78) 100%
+  );
+}
+
+.whos-who-aside-card:hover {
+  transform: translateY(-2px);
+  border-color: oklch(0.35 0.08 150 / 0.22);
+  box-shadow: 0 8px 24px -10px oklch(0.2 0.06 150 / 0.16);
+}
+
+.whos-who-aside-card__icon {
+  display: flex;
+  height: 2.5rem;
+  width: 2.5rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  background: oklch(0.35 0.08 150 / 0.08);
+  color: oklch(0.35 0.09 150);
+}
+
+.whos-who-aside-card__icon--warm {
+  background: oklch(0.72 0.14 78 / 0.12);
+  color: oklch(0.55 0.12 55);
+}
+
+.whos-who-aside-card__title {
+  font-family: var(--font-display, Georgia, serif);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: oklch(0.28 0.06 150);
+  line-height: 1.35;
+}
+
+.whos-who-aside-card__desc {
+  margin-top: 0.35rem;
+  font-size: 0.75rem;
+  line-height: 1.55;
+  color: oklch(0.48 0.02 150);
+}
+
+.whos-who-aside-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: oklch(0.35 0.09 150);
+  transition: color 0.2s ease;
+}
+
+.whos-who-aside-card:hover .whos-who-aside-card__link {
+  color: oklch(0.55 0.12 55);
+}
+
+.whos-who-aside__note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem 1.125rem;
+  border-radius: 0.875rem;
+  border: 1px solid oklch(0.35 0.08 150 / 0.1);
+  background: oklch(0.98 0.01 110);
+}
+
+.whos-who-aside__note p {
+  font-size: 0.6875rem;
+  line-height: 1.65;
+  color: oklch(0.48 0.02 150);
+}
+
+.whos-who-aside__note a {
+  font-weight: 600;
+  color: oklch(0.35 0.09 150);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.whos-who-aside__note a:hover {
+  color: oklch(0.28 0.06 150);
+}
+
+.whos-who-ministry-banner {
+  background: linear-gradient(
+    135deg,
+    oklch(0.32 0.09 150 / 0.08) 0%,
+    oklch(0.72 0.14 78 / 0.08) 100%
+  );
+  border: 1px dashed oklch(0.35 0.08 150 / 0.25);
+}
+
+.whos-who-section {
+  scroll-margin-top: 5.5rem;
+  animation: whosWhoSectionIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes whosWhoSectionIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.whos-who-section__header {
+  background: linear-gradient(
+    90deg,
+    oklch(0.32 0.09 150) 0%,
+    oklch(0.28 0.08 150) 100%
+  );
+}
+
+.whos-who-table thead th {
+  background: oklch(0.3 0.085 150);
+  color: oklch(0.98 0.01 110);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.whos-who-table tbody tr {
+  transition: background 0.15s ease;
+}
+
+.whos-who-table tbody tr:hover {
+  background: oklch(0.35 0.08 150 / 0.06);
+}
+
+.whos-who-card {
+  border: 1px solid oklch(0.35 0.08 150 / 0.12);
+  background: oklch(1 0 0);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.whos-who-card:hover {
+  border-color: oklch(0.72 0.14 78 / 0.35);
+  box-shadow: 0 8px 24px -12px oklch(0.2 0.06 150 / 0.15);
+  transform: translateY(-1px);
+}
+
+.whos-who-card__name {
+  font-variant-numeric: tabular-nums;
+}
+
+.whos-who-empty {
+  background: oklch(0.97 0.01 110);
+  border: 1px dashed oklch(0.35 0.08 150 / 0.2);
+}
+
+/* ── Leadership pyramid (MDoNER-inspired) ── */
+
+.whos-who-leadership {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  border: 1px solid oklch(1 0 0 / 0.14);
+  background: oklch(0.16 0.06 150);
+  padding: 0 1.25rem 2rem;
+  box-shadow:
+    0 20px 48px -16px oklch(0.1 0.05 150 / 0.55),
+    inset 0 1px 0 oklch(1 0 0 / 0.08);
+  color: oklch(0.96 0.01 110);
+}
+
+@media (min-width: 640px) {
+  .whos-who-leadership {
+    padding: 0 2rem 2.5rem;
+  }
+}
+
+.whos-who-leadership__photo {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center 38%;
+  background-repeat: no-repeat;
+  transform: scale(1.04);
+  pointer-events: none;
+}
+
+.whos-who-leadership__overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      oklch(0.14 0.06 150 / 0.92) 0%,
+      oklch(0.18 0.08 150 / 0.84) 42%,
+      oklch(0.16 0.07 150 / 0.9) 100%
+    ),
+    radial-gradient(ellipse 85% 55% at 50% 15%, oklch(0.22 0.1 145 / 0.45), transparent 65%),
+    radial-gradient(ellipse 70% 40% at 50% 100%, oklch(0.1 0.05 150 / 0.55), transparent 70%);
+  pointer-events: none;
+}
+
+.whos-who-leadership__glow {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(56px);
+  pointer-events: none;
+  opacity: 0.5;
+  z-index: 0;
+}
+
+.whos-who-leadership__glow--left {
+  width: 16rem;
+  height: 16rem;
+  top: 1rem;
+  left: -5rem;
+  background: oklch(0.72 0.14 78 / 0.18);
+}
+
+.whos-who-leadership__glow--right {
+  width: 18rem;
+  height: 18rem;
+  bottom: 0;
+  right: -6rem;
+  background: oklch(0.35 0.09 150 / 0.28);
+}
+
+.whos-who-leadership__leaf {
+  position: absolute;
+  color: oklch(1 0 0 / 0.1);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.whos-who-leadership__leaf--tl {
+  top: 1.25rem;
+  left: 1rem;
+  transform: rotate(-25deg);
+}
+
+.whos-who-leadership::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    oklch(0.55 0.18 30) 0%,
+    oklch(0.55 0.18 30) 33.33%,
+    oklch(1 0 0) 33.33%,
+    oklch(1 0 0) 66.66%,
+    oklch(0.35 0.09 150) 66.66%,
+    oklch(0.35 0.09 150) 100%
+  );
+  opacity: 0.55;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.whos-who-leadership__leaf--br {
+  bottom: 1rem;
+  right: 1rem;
+  transform: rotate(155deg);
+  color: oklch(0.82 0.14 78 / 0.22);
+}
+
+.whos-who-leadership__header {
+  text-align: center;
+  padding: 1.75rem 0.5rem 3.5rem;
+  max-width: 36rem;
+  margin: 0 auto;
+}
+
+.whos-who-leadership__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+  padding: 0.35rem 0.875rem;
+  border-radius: 9999px;
+  border: 1px solid oklch(0.82 0.14 78 / 0.45);
+  background: oklch(1 0 0 / 0.1);
+  backdrop-filter: blur(8px);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: oklch(0.95 0.04 78);
+}
+
+.whos-who-leadership__eyebrow svg {
+  color: oklch(0.88 0.16 78);
+}
+
+.whos-who-leadership__title {
+  color: oklch(0.99 0.01 110);
+  text-shadow: 0 2px 16px oklch(0.1 0.05 150 / 0.55);
+}
+
+.whos-who-leadership__subtitle {
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: oklch(0.92 0.02 110 / 0.88);
+  text-shadow: 0 1px 8px oklch(0.1 0.05 150 / 0.45);
+}
+
+.whos-who-leadership__credit {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 0.625rem;
+  line-height: 1.6;
+  color: oklch(0.88 0.02 110 / 0.62);
+}
+
+.whos-who-pyramid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 36rem;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.whos-who-pyramid__tier {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.whos-who-pyramid__tier--minister {
+  padding-top: 8rem;
+  margin-bottom: 0.25rem;
+}
+
+.whos-who-pyramid__tier--mos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem 2rem;
+  padding-top: 4.75rem;
+  position: relative;
+  z-index: 1;
+}
+
+@media (min-width: 640px) {
+  .whos-who-pyramid__tier--mos {
+    gap: 1.5rem 3rem;
+  }
+}
+
+.whos-who-pyramid__connector {
+  width: 100%;
+  height: 6.25rem;
+  margin: 0.25rem 0 -2.75rem;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.whos-who-pyramid__connector-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.whos-who-leader-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border-radius: 1.25rem;
+  border: 1px solid oklch(1 0 0 / 0.22);
+  background: linear-gradient(
+    180deg,
+    oklch(1 0 0 / 0.98) 0%,
+    oklch(0.98 0.012 145 / 0.96) 100%
+  );
+  padding: 4.25rem 1.125rem 1.375rem;
+  box-shadow:
+    0 18px 44px -14px oklch(0.08 0.05 150 / 0.65),
+    0 0 0 1px oklch(1 0 0 / 0.12),
+    inset 0 1px 0 oklch(1 0 0 / 0.95);
+  transition:
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.28s ease,
+    border-color 0.28s ease;
+  cursor: pointer;
+  width: 100%;
+  max-width: 15.5rem;
+}
+
+.whos-who-leader-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    oklch(0.72 0.14 78 / 0.06) 0%,
+    transparent 45%,
+    oklch(0.35 0.09 150 / 0.04) 100%
+  );
+  pointer-events: none;
+}
+
+.whos-who-leader-card:hover {
+  transform: translateY(-5px);
+  border-color: oklch(0.82 0.14 78 / 0.65);
+  box-shadow:
+    0 24px 48px -12px oklch(0.08 0.05 150 / 0.7),
+    0 0 0 1px oklch(0.82 0.14 78 / 0.35);
+}
+
+.whos-who-leader-card--minister {
+  max-width: 17.5rem;
+  padding-top: 4.75rem;
+}
+
+/* Portrait centred on the card's top edge */
+.whos-who-leader-card__portrait-slot {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: auto;
+  margin: 0;
+}
+
+.whos-who-leader-card__frame {
+  padding: 3px;
+  border-radius: 9999px;
+  background: linear-gradient(
+    145deg,
+    oklch(0.78 0.15 78) 0%,
+    oklch(0.42 0.1 150) 50%,
+    oklch(0.3 0.09 150) 100%
+  );
+  box-shadow:
+    0 10px 24px -8px oklch(0.2 0.06 150 / 0.4),
+    0 0 0 4px oklch(1 0 0 / 0.85);
+  flex-shrink: 0;
+}
+
+.whos-who-leader-card__photo {
+  display: block;
+  width: 7.25rem;
+  height: 7.25rem;
+  border-radius: 9999px;
+  object-fit: contain;
+  object-position: center center;
+  border: 3px solid white;
+  background: linear-gradient(180deg, oklch(0.98 0.01 110), oklch(0.96 0.02 145));
+  padding: 10px;
+}
+
+.whos-who-leader-card--minister .whos-who-leader-card__photo {
+  width: 8.5rem;
+  height: 8.5rem;
+}
+
+.whos-who-leader-card__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 7.25rem;
+  height: 7.25rem;
+  border-radius: 9999px;
+  border: 3px solid white;
+  background: linear-gradient(135deg, oklch(0.35 0.09 150), oklch(0.28 0.08 150));
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.whos-who-leader-card__body {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+.whos-who-leader-card__role {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  color: oklch(0.38 0.09 150);
+  margin-bottom: 0.4rem;
+}
+
+.whos-who-leader-card__name {
+  font-weight: 700;
+  color: oklch(0.22 0.04 150);
+  line-height: 1.35;
+}
+
+.whos-who-leader-card__hint {
+  margin-top: 0.5rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  color: oklch(0.72 0.14 78);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.whos-who-leader-card:hover .whos-who-leader-card__hint {
+  opacity: 1;
+}
+
+/* Profile modal */
+.whos-who-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: oklch(0.15 0.02 150 / 0.55);
+  backdrop-filter: blur(6px);
+  animation: whosWhoFadeIn 0.2s ease;
+}
+
+.whos-who-modal {
+  position: relative;
+  width: min(100%, 24rem);
+  border-radius: 1.25rem;
+  background: white;
+  padding: 2rem 1.5rem 1.5rem;
+  box-shadow: 0 24px 48px -20px oklch(0 0 0 / 0.35);
+  animation: whosWhoModalIn 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.whos-who-modal__close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  display: flex;
+  height: 2rem;
+  width: 2rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  color: oklch(0.5 0.02 150);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.whos-who-modal__close:hover {
+  background: oklch(0.96 0.01 110);
+  color: oklch(0.32 0.09 150);
+}
+
+.whos-who-modal__hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid oklch(0.35 0.08 150 / 0.1);
+}
+
+.whos-who-modal__photo {
+  width: 7.5rem;
+  height: 7.5rem;
+  border-radius: 9999px;
+  object-fit: contain;
+  object-position: center center;
+  border: 3px solid oklch(0.35 0.09 150);
+  margin-bottom: 1rem;
+  background: linear-gradient(180deg, oklch(0.98 0.01 110), oklch(0.96 0.02 145));
+  padding: 10px;
+}
+
+.whos-who-modal__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 7.5rem;
+  height: 7.5rem;
+  border-radius: 9999px;
+  border: 3px solid oklch(0.35 0.09 150);
+  background: linear-gradient(135deg, oklch(0.35 0.09 150), oklch(0.28 0.08 150));
+  color: white;
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.whos-who-modal__role {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: oklch(0.35 0.09 150);
+  margin-bottom: 0.35rem;
+}
+
+.whos-who-modal__name {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: oklch(0.22 0.04 150);
+}
+
+.whos-who-modal__designation {
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: oklch(0.45 0.03 150);
+}
+
+.whos-who-modal__body {
+  padding-top: 1.25rem;
+}
+
+.whos-who-directory-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.whos-who-directory-heading::before {
+  content: "";
+  height: 2rem;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--gradient-mitra-gold);
+}
+
+@keyframes whosWhoFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes whosWhoModalIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

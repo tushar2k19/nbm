@@ -1,5 +1,6 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/SiteLayout";
+import { ContactSubNav } from "@/components/contact/ContactSubNav";
 import { stateContacts } from "@/data/contacts";
 import { MapPin, Search, Users } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -40,27 +41,7 @@ function StateContactsPage() {
       />
 
       <section className="mx-auto max-w-7xl px-4 sm:px-6 py-10">
-        {/* Sub-nav tabs */}
-        <div className="flex flex-wrap gap-2 mb-6">
-          <Link
-            to="/contact/head-quarter"
-            className="px-4 py-2 rounded-lg text-sm font-semibold bg-secondary text-secondary-foreground hover:bg-primary/10 transition-colors"
-          >
-            Head Quarter
-          </Link>
-          <Link
-            to="/contact/state"
-            className="px-4 py-2 rounded-lg text-sm font-semibold bg-primary text-primary-foreground"
-          >
-            State
-          </Link>
-          <Link
-            to="/rti"
-            className="px-4 py-2 rounded-lg text-sm font-semibold bg-secondary text-secondary-foreground hover:bg-primary/10 transition-colors"
-          >
-            RTI
-          </Link>
-        </div>
+        <ContactSubNav active="state" />
 
         <div className="rounded-xl border border-border bg-card shadow-soft overflow-hidden">
           <div className="bg-primary/5 border-b border-border px-5 py-4">
@@ -91,15 +72,18 @@ function StateContactsPage() {
 
           <div className="overflow-x-auto">
             <table className="w-full text-sm border-collapse min-w-[720px]">
+              <caption className="sr-only">
+                State Mission Directors and concerned officers for the National Bamboo Mission across all States and UTs
+              </caption>
               <thead>
                 <tr className="bg-primary text-primary-foreground">
-                  <th className="text-left px-4 py-3 font-semibold whitespace-nowrap w-40">
+                  <th scope="col" className="text-left px-4 py-3 font-semibold whitespace-nowrap w-40">
                     State Name
                   </th>
-                  <th className="text-left px-4 py-3 font-semibold min-w-[320px]">
+                  <th scope="col" className="text-left px-4 py-3 font-semibold min-w-[320px]">
                     State Mission Director / Nodal Officer (NBM)
                   </th>
-                  <th className="text-left px-4 py-3 font-semibold min-w-[240px]">
+                  <th scope="col" className="text-left px-4 py-3 font-semibold min-w-[240px]">
                     Concerned Officer / Staff
                   </th>
                 </tr>

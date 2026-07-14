@@ -1,8 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { GraduationCap, Package, Mail, Building2, ChevronRight, BookOpen } from "lucide-react";
+import { GraduationCap, Package, Building2, ChevronRight, BookOpen, Sparkles, MapPin } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { knowledgeCenterSections, type KnowledgeSection } from "@/data/knowledgeCenter";
+import { trainingModuleGroups } from "@/data/trainingModules";
 import {
   MegaMenuDropdown,
   MegaMenuItemLink,
@@ -13,22 +14,40 @@ const sectionIcons: Record<string, LucideIcon> = {
   "training-modules": GraduationCap,
   institutes: Building2,
   "value-added-products": Package,
-  letters: Mail,
   "research-papers": BookOpen,
+  "state-mission": MapPin,
+  "success-stories": Sparkles,
 };
 
 type SectionId = KnowledgeSection["id"];
 
+function sectionRoute(sectionId: SectionId): { to: string; hash?: string } {
+  if (sectionId === "value-added-products") return { to: "/products" };
+  if (sectionId === "research-papers") return { to: "/knowledge-center/research-papers" };
+  if (sectionId === "state-mission") return { to: "/knowledge-center/state-mission" };
+  if (sectionId === "success-stories") return { to: "/success-stories" };
+  if (sectionId === "training-modules") return { to: "/training-module" };
+  return { to: "/knowledge-center", hash: sectionId };
+}
+
 function sectionLinkTo(sectionId: SectionId) {
-  if (sectionId === "value-added-products") return "/products";
-  if (sectionId === "research-papers") return "/knowledge-center/research-papers";
-  return "/knowledge-center";
+  return sectionRoute(sectionId).to;
 }
 
 function itemHash(sectionId: SectionId, itemId: string) {
   if (sectionId === "value-added-products") return undefined;
   if (sectionId === "research-papers") return itemId;
+  if (sectionId === "state-mission") return itemId;
+  if (sectionId === "success-stories") return itemId;
+  if (sectionId === "training-modules") return undefined;
   return `${sectionId}-${itemId}`;
+}
+
+function itemLinkTo(sectionId: SectionId, itemId: string) {
+  if (sectionId === "training-modules") {
+    return { to: "/training-module/$groupId" as const, params: { groupId: itemId } };
+  }
+  return { to: sectionLinkTo(sectionId) as string, params: undefined };
 }
 
 function MenuPaneContent({
@@ -43,6 +62,10 @@ function MenuPaneContent({
 
   const Icon = sectionIcons[sectionId] ?? GraduationCap;
   const linkTo = sectionLinkTo(sectionId);
+  const menuItems =
+    sectionId === "training-modules"
+      ? trainingModuleGroups.map((g) => ({ id: g.id, title: g.shortTitle }))
+      : section.items;
 
   return (
     <div className="animate-in fade-in slide-in-from-left-1 duration-200 ease-out fill-mode-forwards">
@@ -52,17 +75,43 @@ function MenuPaneContent({
       </div>
 
       <ul>
-        {section.items.map((item) => (
-          <MegaMenuItemLink
-            key={item.id}
-            to={linkTo}
-            hash={itemHash(sectionId, item.id)}
-            onNavigate={onNavigate}
-          >
-            {item.title}
-          </MegaMenuItemLink>
-        ))}
+        {menuItems.map((item) => {
+          const itemRoute = itemLinkTo(sectionId, item.id);
+          if (itemRoute.params) {
+            return (
+              <MegaMenuItemLink
+                key={item.id}
+                to={itemRoute.to}
+                params={itemRoute.params}
+                onNavigate={onNavigate}
+              >
+                {item.title}
+              </MegaMenuItemLink>
+            );
+          }
+          return (
+            <MegaMenuItemLink
+              key={item.id}
+              to={linkTo}
+              hash={itemHash(sectionId, item.id)}
+              onNavigate={onNavigate}
+            >
+              {item.title}
+            </MegaMenuItemLink>
+          );
+        })}
       </ul>
+
+      {sectionId === "training-modules" && (
+        <Link
+          to="/training-module"
+          onClick={onNavigate}
+          className="mt-2 inline-flex items-center gap-0.5 text-xs font-medium text-primary/70 hover:text-saffron transition-colors"
+        >
+          View all training modules
+          <ChevronRight className="h-3 w-3" />
+        </Link>
+      )}
 
       {sectionId === "research-papers" && (
         <Link
@@ -71,6 +120,28 @@ function MenuPaneContent({
           className="mt-2 inline-flex items-center gap-0.5 text-xs font-medium text-primary/70 hover:text-saffron transition-colors"
         >
           View all papers
+          <ChevronRight className="h-3 w-3" />
+        </Link>
+      )}
+
+      {sectionId === "state-mission" && (
+        <Link
+          to="/knowledge-center/state-mission"
+          onClick={onNavigate}
+          className="mt-2 inline-flex items-center gap-0.5 text-xs font-medium text-primary/70 hover:text-saffron transition-colors"
+        >
+          View all state missions
+          <ChevronRight className="h-3 w-3" />
+        </Link>
+      )}
+
+      {sectionId === "success-stories" && (
+        <Link
+          to="/success-stories"
+          onClick={onNavigate}
+          className="mt-2 inline-flex items-center gap-0.5 text-xs font-medium text-primary/70 hover:text-saffron transition-colors"
+        >
+          View all success stories
           <ChevronRight className="h-3 w-3" />
         </Link>
       )}
@@ -97,22 +168,24 @@ export function KnowledgeCenterMegaMenuPanel({ open, onNavigate }: { open: boole
             {knowledgeCenterSections.map((section) => {
               const Icon = sectionIcons[section.id] ?? GraduationCap;
               const isActive = activeSection === section.id;
+              const route = sectionRoute(section.id);
               return (
                 <li key={section.id}>
-                  <button
-                    type="button"
+                  <Link
+                    to={route.to}
+                    hash={route.hash}
+                    onClick={onNavigate}
                     onMouseEnter={() => setActiveSection(section.id)}
-                    onClick={() => setActiveSection(section.id)}
                     className={`flex w-full items-center gap-2 rounded-md px-2.5 py-2 text-left text-xs font-semibold transition-colors ${
                       isActive
                         ? "bg-primary text-primary-foreground"
                         : "text-foreground/75 hover:bg-primary/10 hover:text-primary"
                     }`}
-                    aria-current={isActive ? "true" : undefined}
+                    aria-current={isActive ? "page" : undefined}
                   >
                     <Icon className={`h-3.5 w-3.5 shrink-0 ${isActive ? "text-saffron" : "text-primary/45"}`} />
                     <span className="leading-tight">{section.title}</span>
-                  </button>
+                  </Link>
                 </li>
               );
             })}
@@ -143,24 +216,59 @@ export function KnowledgeCenterMobileMenu({ onNavigate }: { onNavigate?: () => v
   return (
     <MegaMenuMobileShell>
       {knowledgeCenterSections.map((section) => {
-        const linkTo = sectionLinkTo(section.id);
+        const route = sectionRoute(section.id);
+        const linkTo = route.to;
+        const menuItems =
+          section.id === "training-modules"
+            ? trainingModuleGroups.map((g) => ({ id: g.id, title: g.shortTitle }))
+            : section.items;
         return (
           <div key={section.id}>
-            <div className="mb-2 flex items-center gap-2 border-b border-primary/8 pb-2">
+            <Link
+              to={route.to}
+              hash={route.hash}
+              onClick={onNavigate}
+              className="mb-2 flex items-center gap-2 border-b border-primary/8 pb-2 hover:text-saffron transition-colors"
+            >
               <h3 className="font-display text-sm font-bold text-primary">{section.title}</h3>
-            </div>
+            </Link>
             <ul>
-              {section.items.map((item) => (
-                <MegaMenuItemLink
-                  key={item.id}
-                  to={linkTo}
-                  hash={itemHash(section.id, item.id)}
-                  onNavigate={onNavigate}
-                >
-                  {item.title}
-                </MegaMenuItemLink>
-              ))}
+              {menuItems.map((item) => {
+                const itemRoute = itemLinkTo(section.id, item.id);
+                if (itemRoute.params) {
+                  return (
+                    <MegaMenuItemLink
+                      key={item.id}
+                      to={itemRoute.to}
+                      params={itemRoute.params}
+                      onNavigate={onNavigate}
+                    >
+                      {item.title}
+                    </MegaMenuItemLink>
+                  );
+                }
+                return (
+                  <MegaMenuItemLink
+                    key={item.id}
+                    to={linkTo}
+                    hash={itemHash(section.id, item.id)}
+                    onNavigate={onNavigate}
+                  >
+                    {item.title}
+                  </MegaMenuItemLink>
+                );
+              })}
             </ul>
+            {section.id === "training-modules" && (
+              <Link
+                to="/training-module"
+                onClick={onNavigate}
+                className="mb-4 inline-flex items-center gap-0.5 text-xs font-medium text-primary/70 hover:text-saffron"
+              >
+                View all training modules
+                <ChevronRight className="h-3 w-3" />
+              </Link>
+            )}
           </div>
         );
       })}

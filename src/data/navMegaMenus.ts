@@ -2,8 +2,8 @@ import type { LucideIcon } from "lucide-react";
 import {
   BarChart2,
   Map,
-  Users,
   Building2,
+  GitBranch,
   Monitor,
   UserCircle,
   MapPin,
@@ -49,14 +49,6 @@ export const navMegaMenus: Record<NavMegaMenuId, NavMegaMenuConfig> = {
           "State-wise performance dashboards for implementing States and UTs — physical and financial achievements.",
         icon: Map,
       },
-      {
-        id: "beneficiary",
-        label: "Beneficiary Dashboard",
-        to: "/beneficiary-dashboard",
-        description:
-          "Track beneficiary applications, subsidy status and scheme-wise disbursement for farmers and entrepreneurs.",
-        icon: Users,
-      },
     ],
   },
   login: {
@@ -80,15 +72,6 @@ export const navMegaMenus: Record<NavMegaMenuId, NavMegaMenuConfig> = {
           "Management Information System portal for data entry, monitoring and reporting by NBM field functionaries.",
         icon: Monitor,
       },
-      {
-        id: "beneficiary-login",
-        label: "Beneficiary Login",
-        to: "/login",
-        hash: "beneficiary",
-        description:
-          "Login for farmers, artisans and entrepreneurs to track application status and beneficiary records.",
-        icon: UserCircle,
-      },
     ],
   },
   contact: {
@@ -97,12 +80,22 @@ export const navMegaMenus: Record<NavMegaMenuId, NavMegaMenuConfig> = {
     items: [
       {
         id: "head-quarter",
-        label: "Head Quarter",
+        label: "HQ",
         to: "/contact/head-quarter",
         description:
-          "Official directory of NBM headquarters staff at Krishi Bhawan and Shastri Bhawan, New Delhi.",
+          "Official directory of National Bamboo Mission Cell (NBMC) officials at Krishi Bhawan and Shastri Bhawan, New Delhi.",
         icon: Building2,
       },
+      /* Who's Who hidden — officials shown on HQ table instead
+      {
+        id: "whos-who",
+        label: "Who's Who",
+        to: "/contact/whos-who",
+        description:
+          "NBM-scoped official directory — ministry oversight, horticulture division leadership and NBMC functionaries.",
+        icon: Users,
+      },
+      */
       {
         id: "state",
         label: "State",
@@ -112,12 +105,12 @@ export const navMegaMenus: Record<NavMegaMenuId, NavMegaMenuConfig> = {
         icon: MapPin,
       },
       {
-        id: "rti",
-        label: "RTI",
-        to: "/rti",
+        id: "structure",
+        label: "NBM Structure",
+        to: "/contact/structure",
         description:
-          "Right to Information disclosures, CPIO details and proactive information under RTI Act, 2005.",
-        icon: Scale,
+          "National, State and District governance framework — Executive Committee, NBMC, BTSG, SLEC and BDA.",
+        icon: GitBranch,
       },
     ],
   },

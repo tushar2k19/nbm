@@ -80,23 +80,24 @@ export function NavDropdownMegaMenuPanel({
               const isActive = activeId === item.id;
               return (
                 <li key={item.id}>
-                  <button
-                    type="button"
+                  <Link
+                    to={item.to}
+                    hash={item.hash}
+                    onClick={onNavigate}
                     onMouseEnter={() => setActiveId(item.id)}
                     onFocus={() => setActiveId(item.id)}
-                    onClick={() => setActiveId(item.id)}
                     className={`flex w-full items-center gap-2 rounded-md px-2.5 py-2 text-left text-xs font-semibold transition-colors ${
                       isActive
                         ? "bg-primary text-primary-foreground"
                         : "text-foreground/75 hover:bg-primary/10 hover:text-primary"
                     }`}
-                    aria-current={isActive ? "true" : undefined}
+                    aria-current={isActive ? "page" : undefined}
                   >
                     <Icon
                       className={`h-3.5 w-3.5 shrink-0 ${isActive ? "text-saffron" : "text-primary/45"}`}
                     />
                     <span className="leading-tight">{item.label}</span>
-                  </button>
+                  </Link>
                 </li>
               );
             })}

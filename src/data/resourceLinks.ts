@@ -1,0 +1,96 @@
+import {
+  BarChart3,
+  Images,
+  LayoutDashboard,
+  ScrollText,
+  Users,
+  Video,
+} from "lucide-react";
+import type { QuickServiceItem } from "@/data/quickServices";
+
+export const resourceLinks: QuickServiceItem[] = [
+  {
+    id: "tutorials",
+    icon: Video,
+    title: "Tutorials",
+    desc: "Video guides and training modules for bamboo cultivation, processing and artisan skills.",
+    to: "/knowledge-center",
+    cta: "Watch Now",
+    accent: "oklch(0.48 0.14 250)",
+    idleTint: "oklch(0.97 0.03 250)",
+    highlight:
+      "linear-gradient(152deg, oklch(0.50 0.14 250) 0%, oklch(0.58 0.16 255) 100%)",
+    ctaAccent: "oklch(0.44 0.14 250)",
+    glow: "oklch(0.50 0.14 250 / 0.35)",
+  },
+  {
+    id: "circulars",
+    icon: ScrollText,
+    title: "Circulars",
+    desc: "Official government circulars, notifications and policy letters under NBM.",
+    to: "/guidelines#letters",
+    cta: "Read Now",
+    accent: "oklch(0.52 0.13 58)",
+    idleTint: "oklch(0.98 0.025 75)",
+    highlight:
+      "linear-gradient(152deg, oklch(0.62 0.14 55) 0%, oklch(0.72 0.13 70) 100%)",
+    ctaAccent: "oklch(0.50 0.13 58)",
+    glow: "oklch(0.62 0.14 60 / 0.38)",
+  },
+  {
+    id: "reports",
+    icon: BarChart3,
+    title: "Reports",
+    desc: "Annual reports, Annual Action Plans and state-wise progress summaries.",
+    to: "/reports",
+    cta: "View Reports",
+    accent: "oklch(0.46 0.11 205)",
+    idleTint: "oklch(0.97 0.03 200)",
+    highlight:
+      "linear-gradient(152deg, oklch(0.50 0.11 205) 0%, oklch(0.58 0.12 198) 100%)",
+    ctaAccent: "oklch(0.44 0.11 205)",
+    glow: "oklch(0.50 0.11 205 / 0.35)",
+  },
+  {
+    id: "directory",
+    icon: Users,
+    title: "Directory",
+    desc: "State-wise contacts of Mission Directors, nodal officers and SBM staff.",
+    to: "/contact/state",
+    cta: "Browse Directory",
+    accent: "oklch(0.48 0.16 285)",
+    idleTint: "oklch(0.97 0.03 290)",
+    highlight:
+      "linear-gradient(152deg, oklch(0.52 0.15 285) 0%, oklch(0.60 0.17 290) 100%)",
+    ctaAccent: "oklch(0.46 0.16 285)",
+    glow: "oklch(0.52 0.15 285 / 0.38)",
+  },
+  {
+    id: "dashboard",
+    icon: LayoutDashboard,
+    title: "Dashboard",
+    desc: "National and state-wise bamboo mission statistics, KPIs and interactive map.",
+    to: "/dashboard",
+    cta: "Open Dashboard",
+    accent: "oklch(0.42 0.10 175)",
+    idleTint: "oklch(0.97 0.028 175)",
+    highlight:
+      "linear-gradient(152deg, oklch(0.46 0.11 175) 0%, oklch(0.54 0.12 168) 100%)",
+    ctaAccent: "oklch(0.40 0.10 175)",
+    glow: "oklch(0.46 0.11 175 / 0.35)",
+  },
+  {
+    id: "gallery",
+    icon: Images,
+    title: "Gallery",
+    desc: "Photos from plantations, processing units, artisan melas and bamboo products.",
+    to: "/gallery",
+    cta: "View Gallery",
+    accent: "oklch(0.50 0.14 350)",
+    idleTint: "oklch(0.98 0.025 350)",
+    highlight:
+      "linear-gradient(152deg, oklch(0.56 0.14 350) 0%, oklch(0.66 0.16 355) 100%)",
+    ctaAccent: "oklch(0.48 0.14 350)",
+    glow: "oklch(0.56 0.14 350 / 0.35)",
+  },
+];
