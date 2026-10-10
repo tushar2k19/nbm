@@ -187,6 +187,240 @@ export type Database = {
         }
         Relationships: []
       }
+      state_users: {
+        Row: {
+          id: string
+          user_id: string
+          full_name: string
+          email: string
+          mobile: string | null
+          state_code: string | null
+          role: Database["public"]["Enums"]["nbm_role"]
+          is_active: boolean
+          created_by: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          full_name: string
+          email: string
+          mobile?: string | null
+          state_code?: string | null
+          role: Database["public"]["Enums"]["nbm_role"]
+          is_active?: boolean
+          created_by?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          full_name?: string
+          email?: string
+          mobile?: string | null
+          state_code?: string | null
+          role?: Database["public"]["Enums"]["nbm_role"]
+          is_active?: boolean
+          created_by?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      monthly_entries: {
+        Row: {
+          id: string
+          state_code: string
+          month_year: string
+          activity: string
+          beneficiary_name: string
+          beneficiary_type: string
+          father_husband_name: string | null
+          gender: string | null
+          age: number | null
+          category: string | null
+          mobile: string | null
+          village: string | null
+          block: string | null
+          district: string | null
+          state: string | null
+          pin_code: string | null
+          total_project_investment_lakhs: number | null
+          center_share_lakhs: number | null
+          state_share_lakhs: number | null
+          total_capacity: string | null
+          employment_generated: number | null
+          status: string
+          submitted_at: string | null
+          created_by: string
+          updated_by: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          state_code: string
+          month_year: string
+          activity: string
+          beneficiary_name: string
+          beneficiary_type: string
+          father_husband_name?: string | null
+          gender?: string | null
+          age?: number | null
+          category?: string | null
+          mobile?: string | null
+          village?: string | null
+          block?: string | null
+          district?: string | null
+          state?: string | null
+          pin_code?: string | null
+          total_project_investment_lakhs?: number | null
+          center_share_lakhs?: number | null
+          state_share_lakhs?: number | null
+          total_capacity?: string | null
+          employment_generated?: number | null
+          status?: string
+          submitted_at?: string | null
+          created_by: string
+          updated_by?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          state_code?: string
+          month_year?: string
+          activity?: string
+          beneficiary_name?: string
+          beneficiary_type?: string
+          father_husband_name?: string | null
+          gender?: string | null
+          age?: number | null
+          category?: string | null
+          mobile?: string | null
+          village?: string | null
+          block?: string | null
+          district?: string | null
+          state?: string | null
+          pin_code?: string | null
+          total_project_investment_lakhs?: number | null
+          center_share_lakhs?: number | null
+          state_share_lakhs?: number | null
+          total_capacity?: string | null
+          employment_generated?: number | null
+          status?: string
+          submitted_at?: string | null
+          created_by?: string
+          updated_by?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      entry_comments: {
+        Row: {
+          id: string
+          entry_id: string
+          author_id: string
+          author_role: string
+          message: string
+          parent_id: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          entry_id: string
+          author_id: string
+          author_role: string
+          message: string
+          parent_id?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          entry_id?: string
+          author_id?: string
+          author_role?: string
+          message?: string
+          parent_id?: string | null
+          created_at?: string
+        }
+        Relationships: []
+      }
+      reminders: {
+        Row: {
+          id: string
+          sent_by: string
+          target_state_code: string | null
+          target_user_id: string | null
+          month_year: string | null
+          message: string
+          is_read: boolean
+          sent_at: string
+        }
+        Insert: {
+          id?: string
+          sent_by: string
+          target_state_code?: string | null
+          target_user_id?: string | null
+          month_year?: string | null
+          message: string
+          is_read?: boolean
+          sent_at?: string
+        }
+        Update: {
+          id?: string
+          sent_by?: string
+          target_state_code?: string | null
+          target_user_id?: string | null
+          month_year?: string | null
+          message?: string
+          is_read?: boolean
+          sent_at?: string
+        }
+        Relationships: []
+      }
+      submission_cycles: {
+        Row: {
+          id: string
+          state_code: string
+          month_year: string
+          editor_deadline: string
+          reviewer_deadline: string
+          editor_submitted_at: string | null
+          reviewer_finalised_at: string | null
+          overall_status: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          state_code: string
+          month_year: string
+          editor_deadline: string
+          reviewer_deadline: string
+          editor_submitted_at?: string | null
+          reviewer_finalised_at?: string | null
+          overall_status?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          state_code?: string
+          month_year?: string
+          editor_deadline?: string
+          reviewer_deadline?: string
+          editor_submitted_at?: string | null
+          reviewer_finalised_at?: string | null
+          overall_status?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -203,6 +437,7 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "state" | "beneficiary"
+      nbm_role: "state_editor" | "state_reviewer" | "nbm_central"
     }
     CompositeTypes: {
       [_ in never]: never

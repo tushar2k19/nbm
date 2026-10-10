@@ -31,7 +31,9 @@ export const Route = createFileRoute("/news/$newsId")({
 });
 
 function NewsDetailPage() {
-  const { item, related } = Route.useLoaderData();
+  const data = Route.useLoaderData() as any;
+  if (!data) return null;
+  const { item, related } = data;
 
   return (
     <>
@@ -87,7 +89,7 @@ function NewsDetailPage() {
 
             {/* Body */}
             <div className="space-y-4 text-sm sm:text-base text-foreground/90 leading-relaxed">
-              {item.body.map((para, i) => (
+              {item.body.map((para: string, i: number) => (
                 <p key={i}>{para}</p>
               ))}
             </div>
@@ -173,7 +175,7 @@ function NewsDetailPage() {
               <div className="bg-secondary border border-border rounded-xl p-5">
                 <h3 className="font-semibold text-primary text-sm mb-3">Related Updates</h3>
                 <ul className="space-y-3">
-                  {related.map((r) => (
+                  {related.map((r: any) => (
                     <li key={r.id}>
                       <Link
                         to="/news/$newsId"

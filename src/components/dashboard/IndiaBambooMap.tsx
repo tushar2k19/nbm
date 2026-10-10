@@ -191,21 +191,21 @@ function MapSvg({
     const svgEl = svgRef.current;
     const zoomBehavior = zoomRef.current;
     if (!svgEl || !zoomBehavior) return;
-    select(svgEl).transition().duration(200).call(zoomBehavior.scaleBy, 1.35);
+    (select(svgEl) as any).transition().duration(200).call(zoomBehavior.scaleBy, 1.35);
   }, []);
 
   const handleZoomOut = useCallback(() => {
     const svgEl = svgRef.current;
     const zoomBehavior = zoomRef.current;
     if (!svgEl || !zoomBehavior) return;
-    select(svgEl).transition().duration(200).call(zoomBehavior.scaleBy, 1 / 1.35);
+    (select(svgEl) as any).transition().duration(200).call(zoomBehavior.scaleBy, 1 / 1.35);
   }, []);
 
   const handleResetZoom = useCallback(() => {
     const svgEl = svgRef.current;
     const zoomBehavior = zoomRef.current;
     if (!svgEl || !zoomBehavior) return;
-    select(svgEl).transition().duration(250).call(zoomBehavior.transform, zoomIdentity);
+    (select(svgEl) as any).transition().duration(250).call(zoomBehavior.transform, zoomIdentity);
     transformRef.current = zoomIdentity;
     setCanReset(false);
   }, []);

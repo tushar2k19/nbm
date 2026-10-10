@@ -20,6 +20,7 @@ import { Route as RtiRouteImport } from './routes/rti'
 import { Route as ReportsRouteImport } from './routes/reports'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
+import { Route as PortalRouteImport } from './routes/portal'
 import { Route as PlantationRouteImport } from './routes/plantation'
 import { Route as NewsRouteImport } from './routes/news'
 import { Route as MisLoginRouteImport } from './routes/mis-login'
@@ -40,11 +41,15 @@ import { Route as AccessibilityRouteImport } from './routes/accessibility'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TrainingModuleIndexRouteImport } from './routes/training-module.index'
+import { Route as PortalIndexRouteImport } from './routes/portal.index'
 import { Route as NewsIndexRouteImport } from './routes/news.index'
 import { Route as KnowledgeCenterIndexRouteImport } from './routes/knowledge-center.index'
 import { Route as GuidelinesIndexRouteImport } from './routes/guidelines.index'
 import { Route as ContactIndexRouteImport } from './routes/contact.index'
 import { Route as TrainingModuleGroupIdRouteImport } from './routes/training-module.$groupId'
+import { Route as PortalReviewerRouteImport } from './routes/portal.reviewer'
+import { Route as PortalEditorRouteImport } from './routes/portal.editor'
+import { Route as PortalCentralRouteImport } from './routes/portal.central'
 import { Route as NewsNewsIdRouteImport } from './routes/news.$newsId'
 import { Route as KnowledgeCenterStateMissionRouteImport } from './routes/knowledge-center.state-mission'
 import { Route as KnowledgeCenterResearchPapersRouteImport } from './routes/knowledge-center.research-papers'
@@ -108,6 +113,11 @@ const ProductsRoute = ProductsRouteImport.update({
 const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
   id: '/privacy-policy',
   path: '/privacy-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortalRoute = PortalRouteImport.update({
+  id: '/portal',
+  path: '/portal',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PlantationRoute = PlantationRouteImport.update({
@@ -210,6 +220,11 @@ const TrainingModuleIndexRoute = TrainingModuleIndexRouteImport.update({
   path: '/',
   getParentRoute: () => TrainingModuleRoute,
 } as any)
+const PortalIndexRoute = PortalIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PortalRoute,
+} as any)
 const NewsIndexRoute = NewsIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -234,6 +249,21 @@ const TrainingModuleGroupIdRoute = TrainingModuleGroupIdRouteImport.update({
   id: '/$groupId',
   path: '/$groupId',
   getParentRoute: () => TrainingModuleRoute,
+} as any)
+const PortalReviewerRoute = PortalReviewerRouteImport.update({
+  id: '/reviewer',
+  path: '/reviewer',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalEditorRoute = PortalEditorRouteImport.update({
+  id: '/editor',
+  path: '/editor',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalCentralRoute = PortalCentralRouteImport.update({
+  id: '/central',
+  path: '/central',
+  getParentRoute: () => PortalRoute,
 } as any)
 const NewsNewsIdRoute = NewsNewsIdRouteImport.update({
   id: '/$newsId',
@@ -304,6 +334,7 @@ export interface FileRoutesByFullPath {
   '/mis-login': typeof MisLoginRoute
   '/news': typeof NewsRouteWithChildren
   '/plantation': typeof PlantationRoute
+  '/portal': typeof PortalRouteWithChildren
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/products': typeof ProductsRoute
   '/reports': typeof ReportsRoute
@@ -324,11 +355,15 @@ export interface FileRoutesByFullPath {
   '/knowledge-center/research-papers': typeof KnowledgeCenterResearchPapersRoute
   '/knowledge-center/state-mission': typeof KnowledgeCenterStateMissionRoute
   '/news/$newsId': typeof NewsNewsIdRoute
+  '/portal/central': typeof PortalCentralRoute
+  '/portal/editor': typeof PortalEditorRoute
+  '/portal/reviewer': typeof PortalReviewerRoute
   '/training-module/$groupId': typeof TrainingModuleGroupIdRoute
   '/contact/': typeof ContactIndexRoute
   '/guidelines/': typeof GuidelinesIndexRoute
   '/knowledge-center/': typeof KnowledgeCenterIndexRoute
   '/news/': typeof NewsIndexRoute
+  '/portal/': typeof PortalIndexRoute
   '/training-module/': typeof TrainingModuleIndexRoute
 }
 export interface FileRoutesByTo {
@@ -366,11 +401,15 @@ export interface FileRoutesByTo {
   '/knowledge-center/research-papers': typeof KnowledgeCenterResearchPapersRoute
   '/knowledge-center/state-mission': typeof KnowledgeCenterStateMissionRoute
   '/news/$newsId': typeof NewsNewsIdRoute
+  '/portal/central': typeof PortalCentralRoute
+  '/portal/editor': typeof PortalEditorRoute
+  '/portal/reviewer': typeof PortalReviewerRoute
   '/training-module/$groupId': typeof TrainingModuleGroupIdRoute
   '/contact': typeof ContactIndexRoute
   '/guidelines': typeof GuidelinesIndexRoute
   '/knowledge-center': typeof KnowledgeCenterIndexRoute
   '/news': typeof NewsIndexRoute
+  '/portal': typeof PortalIndexRoute
   '/training-module': typeof TrainingModuleIndexRoute
 }
 export interface FileRoutesById {
@@ -394,6 +433,7 @@ export interface FileRoutesById {
   '/mis-login': typeof MisLoginRoute
   '/news': typeof NewsRouteWithChildren
   '/plantation': typeof PlantationRoute
+  '/portal': typeof PortalRouteWithChildren
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/products': typeof ProductsRoute
   '/reports': typeof ReportsRoute
@@ -414,11 +454,15 @@ export interface FileRoutesById {
   '/knowledge-center/research-papers': typeof KnowledgeCenterResearchPapersRoute
   '/knowledge-center/state-mission': typeof KnowledgeCenterStateMissionRoute
   '/news/$newsId': typeof NewsNewsIdRoute
+  '/portal/central': typeof PortalCentralRoute
+  '/portal/editor': typeof PortalEditorRoute
+  '/portal/reviewer': typeof PortalReviewerRoute
   '/training-module/$groupId': typeof TrainingModuleGroupIdRoute
   '/contact/': typeof ContactIndexRoute
   '/guidelines/': typeof GuidelinesIndexRoute
   '/knowledge-center/': typeof KnowledgeCenterIndexRoute
   '/news/': typeof NewsIndexRoute
+  '/portal/': typeof PortalIndexRoute
   '/training-module/': typeof TrainingModuleIndexRoute
 }
 export interface FileRouteTypes {
@@ -443,6 +487,7 @@ export interface FileRouteTypes {
     | '/mis-login'
     | '/news'
     | '/plantation'
+    | '/portal'
     | '/privacy-policy'
     | '/products'
     | '/reports'
@@ -463,11 +508,15 @@ export interface FileRouteTypes {
     | '/knowledge-center/research-papers'
     | '/knowledge-center/state-mission'
     | '/news/$newsId'
+    | '/portal/central'
+    | '/portal/editor'
+    | '/portal/reviewer'
     | '/training-module/$groupId'
     | '/contact/'
     | '/guidelines/'
     | '/knowledge-center/'
     | '/news/'
+    | '/portal/'
     | '/training-module/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -505,11 +554,15 @@ export interface FileRouteTypes {
     | '/knowledge-center/research-papers'
     | '/knowledge-center/state-mission'
     | '/news/$newsId'
+    | '/portal/central'
+    | '/portal/editor'
+    | '/portal/reviewer'
     | '/training-module/$groupId'
     | '/contact'
     | '/guidelines'
     | '/knowledge-center'
     | '/news'
+    | '/portal'
     | '/training-module'
   id:
     | '__root__'
@@ -532,6 +585,7 @@ export interface FileRouteTypes {
     | '/mis-login'
     | '/news'
     | '/plantation'
+    | '/portal'
     | '/privacy-policy'
     | '/products'
     | '/reports'
@@ -552,11 +606,15 @@ export interface FileRouteTypes {
     | '/knowledge-center/research-papers'
     | '/knowledge-center/state-mission'
     | '/news/$newsId'
+    | '/portal/central'
+    | '/portal/editor'
+    | '/portal/reviewer'
     | '/training-module/$groupId'
     | '/contact/'
     | '/guidelines/'
     | '/knowledge-center/'
     | '/news/'
+    | '/portal/'
     | '/training-module/'
   fileRoutesById: FileRoutesById
 }
@@ -580,6 +638,7 @@ export interface RootRouteChildren {
   MisLoginRoute: typeof MisLoginRoute
   NewsRoute: typeof NewsRouteWithChildren
   PlantationRoute: typeof PlantationRoute
+  PortalRoute: typeof PortalRouteWithChildren
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   ProductsRoute: typeof ProductsRoute
   ReportsRoute: typeof ReportsRoute
@@ -671,6 +730,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy-policy'
       fullPath: '/privacy-policy'
       preLoaderRoute: typeof PrivacyPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/portal': {
+      id: '/portal'
+      path: '/portal'
+      fullPath: '/portal'
+      preLoaderRoute: typeof PortalRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/plantation': {
@@ -813,6 +879,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TrainingModuleIndexRouteImport
       parentRoute: typeof TrainingModuleRoute
     }
+    '/portal/': {
+      id: '/portal/'
+      path: '/'
+      fullPath: '/portal/'
+      preLoaderRoute: typeof PortalIndexRouteImport
+      parentRoute: typeof PortalRoute
+    }
     '/news/': {
       id: '/news/'
       path: '/'
@@ -847,6 +920,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/training-module/$groupId'
       preLoaderRoute: typeof TrainingModuleGroupIdRouteImport
       parentRoute: typeof TrainingModuleRoute
+    }
+    '/portal/reviewer': {
+      id: '/portal/reviewer'
+      path: '/reviewer'
+      fullPath: '/portal/reviewer'
+      preLoaderRoute: typeof PortalReviewerRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/editor': {
+      id: '/portal/editor'
+      path: '/editor'
+      fullPath: '/portal/editor'
+      preLoaderRoute: typeof PortalEditorRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/central': {
+      id: '/portal/central'
+      path: '/central'
+      fullPath: '/portal/central'
+      preLoaderRoute: typeof PortalCentralRouteImport
+      parentRoute: typeof PortalRoute
     }
     '/news/$newsId': {
       id: '/news/$newsId'
@@ -975,6 +1069,23 @@ const NewsRouteChildren: NewsRouteChildren = {
 
 const NewsRouteWithChildren = NewsRoute._addFileChildren(NewsRouteChildren)
 
+interface PortalRouteChildren {
+  PortalCentralRoute: typeof PortalCentralRoute
+  PortalEditorRoute: typeof PortalEditorRoute
+  PortalReviewerRoute: typeof PortalReviewerRoute
+  PortalIndexRoute: typeof PortalIndexRoute
+}
+
+const PortalRouteChildren: PortalRouteChildren = {
+  PortalCentralRoute: PortalCentralRoute,
+  PortalEditorRoute: PortalEditorRoute,
+  PortalReviewerRoute: PortalReviewerRoute,
+  PortalIndexRoute: PortalIndexRoute,
+}
+
+const PortalRouteWithChildren =
+  PortalRoute._addFileChildren(PortalRouteChildren)
+
 interface TrainingModuleRouteChildren {
   TrainingModuleGroupIdRoute: typeof TrainingModuleGroupIdRoute
   TrainingModuleIndexRoute: typeof TrainingModuleIndexRoute
@@ -1009,6 +1120,7 @@ const rootRouteChildren: RootRouteChildren = {
   MisLoginRoute: MisLoginRoute,
   NewsRoute: NewsRouteWithChildren,
   PlantationRoute: PlantationRoute,
+  PortalRoute: PortalRouteWithChildren,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   ProductsRoute: ProductsRoute,
   ReportsRoute: ReportsRoute,

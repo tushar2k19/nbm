@@ -7,6 +7,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import { AuthProvider } from "../lib/auth";
 import { I18nextProvider } from "react-i18next";
 
 import appCss from "../styles.css?url";
@@ -47,24 +48,36 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
     reportLovableError(error, { boundary: "tanstack_root_error_component" });
   }, [error]);
 
+  const isChunkError =
+    error?.message?.includes("Failed to fetch dynamically imported module") ||
+    error?.message?.includes("Importing a module script failed");
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
+    <div className="flex min-h-screen items-center justify-center bg-background px-4 py-8">
+      <div className="max-w-xl text-center">
         <h1 className="text-xl font-semibold tracking-tight text-foreground">
           This page didn't load
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
+          {isChunkError
+            ? "A newer version of the module was loaded. Please refresh to load the latest version."
+            : "Something went wrong on our end. You can try refreshing or head back home."}
         </p>
+
+        {error?.message && (
+          <div className="mt-4 text-left bg-destructive/10 border border-destructive/20 text-destructive rounded-lg p-3 text-xs font-mono overflow-auto max-h-40">
+            <strong>Error details:</strong> {error.message}
+          </div>
+        )}
+
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
             onClick={() => {
-              router.invalidate();
-              reset();
+              window.location.reload();
             }}
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Try again
+            Refresh page
           </button>
           <a
             href="/"
@@ -156,9 +169,11 @@ function RootComponent() {
   return (
     <I18nextProvider i18n={i18n}>
       <QueryClientProvider client={queryClient}>
-        <BambooPageLoader />
-        <SiteLayout />
-        <Toaster richColors position="top-right" />
+        <AuthProvider>
+          <BambooPageLoader />
+          <SiteLayout />
+          <Toaster richColors position="top-right" />
+        </AuthProvider>
       </QueryClientProvider>
     </I18nextProvider>
   );

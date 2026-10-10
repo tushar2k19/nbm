@@ -23,6 +23,7 @@ export const Route = createFileRoute("/training-module/$groupId")({
 });
 
 function TrainingModuleDetailRoute() {
-  const { group } = Route.useLoaderData();
-  return <TrainingModuleDetailPage group={group} />;
+  const data = Route.useLoaderData() as any;
+  if (!data) return null;
+  return <TrainingModuleDetailPage group={data.group} />;
 }

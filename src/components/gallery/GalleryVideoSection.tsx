@@ -145,12 +145,12 @@ function VideoModal({ video, onClose }: { video: GalleryVideo; onClose: () => vo
           {isYoutube ? (
             <iframe
               title={video.title}
-              src={`https://www.youtube.com/embed/${video.source.youtubeId}?autoplay=1&rel=0&cc_load_policy=1&cc_lang_pref=en`}
+              src={`https://www.youtube.com/embed/${(video.source as any).youtubeId}?autoplay=1&rel=0&cc_load_policy=1&cc_lang_pref=en`}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             />
           ) : (
-            <video controls autoPlay playsInline preload="metadata" src={video.source.src}>
+            <video controls autoPlay playsInline preload="metadata" src={(video.source as any).src}>
               <track kind="captions" label="English (placeholder — to be provided by Department)" default />
               Your browser does not support embedded video playback.
             </video>

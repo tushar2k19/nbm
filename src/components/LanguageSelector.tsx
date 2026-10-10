@@ -16,7 +16,8 @@ export function LanguageSelector() {
 
   const syncLocale = useCallback(() => {
     const googleLang = getGoogleTranslateTargetLang();
-    if (googleLang && getPortalLanguage(googleLang)?.google) {
+    const target = googleLang ? getPortalLanguage(googleLang) : null;
+    if (target && "google" in target && target.google) {
       setLocale(googleLang as PortalLanguageCode);
       return;
     }

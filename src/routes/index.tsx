@@ -268,7 +268,7 @@ function HeroCarousel() {
 /* ─────────────────────────────────────────────
    SCROLL REVEAL
 ───────────────────────────────────────────── */
-function useReveal<T extends HTMLElement = HTMLElement>(): { ref: RefObject<T>; inView: boolean } {
+function useReveal<T extends HTMLElement = HTMLElement>(): { ref: RefObject<T | null>; inView: boolean } {
   const ref = useRef<T>(null);
   const [inView, setInView] = useState(false);
 

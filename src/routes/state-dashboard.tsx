@@ -231,7 +231,7 @@ function BeneficiariesTable() {
 function Kpi({ label, value, icon: Icon }: { label: string; value: number; icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }> }) {
   return (
     <div className="bg-card border border-border rounded-lg p-4 shadow-soft">
-      <MetricAccent icon={Icon} iconClassName="h-4 w-4">
+      <MetricAccent icon={Icon as any} iconClassName="h-4 w-4">
         {label}
       </MetricAccent>
       <div className="mt-1 text-2xl font-display font-bold text-primary">{value}</div>

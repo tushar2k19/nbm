@@ -51,7 +51,7 @@ export async function setAppLocale(code: PortalLanguageCode) {
 
   const hadGoogleTranslate = Boolean(getGoogleTranslateTargetLang());
 
-  if (lang.i18n) {
+  if (lang && "i18n" in lang && lang.i18n) {
     clearGoogleTranslateCookie();
     await i18n.changeLanguage(code);
     window.dispatchEvent(new CustomEvent("nbm-locale-change", { detail: code }));
@@ -59,7 +59,7 @@ export async function setAppLocale(code: PortalLanguageCode) {
     return;
   }
 
-  if (lang.google) {
+  if (lang && "google" in lang && lang.google) {
     await i18n.changeLanguage("en");
     setGoogleTranslateCookie(code);
     window.location.reload();
@@ -71,14 +71,14 @@ export function initAppLocale() {
   applyDocumentLang(code);
   const lang = getPortalLanguage(code);
 
-  if (lang?.i18n) {
+  if (lang && "i18n" in lang && lang.i18n) {
     void i18n.changeLanguage(code);
     if (getGoogleTranslateTargetLang()) clearGoogleTranslateCookie();
     return;
   }
 
   void i18n.changeLanguage("en");
-  if (lang?.google || getGoogleTranslateTargetLang()) {
+  if ((lang && "google" in lang && lang.google) || getGoogleTranslateTargetLang()) {
     loadGoogleTranslate();
   }
 }

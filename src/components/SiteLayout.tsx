@@ -1,5 +1,5 @@
 import { Link, Outlet, useNavigate } from "@tanstack/react-router";
-import { Menu, X, Phone, MonitorSpeaker, Search } from "lucide-react";
+import { Menu, X, Phone, MonitorSpeaker, Search, LogOut, User, LayoutDashboard } from "lucide-react";
 import { useState, useRef, useEffect, useLayoutEffect, useCallback, type CSSProperties, type ReactNode } from "react";
 import bambooHeroBg from "@/assets/front_page.png";
 import { MegaMenuFloatingLayer } from "@/components/MegaMenuPrimitives";
@@ -15,6 +15,8 @@ import { TextSizeControls } from "@/components/TextSizeControls";
 import { LanguageSelector } from "@/components/LanguageSelector";
 import { SiteFooter } from "@/components/footer/SiteFooter";
 import { AccessibilityWidget } from "@/components/AccessibilityWidget";
+import { useAuth } from "@/lib/auth";
+import { getRoleLabel, getPortalPath } from "@/lib/roles";
 
 /* ── Screen Reader Access popover ── */
 const screenReaders = [
@@ -181,6 +183,9 @@ export function SiteHeader() {
   const megaMenuPanelRef = useRef<HTMLDivElement | null>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [menuAnchorRect, setMenuAnchorRect] = useState<DOMRect | null>(null);
+  const { user, profile, role, stateName, loading: authLoading, signOut } = useAuth();
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const userMenuRef = useRef<HTMLLIElement | null>(null);
 
   const closeMenu = useCallback(() => {
     setOpen(false);
@@ -260,6 +265,38 @@ export function SiteHeader() {
       if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
     };
   }, []);
+
+  // Close user menu on outside click
+  useEffect(() => {
+    if (!userMenuOpen) return;
+    function onPointerDown(e: PointerEvent) {
+      if (!userMenuRef.current?.contains(e.target as Node)) setUserMenuOpen(false);
+    }
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") setUserMenuOpen(false);
+    }
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [userMenuOpen]);
+
+  const isLoggedIn = !authLoading && !!user && !!role;
+
+  // Filter nav items: replace login with portal link when logged in
+  const displayNavItems = navItems.map((item) => {
+    if (item.to === "/login" && isLoggedIn) {
+      return {
+        ...item,
+        to: getPortalPath(role),
+        labelKey: "__portal__", // special marker to render custom label
+        megaMenu: undefined as MegaMenuType | undefined,
+      };
+    }
+    return item;
+  });
 
   function renderMegaMenuPanel(type: MegaMenuType, open: boolean, anchor: "start" | "end") {
     switch (type) {
@@ -444,7 +481,65 @@ export function SiteHeader() {
       <nav aria-label="Main navigation" className={`site-nav ${open ? "block" : "hidden"} lg:block relative overflow-visible`}>
         <div className="site-nav-scroll mx-auto max-w-7xl lg:overflow-x-auto">
           <ul className="site-nav-list" role="list">
-            {navItems.map((item) => {
+            {displayNavItems.map((item) => {
+              // ── Custom portal link (replaces login when logged in) ──
+              if (item.labelKey === "__portal__") {
+                return (
+                  <li key="portal" className="relative" ref={userMenuRef}>
+                    <div className="flex items-stretch">
+                      <Link
+                        to={item.to}
+                        onClick={closeMenu}
+                        className="site-nav-link"
+                        inactiveProps={{ className: "is-inactive" }}
+                        activeProps={{ className: "is-active" }}
+                      >
+                        <LayoutDashboard className="h-3.5 w-3.5 mr-1 inline-block" aria-hidden />
+                        My Portal
+                      </Link>
+                      <button
+                        type="button"
+                        className="px-2 py-2 text-secondary-foreground hover:bg-primary hover:text-primary-foreground border-l border-border/60"
+                        onClick={() => setUserMenuOpen((v) => !v)}
+                        aria-expanded={userMenuOpen}
+                        aria-label="User menu"
+                      >
+                        <User className="h-4 w-4" aria-hidden />
+                      </button>
+                    </div>
+                    {userMenuOpen && (
+                      <div className="absolute right-0 top-full z-50 mt-1 w-64 rounded-lg border border-border bg-card shadow-lg p-4 animate-in fade-in slide-in-from-top-2 duration-150">
+                        <div className="mb-3">
+                          <p className="font-semibold text-sm text-foreground">{profile?.full_name}</p>
+                          <p className="text-xs text-muted-foreground">{getRoleLabel(role)}</p>
+                          {stateName && (
+                            <p className="text-xs text-muted-foreground">{stateName}</p>
+                          )}
+                          <p className="text-xs text-muted-foreground mt-0.5 truncate">{user?.email}</p>
+                        </div>
+                        <div className="border-t border-border pt-2 flex flex-col gap-1">
+                          <Link
+                            to={item.to}
+                            onClick={() => { setUserMenuOpen(false); closeMenu(); }}
+                            className="flex items-center gap-2 rounded px-2 py-1.5 text-sm text-foreground hover:bg-secondary transition-colors"
+                          >
+                            <LayoutDashboard className="h-4 w-4" aria-hidden />
+                            Go to Portal
+                          </Link>
+                          <button
+                            type="button"
+                            onClick={async () => { setUserMenuOpen(false); await signOut(); }}
+                            className="flex items-center gap-2 rounded px-2 py-1.5 text-sm text-red-600 hover:bg-red-50 transition-colors w-full text-left"
+                          >
+                            <LogOut className="h-4 w-4" aria-hidden />
+                            Sign Out
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </li>
+                );
+              }
               if (item.megaMenu) {
                 const isExpanded = expandedMegaMenu === item.megaMenu;
                 const isMegaOpen = activeMegaMenu === item.megaMenu;

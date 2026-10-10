@@ -8,7 +8,6 @@ import {
   Phone,
   Building2,
   Scale,
-  Scale,
   Newspaper,
   Briefcase,
   GraduationCap,
@@ -18,6 +17,7 @@ import {
   Sparkles,
   Users,
   MapPin,
+  Image as ImageIcon,
 } from "lucide-react";
 
 export type NbmChatLink = {
@@ -293,7 +293,7 @@ export const NBM_CHAT_LINKS: NbmChatLink[] = [
   {
     label: "Gallery",
     to: "/gallery",
-    icon: Images,
+    icon: ImageIcon,
     keywords: ["gallery", "photo", "image", "picture", "video gallery", "video", "film"],
   },
 ];

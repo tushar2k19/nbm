@@ -4,6 +4,10 @@ import { Building2 } from "lucide-react";
 import { PageHero } from "@/components/SiteLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useNavigate } from "@tanstack/react-router";
+import { useAuth } from "@/lib/auth";
+import { getPortalPath } from "@/lib/roles";
+import { useEffect } from "react";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -36,6 +40,15 @@ function StateLogin() {
   const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { user, role, loading: authLoading } = useAuth();
+
+  // Redirect to portal if already authenticated
+  useEffect(() => {
+    if (!authLoading && user && role) {
+      void navigate({ to: getPortalPath(role), replace: true });
+    }
+  }, [user, role, authLoading, navigate]);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -43,7 +56,7 @@ function StateLogin() {
     const { error } = await supabase.auth.signInWithPassword({ email, password: pwd });
     setLoading(false);
     if (error) toast.error(error.message);
-    else toast.success("Signed in. Welcome, State Officer.");
+    else toast.success("Signed in. Redirecting to portal...");
   }
 
   const helperId = "state-login-helper";
