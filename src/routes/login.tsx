@@ -5,7 +5,9 @@ import { PageHero } from "@/components/SiteLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useNavigate } from "@tanstack/react-router";
-import { useAuth } from "@/lib/auth";
+import { useAuth, notifyMysqlLogin } from "@/lib/auth";
+import { isMysqlBackend } from "@/lib/backend-config";
+import { mysqlLogin, requestForgotPassword } from "@/lib/portal-client";
 import { getPortalPath } from "@/lib/roles";
 import { useEffect } from "react";
 
@@ -40,6 +42,11 @@ function StateLogin() {
   const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
   const [loading, setLoading] = useState(false);
+  const [forgotBusy, setForgotBusy] = useState(false);
+  const [forgotOpen, setForgotOpen] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotPreview, setForgotPreview] = useState<string | null>(null);
+  const [forgotMessage, setForgotMessage] = useState<string | null>(null);
   const navigate = useNavigate();
   const { user, role, loading: authLoading } = useAuth();
 
@@ -53,10 +60,21 @@ function StateLogin() {
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password: pwd });
-    setLoading(false);
-    if (error) toast.error(error.message);
-    else toast.success("Signed in. Redirecting to portal...");
+    try {
+      if (isMysqlBackend()) {
+        await mysqlLogin(email, pwd);
+        notifyMysqlLogin();
+        toast.success("Signed in. Redirecting to portal...");
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({ email, password: pwd });
+        if (error) toast.error(error.message);
+        else toast.success("Signed in. Redirecting to portal...");
+      }
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Sign in failed");
+    } finally {
+      setLoading(false);
+    }
   }
 
   const helperId = "state-login-helper";
@@ -129,6 +147,66 @@ function StateLogin() {
         >
           {loading ? "Signing in…" : "Sign In"}
         </button>
+
+        {isMysqlBackend() ? (
+          <div className="mt-4 border-t border-border pt-3">
+            <button
+              type="button"
+              className="text-xs font-semibold text-primary hover:underline"
+              onClick={() => {
+                setForgotOpen((open) => !open);
+                setForgotPreview(null);
+                setForgotMessage(null);
+                setForgotEmail(email);
+              }}
+            >
+              Forgot password?
+            </button>
+            {forgotOpen ? (
+              <div className="mt-3 space-y-2">
+                <label htmlFor="forgot-email" className="block text-xs font-semibold">
+                  Official email
+                </label>
+                <input
+                  id="forgot-email"
+                  type="email"
+                  className={inputCls}
+                  value={forgotEmail}
+                  onChange={(e) => setForgotEmail(e.target.value)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") event.preventDefault();
+                  }}
+                  required
+                />
+                <button
+                  type="button"
+                  disabled={forgotBusy || !forgotEmail.trim()}
+                  className="w-full border border-primary text-primary py-2 rounded text-sm font-semibold hover:bg-secondary disabled:opacity-60"
+                  onClick={async () => {
+                    setForgotBusy(true);
+                    try {
+                      const result = await requestForgotPassword(forgotEmail);
+                      setForgotMessage(result.message);
+                      setForgotPreview(result.previewPath);
+                    } catch (err) {
+                      toast.error(err instanceof Error ? err.message : "Could not start password reset");
+                    } finally {
+                      setForgotBusy(false);
+                    }
+                  }}
+                >
+                  {forgotBusy ? "Preparing…" : "Send password link"}
+                </button>
+                {forgotMessage ? <p className="text-xs text-muted-foreground">{forgotMessage}</p> : null}
+                {forgotPreview ? (
+                  <a href={forgotPreview} className="inline-block text-xs font-semibold text-primary hover:underline">
+                    Open the email
+                  </a>
+                ) : null}
+              </div>
+            ) : null}
+          </div>
+        ) : null}
 
         <p id={helperId} className="text-xs text-muted-foreground mt-3">
           State Officer accounts are provisioned by NBM Headquarters. Contact{" "}

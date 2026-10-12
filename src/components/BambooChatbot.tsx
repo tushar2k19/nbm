@@ -7,6 +7,9 @@ import ReactMarkdown from "react-markdown";
 import { toast } from "sonner";
 import chatbotBambooIcon from "@/assets/2bamboo_chatbot_icon.png";
 import { findRelevantLinks } from "@/data/nbmChatLinks";
+import { answerNbmLocally } from "@/data/nbmChatKnowledge";
+
+const externalAiEnabled = import.meta.env.VITE_ALLOW_EXTERNAL_AI === "true";
 
 const transport = new DefaultChatTransport({ api: "/api/chat" });
 
@@ -34,6 +37,7 @@ export default function BambooChatbot() {
   const [open, setOpen] = useState(false);
   const [closing, setClosing] = useState(false);
   const [input, setInput] = useState("");
+  const [localMessages, setLocalMessages] = useState<UIMessage[]>([WELCOME]);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -52,7 +56,8 @@ export default function BambooChatbot() {
     },
   });
 
-  const isLoading = status === "submitted" || status === "streaming";
+  const isLoading = externalAiEnabled && (status === "submitted" || status === "streaming");
+  const visibleMessages = externalAiEnabled ? messages : localMessages;
 
   const closeChat = useCallback(() => {
     setClosing((alreadyClosing) => {
@@ -86,7 +91,7 @@ export default function BambooChatbot() {
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
-  }, [messages, status]);
+  }, [visibleMessages, status]);
 
   useEffect(() => {
     if (!open) return;
@@ -105,6 +110,21 @@ export default function BambooChatbot() {
   const submit = (text: string) => {
     const t = text.trim();
     if (!t || isLoading) return;
+    if (!externalAiEnabled) {
+      const reply: UIMessage = {
+        id: `local-${Date.now()}`,
+        role: "assistant",
+        parts: [{ type: "text", text: answerNbmLocally(t) }],
+      };
+      const userMsg: UIMessage = {
+        id: `user-${Date.now()}`,
+        role: "user",
+        parts: [{ type: "text", text: t }],
+      };
+      setLocalMessages((prev) => [...prev, userMsg, reply]);
+      setInput("");
+      return;
+    }
     sendMessage({ text: t });
     setInput("");
   };
@@ -172,7 +192,9 @@ export default function BambooChatbot() {
                 </div>
                 <div className="flex items-center gap-1 mt-px">
                   <span className="inline-block h-1 w-1 rounded-full bg-leaf" aria-hidden />
-                  <span className="text-[9px] font-medium text-white/85">NBM AI · Online</span>
+                  <span className="text-[9px] font-medium text-white/85">
+                    {externalAiEnabled ? "NBM guide · External model" : "NBM guide · On this portal"}
+                  </span>
                 </div>
               </div>
             </div>
@@ -186,10 +208,10 @@ export default function BambooChatbot() {
           </div>
 
           <div ref={scrollRef} className="chat-messages-bg flex-1 overflow-y-auto px-3 py-2.5 space-y-2.5 min-h-0">
-            {messages.map((m, mi) => {
+            {visibleMessages.map((m, mi) => {
               const text = m.parts.map((p) => (p.type === "text" ? p.text : "")).join("");
               const isUser = m.role === "user";
-              const isLast = mi === messages.length - 1;
+              const isLast = mi === visibleMessages.length - 1;
               const stillStreaming = isLast && status === "streaming";
               // Surface relevant portal pages under finished bot replies (skip welcome).
               const links =
@@ -273,7 +295,7 @@ export default function BambooChatbot() {
             )}
           </div>
 
-          {messages.length <= 1 && (
+          {visibleMessages.length <= 1 && (
             <div className="shrink-0 px-3 py-2 border-t border-primary/10 bg-white/80 backdrop-blur-sm">
               <p className="text-[9px] font-semibold uppercase tracking-wider text-primary/70 mb-1.5 flex items-center gap-1">
                 <Leaf className="h-2.5 w-2.5" aria-hidden />

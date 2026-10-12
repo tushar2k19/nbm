@@ -1,6 +1,11 @@
 import type { NavMegaMenuId } from "@/data/navMegaMenus";
 
-export type MegaMenuType = "guidelines" | "knowledge-center" | "reports" | NavMegaMenuId;
+export type MegaMenuType =
+  | "guidelines"
+  | "knowledge-center"
+  | "reports"
+  | "portal"
+  | NavMegaMenuId;
 
 export type NavItem = {
   to: string;

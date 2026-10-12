@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState, useCallback } from "react";
 import { PageHero } from "@/components/SiteLayout";
 import { MetricAccent } from "@/components/MetricAccent";
+import { isMysqlBackend } from "@/lib/backend-config";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import type { Session } from "@supabase/supabase-js";
@@ -18,6 +19,27 @@ export const Route = createFileRoute("/state-dashboard")({
 });
 
 function StateDashboardPage() {
+  if (isMysqlBackend()) {
+    return (
+      <>
+        <PageHero
+          title="State Dashboard"
+          subtitle="Beneficiary review is not part of the on-premises State Login portal."
+        />
+        <section className="mx-auto max-w-3xl px-4 py-10 text-sm text-foreground/90">
+          <p>
+            This deployment stores officer accounts and monthly progress in MySQL on the application
+            host. Use <Link to="/login" className="text-primary underline">State Login</Link> for the
+            editor, reviewer, and headquarters portals.
+          </p>
+        </section>
+      </>
+    );
+  }
+  return <LegacySupabaseStateDashboard />;
+}
+
+function LegacySupabaseStateDashboard() {
   const [session, setSession] = useState<Session | null>(null);
   const [isOfficer, setIsOfficer] = useState<boolean | null>(null);
   const [claiming, setClaiming] = useState(false);

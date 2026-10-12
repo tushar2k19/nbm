@@ -1,6 +1,7 @@
 import { createStart, createMiddleware } from "@tanstack/react-start";
 
 import { renderErrorPage } from "./lib/error-page";
+import { attachMysqlAuth } from "@/integrations/mysql-auth-attacher";
 import { attachSupabaseAuth } from "@/integrations/supabase/auth-attacher";
 
 const errorMiddleware = createMiddleware().server(async ({ next }) => {
@@ -18,7 +19,9 @@ const errorMiddleware = createMiddleware().server(async ({ next }) => {
   }
 });
 
+const useSupabaseBackend = process.env.VITE_DATA_BACKEND === "supabase";
+
 export const startInstance = createStart(() => ({
-  functionMiddleware: [attachSupabaseAuth],
+  functionMiddleware: [useSupabaseBackend ? attachSupabaseAuth : attachMysqlAuth],
   requestMiddleware: [errorMiddleware],
 }));

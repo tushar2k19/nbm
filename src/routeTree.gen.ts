@@ -15,6 +15,7 @@ import { Route as TendersVacanciesRouteImport } from './routes/tenders-vacancies
 import { Route as SuccessStoriesRouteImport } from './routes/success-stories'
 import { Route as StateDashboardRouteImport } from './routes/state-dashboard'
 import { Route as SitemapRouteImport } from './routes/sitemap'
+import { Route as SetPasswordRouteImport } from './routes/set-password'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as RtiRouteImport } from './routes/rti'
 import { Route as ReportsRouteImport } from './routes/reports'
@@ -51,6 +52,7 @@ import { Route as PortalReviewerRouteImport } from './routes/portal.reviewer'
 import { Route as PortalEditorRouteImport } from './routes/portal.editor'
 import { Route as PortalCentralRouteImport } from './routes/portal.central'
 import { Route as NewsNewsIdRouteImport } from './routes/news.$newsId'
+import { Route as MailboxIdRouteImport } from './routes/mailbox.$id'
 import { Route as KnowledgeCenterStateMissionRouteImport } from './routes/knowledge-center.state-mission'
 import { Route as KnowledgeCenterResearchPapersRouteImport } from './routes/knowledge-center.research-papers'
 import { Route as GuidelinesEnablingProvisionsRouteImport } from './routes/guidelines.enabling-provisions'
@@ -59,6 +61,17 @@ import { Route as ContactStructureRouteImport } from './routes/contact.structure
 import { Route as ContactStateRouteImport } from './routes/contact.state'
 import { Route as ContactHeadQuarterRouteImport } from './routes/contact.head-quarter'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
+import { Route as ApiPortalStateUsersRouteImport } from './routes/api/portal/state-users'
+import { Route as ApiPortalReportingCompliancePreviewRouteImport } from './routes/api/portal/reporting-compliance-preview'
+import { Route as ApiPortalReportingComplianceRouteImport } from './routes/api/portal/reporting-compliance'
+import { Route as ApiPortalMonthlyEntriesRouteImport } from './routes/api/portal/monthly-entries'
+import { Route as ApiPortalEntryCommentsRouteImport } from './routes/api/portal/entry-comments'
+import { Route as ApiMailboxIdRouteImport } from './routes/api/mailbox.$id'
+import { Route as ApiAuthSessionRouteImport } from './routes/api/auth/session'
+import { Route as ApiAuthPasswordResetRouteImport } from './routes/api/auth/password-reset'
+import { Route as ApiAuthLogoutRouteImport } from './routes/api/auth/logout'
+import { Route as ApiAuthLoginRouteImport } from './routes/api/auth/login'
+import { Route as ApiAuthForgotPasswordRouteImport } from './routes/api/auth/forgot-password'
 
 const WebsitePoliciesRoute = WebsitePoliciesRouteImport.update({
   id: '/website-policies',
@@ -88,6 +101,11 @@ const StateDashboardRoute = StateDashboardRouteImport.update({
 const SitemapRoute = SitemapRouteImport.update({
   id: '/sitemap',
   path: '/sitemap',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SetPasswordRoute = SetPasswordRouteImport.update({
+  id: '/set-password',
+  path: '/set-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SearchRoute = SearchRouteImport.update({
@@ -270,6 +288,11 @@ const NewsNewsIdRoute = NewsNewsIdRouteImport.update({
   path: '/$newsId',
   getParentRoute: () => NewsRoute,
 } as any)
+const MailboxIdRoute = MailboxIdRouteImport.update({
+  id: '/mailbox/$id',
+  path: '/mailbox/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const KnowledgeCenterStateMissionRoute =
   KnowledgeCenterStateMissionRouteImport.update({
     id: '/state-mission',
@@ -313,6 +336,63 @@ const ApiChatRoute = ApiChatRouteImport.update({
   path: '/api/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPortalStateUsersRoute = ApiPortalStateUsersRouteImport.update({
+  id: '/api/portal/state-users',
+  path: '/api/portal/state-users',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPortalReportingCompliancePreviewRoute =
+  ApiPortalReportingCompliancePreviewRouteImport.update({
+    id: '/api/portal/reporting-compliance-preview',
+    path: '/api/portal/reporting-compliance-preview',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPortalReportingComplianceRoute =
+  ApiPortalReportingComplianceRouteImport.update({
+    id: '/api/portal/reporting-compliance',
+    path: '/api/portal/reporting-compliance',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPortalMonthlyEntriesRoute = ApiPortalMonthlyEntriesRouteImport.update({
+  id: '/api/portal/monthly-entries',
+  path: '/api/portal/monthly-entries',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPortalEntryCommentsRoute = ApiPortalEntryCommentsRouteImport.update({
+  id: '/api/portal/entry-comments',
+  path: '/api/portal/entry-comments',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiMailboxIdRoute = ApiMailboxIdRouteImport.update({
+  id: '/api/mailbox/$id',
+  path: '/api/mailbox/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAuthSessionRoute = ApiAuthSessionRouteImport.update({
+  id: '/api/auth/session',
+  path: '/api/auth/session',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAuthPasswordResetRoute = ApiAuthPasswordResetRouteImport.update({
+  id: '/api/auth/password-reset',
+  path: '/api/auth/password-reset',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAuthLogoutRoute = ApiAuthLogoutRouteImport.update({
+  id: '/api/auth/logout',
+  path: '/api/auth/logout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAuthLoginRoute = ApiAuthLoginRouteImport.update({
+  id: '/api/auth/login',
+  path: '/api/auth/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAuthForgotPasswordRoute = ApiAuthForgotPasswordRouteImport.update({
+  id: '/api/auth/forgot-password',
+  path: '/api/auth/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -340,6 +420,7 @@ export interface FileRoutesByFullPath {
   '/reports': typeof ReportsRoute
   '/rti': typeof RtiRoute
   '/search': typeof SearchRoute
+  '/set-password': typeof SetPasswordRoute
   '/sitemap': typeof SitemapRoute
   '/state-dashboard': typeof StateDashboardRoute
   '/success-stories': typeof SuccessStoriesRoute
@@ -354,6 +435,7 @@ export interface FileRoutesByFullPath {
   '/guidelines/enabling-provisions': typeof GuidelinesEnablingProvisionsRoute
   '/knowledge-center/research-papers': typeof KnowledgeCenterResearchPapersRoute
   '/knowledge-center/state-mission': typeof KnowledgeCenterStateMissionRoute
+  '/mailbox/$id': typeof MailboxIdRoute
   '/news/$newsId': typeof NewsNewsIdRoute
   '/portal/central': typeof PortalCentralRoute
   '/portal/editor': typeof PortalEditorRoute
@@ -365,6 +447,17 @@ export interface FileRoutesByFullPath {
   '/news/': typeof NewsIndexRoute
   '/portal/': typeof PortalIndexRoute
   '/training-module/': typeof TrainingModuleIndexRoute
+  '/api/auth/forgot-password': typeof ApiAuthForgotPasswordRoute
+  '/api/auth/login': typeof ApiAuthLoginRoute
+  '/api/auth/logout': typeof ApiAuthLogoutRoute
+  '/api/auth/password-reset': typeof ApiAuthPasswordResetRoute
+  '/api/auth/session': typeof ApiAuthSessionRoute
+  '/api/mailbox/$id': typeof ApiMailboxIdRoute
+  '/api/portal/entry-comments': typeof ApiPortalEntryCommentsRoute
+  '/api/portal/monthly-entries': typeof ApiPortalMonthlyEntriesRoute
+  '/api/portal/reporting-compliance': typeof ApiPortalReportingComplianceRoute
+  '/api/portal/reporting-compliance-preview': typeof ApiPortalReportingCompliancePreviewRoute
+  '/api/portal/state-users': typeof ApiPortalStateUsersRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -387,6 +480,7 @@ export interface FileRoutesByTo {
   '/reports': typeof ReportsRoute
   '/rti': typeof RtiRoute
   '/search': typeof SearchRoute
+  '/set-password': typeof SetPasswordRoute
   '/sitemap': typeof SitemapRoute
   '/state-dashboard': typeof StateDashboardRoute
   '/success-stories': typeof SuccessStoriesRoute
@@ -400,6 +494,7 @@ export interface FileRoutesByTo {
   '/guidelines/enabling-provisions': typeof GuidelinesEnablingProvisionsRoute
   '/knowledge-center/research-papers': typeof KnowledgeCenterResearchPapersRoute
   '/knowledge-center/state-mission': typeof KnowledgeCenterStateMissionRoute
+  '/mailbox/$id': typeof MailboxIdRoute
   '/news/$newsId': typeof NewsNewsIdRoute
   '/portal/central': typeof PortalCentralRoute
   '/portal/editor': typeof PortalEditorRoute
@@ -411,6 +506,17 @@ export interface FileRoutesByTo {
   '/news': typeof NewsIndexRoute
   '/portal': typeof PortalIndexRoute
   '/training-module': typeof TrainingModuleIndexRoute
+  '/api/auth/forgot-password': typeof ApiAuthForgotPasswordRoute
+  '/api/auth/login': typeof ApiAuthLoginRoute
+  '/api/auth/logout': typeof ApiAuthLogoutRoute
+  '/api/auth/password-reset': typeof ApiAuthPasswordResetRoute
+  '/api/auth/session': typeof ApiAuthSessionRoute
+  '/api/mailbox/$id': typeof ApiMailboxIdRoute
+  '/api/portal/entry-comments': typeof ApiPortalEntryCommentsRoute
+  '/api/portal/monthly-entries': typeof ApiPortalMonthlyEntriesRoute
+  '/api/portal/reporting-compliance': typeof ApiPortalReportingComplianceRoute
+  '/api/portal/reporting-compliance-preview': typeof ApiPortalReportingCompliancePreviewRoute
+  '/api/portal/state-users': typeof ApiPortalStateUsersRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -439,6 +545,7 @@ export interface FileRoutesById {
   '/reports': typeof ReportsRoute
   '/rti': typeof RtiRoute
   '/search': typeof SearchRoute
+  '/set-password': typeof SetPasswordRoute
   '/sitemap': typeof SitemapRoute
   '/state-dashboard': typeof StateDashboardRoute
   '/success-stories': typeof SuccessStoriesRoute
@@ -453,6 +560,7 @@ export interface FileRoutesById {
   '/guidelines/enabling-provisions': typeof GuidelinesEnablingProvisionsRoute
   '/knowledge-center/research-papers': typeof KnowledgeCenterResearchPapersRoute
   '/knowledge-center/state-mission': typeof KnowledgeCenterStateMissionRoute
+  '/mailbox/$id': typeof MailboxIdRoute
   '/news/$newsId': typeof NewsNewsIdRoute
   '/portal/central': typeof PortalCentralRoute
   '/portal/editor': typeof PortalEditorRoute
@@ -464,6 +572,17 @@ export interface FileRoutesById {
   '/news/': typeof NewsIndexRoute
   '/portal/': typeof PortalIndexRoute
   '/training-module/': typeof TrainingModuleIndexRoute
+  '/api/auth/forgot-password': typeof ApiAuthForgotPasswordRoute
+  '/api/auth/login': typeof ApiAuthLoginRoute
+  '/api/auth/logout': typeof ApiAuthLogoutRoute
+  '/api/auth/password-reset': typeof ApiAuthPasswordResetRoute
+  '/api/auth/session': typeof ApiAuthSessionRoute
+  '/api/mailbox/$id': typeof ApiMailboxIdRoute
+  '/api/portal/entry-comments': typeof ApiPortalEntryCommentsRoute
+  '/api/portal/monthly-entries': typeof ApiPortalMonthlyEntriesRoute
+  '/api/portal/reporting-compliance': typeof ApiPortalReportingComplianceRoute
+  '/api/portal/reporting-compliance-preview': typeof ApiPortalReportingCompliancePreviewRoute
+  '/api/portal/state-users': typeof ApiPortalStateUsersRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -493,6 +612,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/rti'
     | '/search'
+    | '/set-password'
     | '/sitemap'
     | '/state-dashboard'
     | '/success-stories'
@@ -507,6 +627,7 @@ export interface FileRouteTypes {
     | '/guidelines/enabling-provisions'
     | '/knowledge-center/research-papers'
     | '/knowledge-center/state-mission'
+    | '/mailbox/$id'
     | '/news/$newsId'
     | '/portal/central'
     | '/portal/editor'
@@ -518,6 +639,17 @@ export interface FileRouteTypes {
     | '/news/'
     | '/portal/'
     | '/training-module/'
+    | '/api/auth/forgot-password'
+    | '/api/auth/login'
+    | '/api/auth/logout'
+    | '/api/auth/password-reset'
+    | '/api/auth/session'
+    | '/api/mailbox/$id'
+    | '/api/portal/entry-comments'
+    | '/api/portal/monthly-entries'
+    | '/api/portal/reporting-compliance'
+    | '/api/portal/reporting-compliance-preview'
+    | '/api/portal/state-users'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -540,6 +672,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/rti'
     | '/search'
+    | '/set-password'
     | '/sitemap'
     | '/state-dashboard'
     | '/success-stories'
@@ -553,6 +686,7 @@ export interface FileRouteTypes {
     | '/guidelines/enabling-provisions'
     | '/knowledge-center/research-papers'
     | '/knowledge-center/state-mission'
+    | '/mailbox/$id'
     | '/news/$newsId'
     | '/portal/central'
     | '/portal/editor'
@@ -564,6 +698,17 @@ export interface FileRouteTypes {
     | '/news'
     | '/portal'
     | '/training-module'
+    | '/api/auth/forgot-password'
+    | '/api/auth/login'
+    | '/api/auth/logout'
+    | '/api/auth/password-reset'
+    | '/api/auth/session'
+    | '/api/mailbox/$id'
+    | '/api/portal/entry-comments'
+    | '/api/portal/monthly-entries'
+    | '/api/portal/reporting-compliance'
+    | '/api/portal/reporting-compliance-preview'
+    | '/api/portal/state-users'
   id:
     | '__root__'
     | '/'
@@ -591,6 +736,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/rti'
     | '/search'
+    | '/set-password'
     | '/sitemap'
     | '/state-dashboard'
     | '/success-stories'
@@ -605,6 +751,7 @@ export interface FileRouteTypes {
     | '/guidelines/enabling-provisions'
     | '/knowledge-center/research-papers'
     | '/knowledge-center/state-mission'
+    | '/mailbox/$id'
     | '/news/$newsId'
     | '/portal/central'
     | '/portal/editor'
@@ -616,6 +763,17 @@ export interface FileRouteTypes {
     | '/news/'
     | '/portal/'
     | '/training-module/'
+    | '/api/auth/forgot-password'
+    | '/api/auth/login'
+    | '/api/auth/logout'
+    | '/api/auth/password-reset'
+    | '/api/auth/session'
+    | '/api/mailbox/$id'
+    | '/api/portal/entry-comments'
+    | '/api/portal/monthly-entries'
+    | '/api/portal/reporting-compliance'
+    | '/api/portal/reporting-compliance-preview'
+    | '/api/portal/state-users'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -644,6 +802,7 @@ export interface RootRouteChildren {
   ReportsRoute: typeof ReportsRoute
   RtiRoute: typeof RtiRoute
   SearchRoute: typeof SearchRoute
+  SetPasswordRoute: typeof SetPasswordRoute
   SitemapRoute: typeof SitemapRoute
   StateDashboardRoute: typeof StateDashboardRoute
   SuccessStoriesRoute: typeof SuccessStoriesRoute
@@ -651,6 +810,18 @@ export interface RootRouteChildren {
   TrainingModuleRoute: typeof TrainingModuleRouteWithChildren
   WebsitePoliciesRoute: typeof WebsitePoliciesRoute
   ApiChatRoute: typeof ApiChatRoute
+  MailboxIdRoute: typeof MailboxIdRoute
+  ApiAuthForgotPasswordRoute: typeof ApiAuthForgotPasswordRoute
+  ApiAuthLoginRoute: typeof ApiAuthLoginRoute
+  ApiAuthLogoutRoute: typeof ApiAuthLogoutRoute
+  ApiAuthPasswordResetRoute: typeof ApiAuthPasswordResetRoute
+  ApiAuthSessionRoute: typeof ApiAuthSessionRoute
+  ApiMailboxIdRoute: typeof ApiMailboxIdRoute
+  ApiPortalEntryCommentsRoute: typeof ApiPortalEntryCommentsRoute
+  ApiPortalMonthlyEntriesRoute: typeof ApiPortalMonthlyEntriesRoute
+  ApiPortalReportingComplianceRoute: typeof ApiPortalReportingComplianceRoute
+  ApiPortalReportingCompliancePreviewRoute: typeof ApiPortalReportingCompliancePreviewRoute
+  ApiPortalStateUsersRoute: typeof ApiPortalStateUsersRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -695,6 +866,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap'
       fullPath: '/sitemap'
       preLoaderRoute: typeof SitemapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/set-password': {
+      id: '/set-password'
+      path: '/set-password'
+      fullPath: '/set-password'
+      preLoaderRoute: typeof SetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/search': {
@@ -949,6 +1127,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NewsNewsIdRouteImport
       parentRoute: typeof NewsRoute
     }
+    '/mailbox/$id': {
+      id: '/mailbox/$id'
+      path: '/mailbox/$id'
+      fullPath: '/mailbox/$id'
+      preLoaderRoute: typeof MailboxIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/knowledge-center/state-mission': {
       id: '/knowledge-center/state-mission'
       path: '/state-mission'
@@ -1003,6 +1188,83 @@ declare module '@tanstack/react-router' {
       path: '/api/chat'
       fullPath: '/api/chat'
       preLoaderRoute: typeof ApiChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/portal/state-users': {
+      id: '/api/portal/state-users'
+      path: '/api/portal/state-users'
+      fullPath: '/api/portal/state-users'
+      preLoaderRoute: typeof ApiPortalStateUsersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/portal/reporting-compliance-preview': {
+      id: '/api/portal/reporting-compliance-preview'
+      path: '/api/portal/reporting-compliance-preview'
+      fullPath: '/api/portal/reporting-compliance-preview'
+      preLoaderRoute: typeof ApiPortalReportingCompliancePreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/portal/reporting-compliance': {
+      id: '/api/portal/reporting-compliance'
+      path: '/api/portal/reporting-compliance'
+      fullPath: '/api/portal/reporting-compliance'
+      preLoaderRoute: typeof ApiPortalReportingComplianceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/portal/monthly-entries': {
+      id: '/api/portal/monthly-entries'
+      path: '/api/portal/monthly-entries'
+      fullPath: '/api/portal/monthly-entries'
+      preLoaderRoute: typeof ApiPortalMonthlyEntriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/portal/entry-comments': {
+      id: '/api/portal/entry-comments'
+      path: '/api/portal/entry-comments'
+      fullPath: '/api/portal/entry-comments'
+      preLoaderRoute: typeof ApiPortalEntryCommentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/mailbox/$id': {
+      id: '/api/mailbox/$id'
+      path: '/api/mailbox/$id'
+      fullPath: '/api/mailbox/$id'
+      preLoaderRoute: typeof ApiMailboxIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/auth/session': {
+      id: '/api/auth/session'
+      path: '/api/auth/session'
+      fullPath: '/api/auth/session'
+      preLoaderRoute: typeof ApiAuthSessionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/auth/password-reset': {
+      id: '/api/auth/password-reset'
+      path: '/api/auth/password-reset'
+      fullPath: '/api/auth/password-reset'
+      preLoaderRoute: typeof ApiAuthPasswordResetRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/auth/logout': {
+      id: '/api/auth/logout'
+      path: '/api/auth/logout'
+      fullPath: '/api/auth/logout'
+      preLoaderRoute: typeof ApiAuthLogoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/auth/login': {
+      id: '/api/auth/login'
+      path: '/api/auth/login'
+      fullPath: '/api/auth/login'
+      preLoaderRoute: typeof ApiAuthLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/auth/forgot-password': {
+      id: '/api/auth/forgot-password'
+      path: '/api/auth/forgot-password'
+      fullPath: '/api/auth/forgot-password'
+      preLoaderRoute: typeof ApiAuthForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -1126,6 +1388,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReportsRoute: ReportsRoute,
   RtiRoute: RtiRoute,
   SearchRoute: SearchRoute,
+  SetPasswordRoute: SetPasswordRoute,
   SitemapRoute: SitemapRoute,
   StateDashboardRoute: StateDashboardRoute,
   SuccessStoriesRoute: SuccessStoriesRoute,
@@ -1133,6 +1396,19 @@ const rootRouteChildren: RootRouteChildren = {
   TrainingModuleRoute: TrainingModuleRouteWithChildren,
   WebsitePoliciesRoute: WebsitePoliciesRoute,
   ApiChatRoute: ApiChatRoute,
+  MailboxIdRoute: MailboxIdRoute,
+  ApiAuthForgotPasswordRoute: ApiAuthForgotPasswordRoute,
+  ApiAuthLoginRoute: ApiAuthLoginRoute,
+  ApiAuthLogoutRoute: ApiAuthLogoutRoute,
+  ApiAuthPasswordResetRoute: ApiAuthPasswordResetRoute,
+  ApiAuthSessionRoute: ApiAuthSessionRoute,
+  ApiMailboxIdRoute: ApiMailboxIdRoute,
+  ApiPortalEntryCommentsRoute: ApiPortalEntryCommentsRoute,
+  ApiPortalMonthlyEntriesRoute: ApiPortalMonthlyEntriesRoute,
+  ApiPortalReportingComplianceRoute: ApiPortalReportingComplianceRoute,
+  ApiPortalReportingCompliancePreviewRoute:
+    ApiPortalReportingCompliancePreviewRoute,
+  ApiPortalStateUsersRoute: ApiPortalStateUsersRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,8 +1,5 @@
 /**
- * AuthProvider — React context that tracks the Supabase session
- * and the user's NBM role + state profile.
- *
- * Wraps the entire app (plugged into __root.tsx).
+ * AuthProvider — session + NBM role / state profile for portal routes.
  */
 
 import {
@@ -17,6 +14,11 @@ import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import type { NbmRole } from "@/lib/roles";
 import { getStateName } from "@/data/indianStates";
+import { isMysqlBackend } from "@/lib/backend-config";
+import {
+  mysqlFetchSession,
+  mysqlLogout,
+} from "@/lib/portal-client";
 
 // ── Types ──
 
@@ -31,35 +33,90 @@ export type StateUserProfile = {
   is_active: boolean;
 };
 
+export type PortalUser = {
+  id: string;
+  email?: string;
+};
+
 export type AuthState = {
-  /** Supabase auth session */
   session: Session | null;
-  /** Supabase user object */
-  user: User | null;
-  /** The user's NBM portal profile (from state_users table) */
+  user: User | PortalUser | null;
   profile: StateUserProfile | null;
-  /** Convenience: the user's NBM role */
   role: NbmRole | null;
-  /** Convenience: state display name */
   stateName: string | null;
-  /** true while session + profile are still loading */
   loading: boolean;
-  /** Sign out */
   signOut: () => Promise<void>;
-  /** Force re-fetch profile */
   refreshProfile: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthState | undefined>(undefined);
 
-// ── Provider ──
+function MysqlAuthProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<PortalUser | null>(null);
+  const [profile, setProfile] = useState<StateUserProfile | null>(null);
+  const [loading, setLoading] = useState(true);
 
-export function AuthProvider({ children }: { children: ReactNode }) {
+  const loadSession = useCallback(async () => {
+    try {
+      const data = await mysqlFetchSession();
+      setUser(data.user);
+      setProfile(data.profile);
+    } catch (err) {
+      console.error("[Auth] MySQL session error:", err);
+      setUser(null);
+      setProfile(null);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void loadSession();
+
+    const onAuthChange = () => void loadSession();
+    window.addEventListener("nbm-auth-changed", onAuthChange);
+    return () => window.removeEventListener("nbm-auth-changed", onAuthChange);
+  }, [loadSession]);
+
+  const signOut = useCallback(async () => {
+    try {
+      await mysqlLogout();
+    } finally {
+      setUser(null);
+      setProfile(null);
+    }
+  }, []);
+
+  const refreshProfile = useCallback(async () => {
+    await loadSession();
+  }, [loadSession]);
+
+  const role = (profile?.role as NbmRole) ?? null;
+  const stateName = profile?.state_code ? getStateName(profile.state_code) : null;
+
+  return (
+    <AuthContext.Provider
+      value={{
+        session: null,
+        user,
+        profile,
+        role,
+        stateName,
+        loading,
+        signOut,
+        refreshProfile,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+function SupabaseAuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<StateUserProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Fetch the user's state_users profile
   const fetchProfile = useCallback(async (userId: string) => {
     try {
       const { data, error } = await supabase
@@ -82,12 +139,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  // Initial session + listener
   useEffect(() => {
     let mounted = true;
 
     async function init() {
-      const { data: { session: initial } } = await supabase.auth.getSession();
+      const {
+        data: { session: initial },
+      } = await supabase.auth.getSession();
       if (!mounted) return;
       setSession(initial);
       if (initial?.user) {
@@ -98,18 +156,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     void init();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, newSession) => {
-        if (!mounted) return;
-        setSession(newSession);
-        if (newSession?.user) {
-          await fetchProfile(newSession.user.id);
-        } else {
-          setProfile(null);
-        }
-        if (mounted) setLoading(false);
-      },
-    );
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (_event, newSession) => {
+      if (!mounted) return;
+      setSession(newSession);
+      if (newSession?.user) {
+        await fetchProfile(newSession.user.id);
+      } else {
+        setProfile(null);
+      }
+      if (mounted) setLoading(false);
+    });
 
     return () => {
       mounted = false;
@@ -142,10 +200,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 }
 
-// ── Hook ──
+export function AuthProvider({ children }: { children: ReactNode }) {
+  if (isMysqlBackend()) {
+    return <MysqlAuthProvider>{children}</MysqlAuthProvider>;
+  }
+  return <SupabaseAuthProvider>{children}</SupabaseAuthProvider>;
+}
 
 export function useAuth(): AuthState {
   const ctx = useContext(AuthContext);
   if (!ctx) throw new Error("useAuth must be used within <AuthProvider>");
   return ctx;
+}
+
+/** Call after successful MySQL login so AuthProvider picks up the new session. */
+export function notifyMysqlLogin(): void {
+  window.dispatchEvent(new Event("nbm-auth-changed"));
 }

@@ -14,6 +14,16 @@ export const Route = createFileRoute("/api/chat")({
           return new Response("Messages are required", { status: 400 });
         }
 
+        if (process.env.NBM_ALLOW_EXTERNAL_AI !== "true") {
+          return Response.json(
+            {
+              error:
+                "External AI is disabled on this deployment. Bamboo Mitra answers from on-portal content only.",
+            },
+            { status: 403 },
+          );
+        }
+
         const model = getGeminiModel();
         if (!model) {
           return Response.json(

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,43 +11,49 @@ import {
   CATEGORY_OPTIONS,
   isIndividualBeneficiary,
 } from "@/data/dropdowns";
+import {
+  emptyEditorEntryForm,
+  type EditorEntryFormValues,
+} from "@/lib/portal-entry-form";
 
 type EditorEntryFormProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (data: any) => Promise<void>;
+  onSubmit: (data: EditorEntryFormValues) => Promise<void>;
   defaultStateCode?: string | null;
+  mode: "add" | "edit";
+  entryId?: string | null;
+  initialValues?: EditorEntryFormValues | null;
 };
 
-export function EditorEntryForm({ open, onOpenChange, onSubmit, defaultStateCode }: EditorEntryFormProps) {
+export function EditorEntryForm({
+  open,
+  onOpenChange,
+  onSubmit,
+  defaultStateCode,
+  mode,
+  entryId,
+  initialValues,
+}: EditorEntryFormProps) {
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    activity: "",
-    beneficiary_name: "",
-    beneficiary_type: "",
-    father_husband_name: "",
-    gender: "",
-    age: "",
-    category: "",
-    mobile: "",
-    village: "",
-    block: "",
-    district: "",
-    state: defaultStateCode || "",
-    pin_code: "",
-    total_project_investment_lakhs: "",
-    center_share_lakhs: "",
-    state_share_lakhs: "",
-    total_capacity: "",
-    employment_generated: "",
-  });
+  const [formData, setFormData] = useState<EditorEntryFormValues>(() =>
+    emptyEditorEntryForm(defaultStateCode || ""),
+  );
+
+  useEffect(() => {
+    if (!open) return;
+    if (mode === "edit" && initialValues) {
+      setFormData(initialValues);
+      return;
+    }
+    setFormData(emptyEditorEntryForm(defaultStateCode || ""));
+  }, [open, mode, entryId, defaultStateCode]);
 
   const isIndividual = isIndividualBeneficiary(formData.beneficiary_type);
 
-  const handleChange = (field: string, value: string) => {
+  const handleChange = (field: keyof EditorEntryFormValues, value: string) => {
     setFormData((prev) => {
       const next = { ...prev, [field]: value };
-      // Reset individual fields if type changes away from Individual
       if (field === "beneficiary_type" && !isIndividualBeneficiary(value)) {
         next.father_husband_name = "";
         next.gender = "";
@@ -61,25 +67,34 @@ export function EditorEntryForm({ open, onOpenChange, onSubmit, defaultStateCode
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    await onSubmit(formData);
-    setLoading(false);
-    onOpenChange(false); // Close dialog on success
+    try {
+      await onSubmit(formData);
+      onOpenChange(false);
+    } catch {
+      // Parent shows toast; keep dialog open for corrections.
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const isEdit = mode === "edit";
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Add Monthly Entry</DialogTitle>
+          <DialogTitle>{isEdit ? "Edit Entry" : "Add Monthly Entry"}</DialogTitle>
           <DialogDescription>
-            Fill out the details for the new entry. Fields marked with * are required.
+            {isEdit
+              ? "Update this entry and save. You can submit it for review when ready."
+              : "Fill out the details for the new entry. Fields marked with * are required."}
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-4">
-          
+
           <div className="space-y-2 lg:col-span-3">
             <Label>Activity *</Label>
-            <Select required onValueChange={(v) => handleChange("activity", v)}>
+            <Select required value={formData.activity} onValueChange={(v) => handleChange("activity", v)}>
               <SelectTrigger><SelectValue placeholder="Select Activity" /></SelectTrigger>
               <SelectContent>
                 {ACTIVITY_OPTIONS.map((opt) => (
@@ -91,7 +106,7 @@ export function EditorEntryForm({ open, onOpenChange, onSubmit, defaultStateCode
 
           <div className="space-y-2">
             <Label>Beneficiary Type *</Label>
-            <Select required onValueChange={(v) => handleChange("beneficiary_type", v)}>
+            <Select required value={formData.beneficiary_type} onValueChange={(v) => handleChange("beneficiary_type", v)}>
               <SelectTrigger><SelectValue placeholder="Select Type" /></SelectTrigger>
               <SelectContent>
                 {BENEFICIARY_TYPE_OPTIONS.map((opt) => (
@@ -197,7 +212,9 @@ export function EditorEntryForm({ open, onOpenChange, onSubmit, defaultStateCode
 
           <DialogFooter className="lg:col-span-3 mt-4 border-t pt-4">
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
-            <Button type="submit" disabled={loading}>{loading ? "Saving..." : "Save Draft"}</Button>
+            <Button type="submit" disabled={loading}>
+              {loading ? "Saving..." : isEdit ? "Save Changes" : "Save Draft"}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

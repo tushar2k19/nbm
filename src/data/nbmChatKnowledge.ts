@@ -111,6 +111,42 @@ Subsidy is typically **back-ended**; Centre:State sharing per CSS norms (often 6
 - Professional, concise; bullet points; Hindi or English matching user language.
 `.trim();
 
+const LOCAL_ANSWERS: { test: (q: string) => boolean; answer: string }[] = [
+  {
+    test: (q) => /what is nbm|national bamboo mission|about nbm/.test(q),
+    answer:
+      "The **National Bamboo Mission (NBM)** is a Centrally Sponsored Scheme under the Department of Agriculture and Farmers Welfare. It supports nurseries, plantations, processing, skilling, and market linkages through State Bamboo Missions. See the About NBM page, or call **1800-180-1551** (Mon–Fri).",
+  },
+  {
+    test: (q) => /cost norm|subsidy|plantation cost/.test(q),
+    answer:
+      "Indicative cost norms are published in the NBM Guidelines. Subsidy is typically back-ended and depends on the approved State Annual Action Plan. Open **Guidelines & Documents** for the official PDF, and do not treat summary figures on this portal as a sanction order.",
+  },
+  {
+    test: (q) => /nursery|accreditation|tissue culture/.test(q),
+    answer:
+      "Nursery accreditation covers area, mother stock, irrigation, records, and linkage to plantations. Tissue-culture labs follow a separate empanelment circular. Details are on **Guidelines & Documents**.",
+  },
+  {
+    test: (q) => /agarbatti|incense/.test(q),
+    answer:
+      "NBM promotes round bamboo stick manufacturing to substitute imports, including primary processing and cluster support. Quality requirements follow the relevant BIS standards. See **Guidelines & Documents** and **Knowledge Center**.",
+  },
+  {
+    test: (q) => /login|mis|beneficiary status|application status/.test(q),
+    answer:
+      "State officers sign in on **State Login**. Personal beneficiary status is not answered here — contact your State Bamboo Mission or the helpline **1800-180-1551**.",
+  },
+];
+
+/** On-portal answers. No external model is called. */
+export function answerNbmLocally(question: string): string {
+  const q = question.toLowerCase();
+  const match = LOCAL_ANSWERS.find((item) => item.test(q));
+  if (match) return match.answer;
+  return "I can help with NBM overview, cost norms, nursery accreditation, and agarbatti policy using the pages on this portal. For a case-specific sanction or application status, use **State Login** or helpline **1800-180-1551**.";
+}
+
 export function buildNbmSystemPrompt(): string {
   return `You are **Bamboo Mitra**, the official AI assistant of the National Bamboo Mission (NBM), Department of Agriculture and Farmers Welfare, Government of India.
 

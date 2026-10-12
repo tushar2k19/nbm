@@ -1,13 +1,30 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/auth";
-import { supabase } from "@/integrations/supabase/client";
+import { listMonthlyEntriesForState, updateEntryStatus } from "@/lib/portal-data";
 import { AuthGuard } from "@/components/AuthGuard";
 import { getStatusLabel, getStatusColor, ENTRY_STATUS } from "@/data/dropdowns";
-import { CheckCircle, XCircle, MessageSquare, AlertCircle } from "lucide-react";
+import { CheckCircle, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { CommentsDrawer } from "@/components/portal/CommentsDrawer";
+import {
+  EntryCommentsButton,
+  entryCommentCount,
+  entryNeedsCommentHighlight,
+  entryRowCommentHighlightClass,
+} from "@/components/portal/EntryCommentsButton";
+import { PeriodFilter } from "@/components/portal/PeriodFilter";
+import { PortalTablePagination } from "@/components/portal/PortalTablePagination";
+import { useClientPagination } from "@/hooks/useClientPagination";
+import {
+  formatMonthYear,
+  indiaYearMonth,
+  mergeReportingPeriods,
+  monthAfterYearChange,
+  type ReportingPeriods,
+} from "@/lib/reporting-period";
+import { formatPortalDateTime } from "@/lib/portal-datetime";
 
 export const Route = createFileRoute("/portal/reviewer")({
   component: ReviewerPortal,
@@ -25,6 +42,10 @@ function ReviewerDashboard() {
   const { profile, stateName } = useAuth();
   const [entries, setEntries] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const opened = indiaYearMonth();
+  const [year, setYear] = useState(opened.year);
+  const [month, setMonth] = useState<number | null>(opened.month);
+  const [periods, setPeriods] = useState<ReportingPeriods>(() => mergeReportingPeriods([]));
   
   const [selectedEntryId, setSelectedEntryId] = useState<string | null>(null);
   const [isCommentsOpen, setIsCommentsOpen] = useState(false);
@@ -32,50 +53,64 @@ function ReviewerDashboard() {
   const fetchEntries = async () => {
     if (!profile?.state_code) return;
     setLoading(true);
-    const { data, error } = await supabase
-      .from("monthly_entries")
-      .select("*")
-      .eq("state_code", profile.state_code)
-      .neq("status", ENTRY_STATUS.DRAFT) // Reviewer doesn't see drafts
-      .order("created_at", { ascending: false });
-
-    if (error) {
+    try {
+      const data = await listMonthlyEntriesForState(profile.state_code, { excludeDraft: true, year, month });
+      setEntries(data.entries || []);
+      setPeriods(data.periods);
+    } catch (error) {
       toast.error("Failed to fetch entries");
       console.error(error);
-    } else {
-      setEntries(data || []);
     }
     setLoading(false);
   };
 
   useEffect(() => {
     void fetchEntries();
-  }, [profile?.state_code]);
+  }, [profile?.state_code, year, month]);
+
+  const onYearChange = (nextYear: number) => {
+    setMonth((currentMonth) => monthAfterYearChange(nextYear, currentMonth, periods));
+    setYear(nextYear);
+  };
 
   const updateStatus = async (id: string, status: string) => {
-    const { error } = await supabase
-      .from("monthly_entries")
-      .update({ status })
-      .eq("id", id);
-      
-    if (error) {
-      toast.error(`Failed to update status: ${error.message}`);
-    } else {
+    try {
+      await updateEntryStatus(id, status);
       toast.success(`Entry marked as ${getStatusLabel(status)}`);
       await fetchEntries();
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Failed to update status");
     }
   };
 
   const pendingCount = entries.filter(e => e.status === ENTRY_STATUS.SUBMITTED || e.status === ENTRY_STATUS.UNDER_REVIEW).length;
   const approvedCount = entries.filter(e => e.status === ENTRY_STATUS.APPROVED).length;
 
+  const {
+    page,
+    setPage,
+    pageSize,
+    setPageSize,
+    totalPages,
+    paginatedItems,
+    rowOffset,
+    total: entryTotal,
+  } = useClientPagination(entries, [year, month]);
+
   return (
     <div className="space-y-6">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
           <h1 className="text-2xl font-bold text-foreground tracking-tight">Reviewer Dashboard</h1>
           <p className="text-muted-foreground">Welcome, {profile?.full_name} ({stateName})</p>
         </div>
+        <PeriodFilter
+          year={year}
+          month={month}
+          periods={periods}
+          onYearChange={onYearChange}
+          onMonthChange={setMonth}
+        />
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -103,9 +138,12 @@ function ReviewerDashboard() {
             <thead className="text-xs text-muted-foreground uppercase bg-muted/40">
               <tr>
                 <th className="px-4 py-3 font-medium">S.No</th>
+                {month == null ? <th className="px-4 py-3 font-medium">Month</th> : null}
                 <th className="px-4 py-3 font-medium">Status</th>
                 <th className="px-4 py-3 font-medium">Activity</th>
                 <th className="px-4 py-3 font-medium">Beneficiary</th>
+                <th className="px-4 py-3 font-medium">Submitted</th>
+                <th className="px-4 py-3 font-medium">Submitted by</th>
                 <th className="px-4 py-3 font-medium">Investment</th>
                 <th className="px-4 py-3 font-medium text-right">Actions</th>
               </tr>
@@ -113,16 +151,20 @@ function ReviewerDashboard() {
             <tbody className="divide-y divide-border">
               {loading ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-muted-foreground">Loading queue...</td>
+                  <td colSpan={month == null ? 9 : 8} className="px-4 py-8 text-center text-muted-foreground">Loading queue...</td>
                 </tr>
               ) : entries.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-muted-foreground">No submissions to review.</td>
+                  <td colSpan={month == null ? 9 : 8} className="px-4 py-8 text-center text-muted-foreground">No submissions to review.</td>
                 </tr>
               ) : (
-                entries.map((entry, idx) => (
-                  <tr key={entry.id} className="hover:bg-muted/30 transition-colors">
-                    <td className="px-4 py-3 text-muted-foreground">{idx + 1}</td>
+                paginatedItems.map((entry, idx) => (
+                  <tr
+                    key={entry.id}
+                    className={`transition-colors ${entryRowCommentHighlightClass(entryNeedsCommentHighlight(entry))}`}
+                  >
+                    <td className="px-4 py-3 text-muted-foreground">{rowOffset + idx + 1}</td>
+                    {month == null ? <td className="px-4 py-3 text-muted-foreground">{formatMonthYear(entry.month_year)}</td> : null}
                     <td className="px-4 py-3">
                       <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-muted ${getStatusColor(entry.status)} bg-opacity-20`}>
                         {getStatusLabel(entry.status)}
@@ -130,22 +172,24 @@ function ReviewerDashboard() {
                     </td>
                     <td className="px-4 py-3 font-medium truncate max-w-[200px]" title={entry.activity}>{entry.activity}</td>
                     <td className="px-4 py-3">{entry.beneficiary_name}</td>
+                    <td className="px-4 py-3 text-muted-foreground whitespace-normal">
+                      {formatPortalDateTime(entry.submitted_at)}
+                    </td>
+                    <td className="px-4 py-3 text-muted-foreground">
+                      {entry.submitted_by_name ?? "—"}
+                    </td>
                     <td className="px-4 py-3 text-muted-foreground">
                       {entry.total_project_investment_lakhs ? `₹${entry.total_project_investment_lakhs} L` : '-'}
                     </td>
                     <td className="px-4 py-3 text-right space-x-1">
-                      <Button 
-                        variant="ghost" 
-                        size="icon" 
-                        className="h-8 w-8 text-muted-foreground"
-                        title="Comments / Queries"
+                      <EntryCommentsButton
+                        count={entryCommentCount(entry)}
+                        highlightUnresolved={entryNeedsCommentHighlight(entry)}
                         onClick={() => {
                           setSelectedEntryId(entry.id);
                           setIsCommentsOpen(true);
                         }}
-                      >
-                        <MessageSquare className="h-4 w-4" />
-                      </Button>
+                      />
                       
                       {entry.status === ENTRY_STATUS.SUBMITTED || entry.status === ENTRY_STATUS.UNDER_REVIEW ? (
                         <>
@@ -157,15 +201,6 @@ function ReviewerDashboard() {
                             onClick={() => updateStatus(entry.id, ENTRY_STATUS.APPROVED)}
                           >
                             <CheckCircle className="h-4 w-4" />
-                          </Button>
-                          <Button 
-                            variant="ghost" 
-                            size="icon" 
-                            className="h-8 w-8 text-orange-600 hover:text-orange-700 hover:bg-orange-50"
-                            title="Request Revision"
-                            onClick={() => updateStatus(entry.id, ENTRY_STATUS.REVISION_REQUESTED)}
-                          >
-                            <AlertCircle className="h-4 w-4" />
                           </Button>
                           <Button 
                             variant="ghost" 
@@ -185,15 +220,25 @@ function ReviewerDashboard() {
             </tbody>
           </table>
         </div>
+        <PortalTablePagination
+          page={page}
+          totalPages={totalPages}
+          total={entryTotal}
+          pageSize={pageSize}
+          onPageChange={setPage}
+          onPageSizeChange={setPageSize}
+          disabled={loading}
+        />
       </div>
 
-      <CommentsDrawer 
+      <CommentsDrawer
         entryId={selectedEntryId}
         isOpen={isCommentsOpen}
         onClose={() => {
           setIsCommentsOpen(false);
           setSelectedEntryId(null);
         }}
+        onCommentsChange={() => void fetchEntries()}
       />
     </div>
   );

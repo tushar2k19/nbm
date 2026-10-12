@@ -10,7 +10,8 @@
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "db:setup-mysql": "node scripts/setup-mysql-local.mjs"
   },
   "dependencies": {
     "@ai-sdk/google": "^4.0.2",
@@ -60,6 +61,8 @@
     "i18next": "^26.3.3",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.575.0",
+    "mysql2": "^3.24.5",
+    "nodemailer": "^10.1.0",
     "react": "^19.2.0",
     "react-day-picker": "^9.14.0",
     "react-dom": "^19.2.0",
