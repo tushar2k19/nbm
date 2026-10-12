@@ -1,4 +1,5 @@
 import { deliverOutboxEmail } from "@/server/mail/deliver";
+import { buildNbmEmailHtml } from "@/lib/nbm-email-template";
 import type { ComplianceAudience, ComplianceStage } from "@/server/portal/reporting-compliance";
 
 function escapeHtml(value: string): string {
@@ -69,14 +70,12 @@ function reminderCopy(
     }
   }
 
-  const html = `
-    <p>Namaste ${safeName},</p>
-    <p>${lead}</p>
-    <p>${detail}</p>
-    <p>${portalLine}</p>
-    <p>This is an official reminder from NBM Headquarters. If you have already completed this action, you may disregard this message.</p>
-    <p>National Bamboo Mission<br/>Department of Agriculture and Farmers Welfare<br/>mis-nbm@gov.in</p>
-  `.trim();
+  const html = buildNbmEmailHtml({
+    salutation: `Namaste ${safeName},`,
+    paragraphs: [lead, detail, portalLine],
+    footnote:
+      "This is an official reminder from NBM Headquarters. If you have already completed this action, you may disregard this message.",
+  });
 
   const text = [
     `Namaste ${fullName},`,

@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { getMysqlPool } from "@/server/db/mysql";
+import { buildNbmEmailHtml } from "@/lib/nbm-email-template";
 
 export type PasswordMailPurpose = "invite" | "reset";
 
@@ -30,13 +31,13 @@ function messageCopy(purpose: PasswordMailPurpose, fullName: string, url: string
   const safeName = escapeHtml(fullName);
   const safeUrl = escapeHtml(url);
 
-  const html = `
-    <p>Namaste ${safeName},</p>
-    <p>${intro}</p>
-    <p><a href="${safeUrl}">${action}</a></p>
-    <p>This link works once and expires in 48 hours. If you did not expect this message, contact NBM Headquarters at mis-nbm@gov.in.</p>
-    <p>National Bamboo Mission<br/>Department of Agriculture and Farmers Welfare</p>
-  `.trim();
+  const html = buildNbmEmailHtml({
+    salutation: `Namaste ${safeName},`,
+    paragraphs: [intro],
+    cta: { label: action, href: safeUrl },
+    footnote:
+      "This link works once and expires in 48 hours. If you did not expect this message, contact NBM Headquarters at mis-nbm@gov.in.",
+  });
 
   const text = [
     `Namaste ${fullName},`,
